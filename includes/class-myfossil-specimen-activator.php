@@ -1,37 +1,54 @@
 <?php
-namespace myFOSSIL\Plugin\Specimen;
-
 /**
+ * ./includes/class-myfossil-specimen-activator.php
+ *
  * Fired during plugin activation
  *
- * @link       http://atmoapps.com
- * @since      0.0.1
+ * @author Brandon Wood <bwood@atmoapps.com>
+ * @package myFOSSIL
+ * @subpackage  myFOSSIL/includes
  *
- * @package    myFOSSIL
- * @subpackage myFOSSIL/includes
+ * @link        https://github.com/myfossil
+ * @since       0.0.1
  */
+
+namespace myFOSSIL\Plugin\Specimen;
 
 /**
  * Fired during plugin activation.
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since      0.0.1
+ * @author     Brandon Wood <bwood@atmoapps.com>
  * @package    myFOSSIL
  * @subpackage myFOSSIL/includes
- * @author     Brandon Wood <bwood@atmoapps.com>
+ *
+ * @since      0.0.1
  */
-class myFOSSIL_Specimen_Activator {
+class myFOSSIL_Specimen_Activator
+{
 
     /**
-     * Short Description. (use period)
+     * Main function that orchestrates activation methods.
      *
-     * Long Description.
-     *
-     * @since    0.0.1
+     * @since   0.0.1
+     * @access  public
+     * @static
      */
-    public static function activate() {
+    public static function activate()
+    { 
+        global $wpdb;
 
+        $models = array(
+                new Taxon,
+                new Location,
+                new GeologicalTimeScale,
+                new GeologicalTimeInterval,
+                new FossilOccurence
+            );
+
+        foreach ( $models as $model )
+            $model->activate();
     }
 
 }

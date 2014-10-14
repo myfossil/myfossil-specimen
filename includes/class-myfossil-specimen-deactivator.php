@@ -1,15 +1,18 @@
 <?php
-namespace myFOSSIL\Plugin\Specimen;
-
 /**
+ * ./includes/class-myfossil-specimen-deactivator.php
+ *
  * Fired during plugin deactivation
  *
- * @link       http://atmoapps.com
- * @since      0.0.1
+ * @author      Brandon Wood <bwood@atmoapps.com>
+ * @package     myFOSSIL
+ * @subpackage  myFOSSIL/includes
  *
- * @package    myFOSSIL
- * @subpackage myFOSSIL/includes
+ * @link        https://github.com/myfossil
+ * @since       0.0.1
  */
+
+namespace myFOSSIL\Plugin\Specimen;
 
 /**
  * Fired during plugin deactivation.
@@ -17,12 +20,14 @@ namespace myFOSSIL\Plugin\Specimen;
  * This class defines all code necessary to run during the plugin's
  * deactivation.
  *
+ * @author     Brandon Wood <bwood@atmoapps.com>
+ *
  * @since      0.0.1
  * @package    myFOSSIL
  * @subpackage myFOSSIL/includes
- * @author     Brandon Wood <bwood@atmoapps.com>
  */
-class myFOSSIL_Specimen_Deactivator {
+class myFOSSIL_Specimen_Deactivator
+{
 
     /**
      * Short Description. (use period)
@@ -31,8 +36,16 @@ class myFOSSIL_Specimen_Deactivator {
      *
      * @since    0.0.1
      */
-    public static function deactivate() {
-
+    public static function deactivate()
+    {
+        $models = array(
+                new Taxon,
+                new Location,
+                new GeologicalTimeScale,
+                new GeologicalTimeInterval,
+                new FossilOccurence
+            );
+        foreach ( $models as $model )
+            $model->deactivate();
     }
-
 }
