@@ -53,7 +53,7 @@ class GeologicalTimeScale extends Base implements WordPress, CRUD
         $this->_keys = array(
             'id' => '%d',
             'pbdb_id' => '%d',
-            'created_by' => '%d',
+            'created_by_id' => '%d',
             'created_at' => '%s',
             'name' => '%s'
         );
@@ -85,7 +85,7 @@ class GeologicalTimeScale extends Base implements WordPress, CRUD
         $tpl = "CREATE TABLE %s (
             id INT NOT NULL AUTO_INCREMENT,
             pbdb_id INT NULL,
-            created_by INT NULL,
+            created_by_id INT NULL,
             created_at DATETIME NULL,
             name TEXT NULL,
             PRIMARY KEY (id)

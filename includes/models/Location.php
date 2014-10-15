@@ -42,7 +42,7 @@ class Location extends Base implements WordPress, CRUD
         $this->_keys = array(
             'id' => '%d',
             'parent_id' => '%d',
-            'created_by' => '%d',
+            'created_by_id' => '%d',
             'created_at' => '%s',
             'latitude_max' => '%f',
             'latitude_min' => '%f',
@@ -133,7 +133,7 @@ class Location extends Base implements WordPress, CRUD
         $tpl = "CREATE TABLE %s (
             id INT NOT NULL AUTO_INCREMENT,
             parent_id INT NULL,
-            created_by INT NULL,
+            created_by_id INT NULL,
             created_at DATETIME NULL,
             latitude_max DOUBLE NULL,
             latitude_min DOUBLE NULL,
@@ -169,6 +169,10 @@ class Location extends Base implements WordPress, CRUD
      */
     public static function factory( $id )
     {
+        $location = new Location;
+        $location->id = $id;
+        $location->load();
+        return $location;
     }
 
 }

@@ -71,17 +71,14 @@ class myFOSSIL_Specimen_Activator
             $fossil = new FossilOccurence;
             $fossil->pbdb_id = $record['occurrence_no'];
             $fossil->created_at = date( "Y-m-d H:i:s" );
-            $fossil->created_by = 1;
 
             $taxon = new Taxon;
             $taxon->pbdb_id = $record['taxon_no'];
-            $taxon->created_by = 1;
             $taxon->created_at = $fossil->created_at;
             $taxon->name = $record['taxon_name'];
             $fossil->taxon = $taxon;
 
             $location = new Location;
-            $location->created_by = 1;
             $location->created_at = $fossil->created_at;
             $location->latitude = $record['paleolat'];
             $location->longitude = $record['paleolng'];

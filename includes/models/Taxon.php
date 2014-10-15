@@ -54,7 +54,7 @@ class Taxon extends Base implements WordPress, CRUD
             'id' => '%d',
             'parent_id' => '%d',
             'pbdb_id' => '%d',
-            'created_by' => '%s',
+            'created_by_id' => '%s',
             'created_at' => '%s',
             'name' => '%s',
             'common_name' => '%s'
@@ -89,7 +89,7 @@ class Taxon extends Base implements WordPress, CRUD
             id INT NOT NULL AUTO_INCREMENT,
             parent_id INT NULL,
             pbdb_id INT NULL,
-            created_by INT NULL,
+            created_by_id INT NULL,
             created_at DATETIME NULL,
             name VARCHAR(45) NULL,
             common_name VARCHAR(45) NULL,

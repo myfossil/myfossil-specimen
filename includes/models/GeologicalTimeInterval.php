@@ -53,7 +53,7 @@ class GeologicalTimeInterval extends Base implements WordPress, CRUD
             'id' => '%d',
             'pbdb_id' => '%d',
             'time_scale_id' => '%d',
-            'created_by' => '%d',
+            'created_by_id' => '%d',
             'created_at' => '%s',
             'name' => '%s'
         );
@@ -86,7 +86,7 @@ class GeologicalTimeInterval extends Base implements WordPress, CRUD
             id INT NOT NULL AUTO_INCREMENT,
             pbdb_id INT NULL,
             time_scale_id INT NULL,
-            created_by INT NULL,
+            created_by_id INT NULL,
             created_at DATETIME NULL,
             name TEXT NULL,
             PRIMARY KEY (id)

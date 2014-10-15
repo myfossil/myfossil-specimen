@@ -61,7 +61,7 @@ class FossilOccurence extends Base implements WordPress, CRUD
             'time_interval_id' => '%d',
             'geology_id' => '%d',
             'location_id' => '%d',
-            'created_by' => '%s',
+            'created_by_id' => '%s',
             'created_at' => '%s',
             'name' => '%s',
         );
@@ -94,24 +94,24 @@ class FossilOccurence extends Base implements WordPress, CRUD
     public function __get( $key )
     {
         switch ( $key ) {
-        case 'taxon':
-            return $this->get_taxon();
-            break;
-        case 'time_interval':
-            return $this->get_time_interval();
-            break;
-        case 'geology':
-            return $this->get_geology();
-            break;
-        case 'location':
-            return $this->get_location();
-            break;
-        case 'parent':
-            return $this->get_parent();
-            break;
-        default:
-            return parent::__get( $key );
-            break;
+            case 'taxon':
+                return $this->get_taxon();
+                break;
+            case 'time_interval':
+                return $this->get_time_interval();
+                break;
+            case 'geology':
+                return $this->get_geology();
+                break;
+            case 'location':
+                return $this->get_location();
+                break;
+            case 'parent':
+                return $this->get_parent();
+                break;
+            default:
+                return parent::__get( $key );
+                break;
         }
     }
 
@@ -348,7 +348,7 @@ class FossilOccurence extends Base implements WordPress, CRUD
             taxon_id INT NULL,
             time_interval_id INT NULL,
             location_id INT NULL,
-            created_by INT NULL,
+            created_by_id INT NULL,
             created_at DATETIME NULL,
             name VARCHAR(45) NULL,
             PRIMARY KEY (id)

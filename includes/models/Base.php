@@ -127,12 +127,13 @@ class Base
     {
         if ( $key == 'pbdb_id' && $this->pbdb )
             $this->pbdb->oid = $value;
+
         if ( property_exists( $this, $key ) ) {
             $this->$key = $value;
         } else {
             if ( !array_key_exists( $key, $this->_keys ) )
-                trigger_error( sprintf( "Setting unknown property %s in %s.", $key,
-                        __CLASS__ ), E_USER_WARNING );
+                trigger_error( sprintf( "Setting unknown property %s in %s.",
+                        $key, __CLASS__ ), E_USER_WARNING );
             $this->_properties[ $key ] = $value;
         }
     }
