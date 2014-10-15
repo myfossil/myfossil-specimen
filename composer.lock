@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "92ef91b4ce90ab437b36aa8e03ee14cb",
+    "hash": "5fb3def629d7a087de6fd3b14decdb6e",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -130,7 +130,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myfossil/pbdb-php.git",
-                "reference": "b2db6b1bb9adf327a92728d1350701018b091bcb"
+                "reference": "23949534d3a8ed68b369320fe17928181829349d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/myfossil/pbdb-php/zipball/23949534d3a8ed68b369320fe17928181829349d",
+                "reference": "23949534d3a8ed68b369320fe17928181829349d",
+                "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "~4",
@@ -155,13 +161,14 @@
                     "email": "bwood@atmoapps.com"
                 }
             ],
-            "description": "API client for the PaleoBio Database (PBDB)",
+            "description": "PHP client for the Paleobiology Database API",
             "keywords": [
-                "paleobio",
                 "paleobiodb",
-                "pbdb"
+                "paleobiology",
+                "pbdb",
+                "taxonomy"
             ],
-            "time": "2014-10-07 21:14:06"
+            "time": "2014-10-15 00:09:30"
         }
     ],
     "packages-dev": [
@@ -799,7 +806,7 @@
     },
     "prefer-stable": false,
     "platform": {
-        "php": ">=5.4.0"
+        "php": ">=5.3.0"
     },
     "platform-dev": []
 }

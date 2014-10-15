@@ -43,7 +43,7 @@ class FossilOccurenceWordPressTest extends Tests\myFOSSIL_Specimen_Test {
         // Assert that there is a table in there
         $this->assertContains( 'Created table ' . $this->fossil->table_name,
             $this->fossil->activate() );
-
+    
         // Assert that we deleted no data
         $this->assertNull( $this->fossil->deactivate() );
 

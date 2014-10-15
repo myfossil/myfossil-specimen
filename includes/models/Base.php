@@ -283,13 +283,14 @@ class Base
 
         // Query database and load properties
         global $wpdb;
-        $r = $wpdb->get_row( $sql, ARRAY_A );
+        if ( !is_null( $r = $wpdb->get_row( $sql, ARRAY_A ) ) ):
         foreach ( $r as $k => $v )
             if ( !empty( $v ) && empty( $this->$k ) || $overwrite )
                 $this->$k = $v;
+        endif;
         
         // Get PBDB data
-        if ( $this->pbdb && $this->pbdb->oid )
+        if ( $this->pbdb && method_exists( $this->pbdb, 'load' ) )
             $this->pbdb->load();
 
         return $this;

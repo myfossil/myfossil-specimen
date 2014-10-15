@@ -14,6 +14,8 @@
 
 namespace myFOSSIL\Plugin\Specimen;
 
+use \myFOSSIL\PBDB;
+
 /**
  * Fired during plugin activation.
  *
@@ -49,6 +51,47 @@ class myFOSSIL_Specimen_Activator
 
         foreach ( $models as $model )
             $model->activate();
+
+        self::load_data();
+    }
+
+    /**
+     * Load the database with data from PBDB.
+     *
+     * @todo    Use the PBDB client rather than the raw HTTP client
+     * @see     {@link http://bit.ly/1w7janY}
+     */
+    public static function load_data() {
+        $url = "http://paleobiodb.org/data1.1/occs/list.json" .
+            "?base_name=Cetacea&interval=Miocene&show=loc,paleoloc,time&vocab=pbdb";
+
+        $http = new \GuzzleHttp\Client;
+        $fossils = $http->get( $url )->json();
+        foreach ( $fossils['records'] as $record ) {
+            $fossil = new FossilOccurence;
+            $fossil->pbdb_id = $record['occurrence_no'];
+            $fossil->created_at = date( "Y-m-d H:i:s" );
+            $fossil->created_by = 1;
+
+            $taxon = new Taxon;
+            $taxon->pbdb_id = $record['taxon_no'];
+            $taxon->created_by = 1;
+            $taxon->created_at = $fossil->created_at;
+            $taxon->name = $record['taxon_name'];
+            $fossil->taxon = $taxon;
+
+            $location = new Location;
+            $location->created_by = 1;
+            $location->created_at = $fossil->created_at;
+            $location->latitude = $record['paleolat'];
+            $location->longitude = $record['paleolng'];
+            $location->country = $record['cc'];
+            if ( array_key_exists( 'state', $record ) )
+                $location->state = $record['state'];
+            $fossil->location = $location;
+
+            $fossil->save( true, true );
+        }
     }
 
 }
