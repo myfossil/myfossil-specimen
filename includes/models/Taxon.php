@@ -112,11 +112,10 @@ class Taxon extends Base implements WordPress, CRUD
      */
     public static function factory( $id )
     {
-        global $wpdb;
-        $tpl = "SELECT * FROM %s WHERE id = %d";
-        $spl = sprintf( $tpl, self::get_table_name(), $id );
-    
-        
+        $taxon = new Taxon;
+        $taxon->id = $id;
+        $taxon->load();
+        return $taxon;
     }
 
 }

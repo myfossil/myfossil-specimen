@@ -45,7 +45,8 @@ class myFOSSIL_Specimen_Deactivator
                 new GeologicalTimeInterval,
                 new FossilOccurence
             );
+
         foreach ( $models as $model )
-            $model->deactivate();
+            $model->deactivate( true );
     }
 }

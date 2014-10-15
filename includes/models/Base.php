@@ -33,7 +33,7 @@ use myFOSSIL\PBDB;
  */
 class Base
 {
-    const TABLE_PREFIX = '_myfs_';
+    const TABLE_PREFIX = 'myfs_';
 
     /**
      * Properties that are to be stored in the database.
