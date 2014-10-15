@@ -1,8 +1,8 @@
 <?php
 /**
- * ./includes/models/Taxon.php
+ * ./includes/models/GeologicalTimeScale.php
  *
- * Taxon class.
+ * GeologicalTimeScale class.
  *
  * @author      Brandon Wood <bwood@atmoapps.com>
  * @package     myFOSSIL
@@ -26,18 +26,18 @@ namespace myFOSSIL\Plugin\Specimen;
 use myFOSSIL\PBDB;
 
 /**
- * Taxon.
+ * GeologicalTimeScale.
  *
  * @since      0.0.1
  * @package    myFOSSIL
  * @subpackage myFOSSIL/includes
  * @author     Brandon Wood <bwood@atmoapps.com>
  */
-class Taxon extends Base implements WordPress, CRUD
+class GeologicalTimeScale extends Base implements WordPress, CRUD
 {
 
     /**
-     * Taxon.
+     * GeologicalTimeScale.
      *
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
@@ -52,15 +52,12 @@ class Taxon extends Base implements WordPress, CRUD
 
         $this->_keys = array(
             'id' => '%d',
-            'parent_id' => '%d',
             'pbdb_id' => '%d',
-            'created_by' => '%s',
+            'created_by' => '%d',
             'created_at' => '%s',
-            'name' => '%s',
-            'common_name' => '%s'
+            'name' => '%s'
         );
-
-        $this->pbdb = new PBDB\Taxon;
+        $this->pbdb = new PBDB\GeologicalTimeScale;
     }
 
     /**
@@ -73,11 +70,11 @@ class Taxon extends Base implements WordPress, CRUD
      */
     public static function get_table_name() {
         global $wpdb;
-        return $wpdb->prefix . self::TABLE_PREFIX . 'taxa';
+        return $wpdb->prefix . self::TABLE_PREFIX . 'time_scales';
     }
 
     /**
-     * Create table to represent Taxa using $wpdb.
+     * Create table to represent GeologicalTimeScales using $wpdb.
      *
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
@@ -87,36 +84,16 @@ class Taxon extends Base implements WordPress, CRUD
     {
         $tpl = "CREATE TABLE %s (
             id INT NOT NULL AUTO_INCREMENT,
-            parent_id INT NULL,
             pbdb_id INT NULL,
             created_by INT NULL,
             created_at DATETIME NULL,
-            name VARCHAR(45) NULL,
-            common_name VARCHAR(45) NULL,
+            name TEXT NULL,
             PRIMARY KEY (id)
             ) %s";
         $sql = sprintf( $tpl, $this->table_name, charset_collate() );
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         return dbDelta( $sql );
-    }
-
-    /**
-     * Factory method to create Taxon objects given the ID.
-     *
-     * @todo    Add WordPress hook(s)
-     * @since   0.0.1
-     * @access  public
-     * @return  Taxon           Taxon object with properties loaded from database.
-     * @param int     $id Unique identifier of object in database to create.
-     */
-    public static function factory( $id )
-    {
-        global $wpdb;
-        $tpl = "SELECT * FROM %s WHERE id = %d";
-        $spl = sprintf( $tpl, self::get_table_name(), $id );
-    
-        
     }
 
 }

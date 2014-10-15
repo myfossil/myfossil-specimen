@@ -37,7 +37,7 @@ class Location extends Base implements WordPress, CRUD
         parent::__construct();
 
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'locations';
+        $this->table_name = self::get_table_name();
 
         $this->_keys = array(
             'id' => '%d',
@@ -60,6 +60,19 @@ class Location extends Base implements WordPress, CRUD
             'url' => '%s',
             'notes' => '%s',
         );
+    }
+
+    /**
+     * Returns name of the table for this object.
+     *
+     * @since   0.0.1
+     * @static
+     * @access  public
+     * @return  string  Name of the table as stored in the WordPress database.
+     */
+    public static function get_table_name() {
+        global $wpdb;
+        return $wpdb->prefix . self::TABLE_PREFIX . 'locations';
     }
 
     /**

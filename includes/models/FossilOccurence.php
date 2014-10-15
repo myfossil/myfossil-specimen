@@ -48,7 +48,7 @@ class FossilOccurence extends Base implements WordPress, CRUD
         parent::__construct();
 
         global $wpdb;
-        $this->table_name = $wpdb->prefix . 'fossil_occurences';
+        $this->table_name = self::get_table_name();
 
         /*
          * Set properties.
@@ -67,6 +67,19 @@ class FossilOccurence extends Base implements WordPress, CRUD
         );
 
         $this->pbdb = new PBDB\FossilOccurence;
+    }
+
+    /**
+     * Returns name of the table for this object.
+     *
+     * @since   0.0.1
+     * @static
+     * @access  public
+     * @return  string  Name of the table as stored in the WordPress database.
+     */
+    public static function get_table_name() {
+        global $wpdb;
+        return $wpdb->prefix . self::TABLE_PREFIX . 'fossil_occurences';
     }
 
     /**
@@ -112,7 +125,7 @@ class FossilOccurence extends Base implements WordPress, CRUD
      */
     private function _get_object( $id_key, $cache_key, $cls )
     {
-        if ( !property_exists( $this, $id_key ) ) return;
+        if ( !$this->{ $id_key } ) return;
 
         if ( !property_exists( $this->_cache, $cache_key ) )
             $this->_cache->$cache_key = $this->$id_key ? $cls::factory(

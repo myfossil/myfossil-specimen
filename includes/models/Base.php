@@ -33,6 +33,7 @@ use myFOSSIL\PBDB;
  */
 class Base
 {
+    const TABLE_PREFIX = '_myfs_';
 
     /**
      * Properties that are to be stored in the database.
@@ -283,11 +284,13 @@ class Base
 
         // Query database and load properties
         global $wpdb;
-        if ( !is_null( $r = $wpdb->get_row( $sql, ARRAY_A ) ) ):
-        foreach ( $r as $k => $v )
-            if ( !empty( $v ) && empty( $this->$k ) || $overwrite )
-                $this->$k = $v;
-        endif;
+        if ( !is_null( $r = $wpdb->get_row( $sql, ARRAY_A ) ) ) {
+            foreach ( $r as $k => $v ) {
+                if ( !empty( $v ) && empty( $this->$k ) || $overwrite ) {
+                    $this->$k = $v;
+                }
+            }
+        }
         
         // Get PBDB data
         if ( $this->pbdb && method_exists( $this->pbdb, 'load' ) )
@@ -322,4 +325,5 @@ class Base
     {
         $this->_cache = new \stdClass;
     }
+
 }
