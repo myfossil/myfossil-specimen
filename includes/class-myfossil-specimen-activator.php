@@ -63,11 +63,12 @@ class myFOSSIL_Specimen_Activator
      */
     public static function load_data() {
         $url = "http://paleobiodb.org/data1.1/occs/list.json" .
-            "?base_name=Cetacea&interval=Miocene&show=loc,paleoloc,time&vocab=pbdb";
+            "?base_name=Cetacea" . "&interval=Miocene" .
+            "&show=loc,paleoloc,time" . "&vocab=pbdb";
 
         $http = new \GuzzleHttp\Client;
-        $fossils = $http->get( $url )->json();
-        foreach ( $fossils['records'] as $record ) {
+        $pbdb_fossils = $http->get( $url )->json();
+        foreach ( $pbdb_fossils['records'] as $record ) {
             $fossil = new FossilOccurence;
             $fossil->pbdb_id = $record['occurrence_no'];
             $fossil->created_at = date( "Y-m-d H:i:s" );

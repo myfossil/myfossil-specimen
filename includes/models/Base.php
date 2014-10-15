@@ -131,9 +131,11 @@ class Base
         if ( property_exists( $this, $key ) ) {
             $this->$key = $value;
         } else {
+            /*
             if ( !array_key_exists( $key, $this->_keys ) )
                 trigger_error( sprintf( "Setting unknown property %s in %s.",
                         $key, __CLASS__ ), E_USER_WARNING );
+            */
             $this->_properties[ $key ] = $value;
         }
     }
