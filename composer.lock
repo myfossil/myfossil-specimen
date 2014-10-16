@@ -130,12 +130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myfossil/pbdb-php.git",
-                "reference": "d9194ccef494a7f285dae566343b568d38ad483f"
+                "reference": "df4d6c02d9ee5d800cb2bf42e541e947c3a04d16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myfossil/pbdb-php/zipball/d9194ccef494a7f285dae566343b568d38ad483f",
-                "reference": "d9194ccef494a7f285dae566343b568d38ad483f",
+                "url": "https://api.github.com/repos/myfossil/pbdb-php/zipball/df4d6c02d9ee5d800cb2bf42e541e947c3a04d16",
+                "reference": "df4d6c02d9ee5d800cb2bf42e541e947c3a04d16",
                 "shasum": ""
             },
             "require": {
@@ -144,7 +144,7 @@
             },
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "2.*",
-                "phpunit/phpunit": "4.*"
+                "phpunit/phpunit": "4.3.3"
             },
             "type": "library",
             "autoload": {
@@ -168,7 +168,7 @@
                 "pbdb",
                 "taxonomy"
             ],
-            "time": "2014-10-15 14:36:50"
+            "time": "2014-10-16 20:42:11"
         }
     ],
     "packages-dev": [
@@ -475,16 +475,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.3.2",
+            "version": "4.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "02dd047049564f98f796789ec4207ee8f99bc3d4"
+                "reference": "5a0bc4dcbb7340c0a9a9bc3507854a67c564edc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/02dd047049564f98f796789ec4207ee8f99bc3d4",
-                "reference": "02dd047049564f98f796789ec4207ee8f99bc3d4",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/5a0bc4dcbb7340c0a9a9bc3507854a67c564edc4",
+                "reference": "5a0bc4dcbb7340c0a9a9bc3507854a67c564edc4",
                 "shasum": ""
             },
             "require": {
@@ -545,7 +545,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-10-16 08:01:00"
+            "time": "2014-10-16 16:53:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
