@@ -125,8 +125,10 @@ class Base
      */
     public function __set( $key, $value )
     {
-        if ( $key == 'pbdb_id' && $this->pbdb )
+        if ( $key == 'pbdb_id' && $this->pbdb ) {
             $this->pbdb->oid = $value;
+            $this->pbdb->api->parameters->id = $value;
+        }
 
         if ( property_exists( $this, $key ) ) {
             $this->$key = $value;
@@ -277,7 +279,7 @@ class Base
     public function load( $overwrite=false )
     {
         if ( !$this->id && !$this->pbdb && !$this->pbdb->id ) {
-            trigger_error( sprintf( "Cannot load %s without an id.", __CLASS__ ) );
+            trigger_error( sprintf( "Cannot load %s without an id.", get_class( $this ) ) );
             return false;
         }
 
@@ -295,9 +297,10 @@ class Base
             }
         }
         
-        // Get PBDB data
-        if ( $this->pbdb && method_exists( $this->pbdb, 'load' ) )
-            $this->pbdb->load();
+        // Fallback to PBDB data
+        if ( $this->pbdb_id ) {
+            $this->pbdb->api->load();
+        }
 
         return $this;
     }

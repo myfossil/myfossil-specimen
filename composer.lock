@@ -130,12 +130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myfossil/pbdb-php.git",
-                "reference": "df4d6c02d9ee5d800cb2bf42e541e947c3a04d16"
+                "reference": "decff76a439564ba9160ec7244b012613d766e9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myfossil/pbdb-php/zipball/df4d6c02d9ee5d800cb2bf42e541e947c3a04d16",
-                "reference": "df4d6c02d9ee5d800cb2bf42e541e947c3a04d16",
+                "url": "https://api.github.com/repos/myfossil/pbdb-php/zipball/decff76a439564ba9160ec7244b012613d766e9c",
+                "reference": "decff76a439564ba9160ec7244b012613d766e9c",
                 "shasum": ""
             },
             "require": {
@@ -168,7 +168,7 @@
                 "pbdb",
                 "taxonomy"
             ],
-            "time": "2014-10-16 20:42:11"
+            "time": "2014-10-16 21:16:39"
         }
     ],
     "packages-dev": [

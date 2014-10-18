@@ -125,11 +125,11 @@ class FossilOccurence extends Base implements WordPress, CRUD
      */
     private function _get_object( $id_key, $cache_key, $cls )
     {
+        // Bail if we don't have this defined
         if ( !$this->{ $id_key } ) return;
 
         if ( !property_exists( $this->_cache, $cache_key ) )
-            $this->_cache->$cache_key = $this->$id_key ? $cls::factory(
-                $this->$id_key ) : null;
+            $this->_cache->$cache_key = $cls::factory( (int) $this->$id_key );
 
         return $this->_cache->$cache_key;
     }
