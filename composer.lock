@@ -130,12 +130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myfossil/pbdb-php.git",
-                "reference": "decff76a439564ba9160ec7244b012613d766e9c"
+                "reference": "617b2cac39411530a4c18ffe8af15032bc595c6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myfossil/pbdb-php/zipball/decff76a439564ba9160ec7244b012613d766e9c",
-                "reference": "decff76a439564ba9160ec7244b012613d766e9c",
+                "url": "https://api.github.com/repos/myfossil/pbdb-php/zipball/617b2cac39411530a4c18ffe8af15032bc595c6c",
+                "reference": "617b2cac39411530a4c18ffe8af15032bc595c6c",
                 "shasum": ""
             },
             "require": {
@@ -144,7 +144,7 @@
             },
             "require-dev": {
                 "phpdocumentor/phpdocumentor": "2.*",
-                "phpunit/phpunit": "4.3.3"
+                "phpunit/phpunit": "4.3.2"
             },
             "type": "library",
             "autoload": {
@@ -166,9 +166,10 @@
                 "paleobiodb",
                 "paleobiology",
                 "pbdb",
+                "pbdbhttpapiphp",
                 "taxonomy"
             ],
-            "time": "2014-10-16 21:16:39"
+            "time": "2014-10-19 18:00:51"
         }
     ],
     "packages-dev": [

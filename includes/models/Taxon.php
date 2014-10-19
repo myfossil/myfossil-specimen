@@ -53,7 +53,7 @@ class Taxon extends Base implements WordPress, CRUD
         $this->_keys = array(
             'id' => '%d',
             'parent_id' => '%d',
-            'pbdb_id' => '%d',
+            'pbdbid' => '%d',
             'created_by_id' => '%s',
             'created_at' => '%s',
             'name' => '%s',
@@ -88,7 +88,7 @@ class Taxon extends Base implements WordPress, CRUD
         $tpl = "CREATE TABLE %s (
             id INT NOT NULL AUTO_INCREMENT,
             parent_id INT NULL,
-            pbdb_id INT NULL,
+            pbdbid INT NULL,
             created_by_id INT NULL,
             created_at DATETIME NULL,
             name VARCHAR(45) NULL,

@@ -70,11 +70,11 @@ class myFOSSIL_Specimen_Activator
         $pbdb_fossils = $http->get( $url )->json();
         foreach ( $pbdb_fossils['records'] as $record ) {
             $fossil = new FossilOccurence;
-            $fossil->pbdb_id = $record['occurrence_no'];
+            $fossil->pbdbid = $record['occurrence_no'];
             $fossil->created_at = date( "Y-m-d H:i:s" );
 
             $taxon = new Taxon;
-            $taxon->pbdb_id = $record['taxon_no'];
+            $taxon->pbdbid = $record['taxon_no'];
             $taxon->created_at = $fossil->created_at;
             $taxon->name = $record['taxon_name'];
             $fossil->taxon = $taxon;

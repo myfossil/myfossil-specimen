@@ -105,12 +105,8 @@ class Base
 
         if ( !$this->pbdb || $key == 'id' ) return;
 
-        try {
+        if ( $this->pbdb->$key )
             return $this->pbdb->$key;
-        } catch ( \DomainException $e ) {
-            // Fail silently.
-            return;
-        }
 
         return;
     }
@@ -125,10 +121,8 @@ class Base
      */
     public function __set( $key, $value )
     {
-        if ( $key == 'pbdb_id' && $this->pbdb ) {
-            $this->pbdb->oid = $value;
-            $this->pbdb->api->parameters->id = $value;
-        }
+        if ( $key == 'pbdbid' && $this->pbdb )
+            $this->pbdb->pbdbid = $value;
 
         if ( property_exists( $this, $key ) ) {
             $this->$key = $value;
@@ -278,7 +272,7 @@ class Base
      */
     public function load( $overwrite=false )
     {
-        if ( !$this->id && !$this->pbdb && !$this->pbdb->id ) {
+        if ( !$this->id ) {
             trigger_error( sprintf( "Cannot load %s without an id.", get_class( $this ) ) );
             return false;
         }
@@ -297,11 +291,6 @@ class Base
             }
         }
         
-        // Fallback to PBDB data
-        if ( $this->pbdb_id ) {
-            $this->pbdb->api->load();
-        }
-
         return $this;
     }
 

@@ -56,7 +56,7 @@ class FossilOccurence extends Base implements WordPress, CRUD
         $this->_keys = array(
             'id' => '%d',
             'parent_id' => '%d',
-            'pbdb_id' => '%d',
+            'pbdbid' => '%d',
             'taxon_id' => '%d',
             'time_interval_id' => '%d',
             'geology_id' => '%d',
@@ -343,7 +343,7 @@ class FossilOccurence extends Base implements WordPress, CRUD
     {
         $tpl = "CREATE TABLE %s (
             id INT NOT NULL AUTO_INCREMENT,
-            pbdb_id INT NULL,
+            pbdbid INT NULL,
             parent_id INT NULL,
             taxon_id INT NULL,
             time_interval_id INT NULL,
@@ -406,7 +406,7 @@ class FossilOccurence extends Base implements WordPress, CRUD
     private function _create_table_suggestions() {
         $tpl = "CREATE TABLE %s_suggestions (
             fid INT NOT NULL,
-            pbdb_id INT NULL,
+            pbdbid INT NULL,
             created_by INT NULL,
             created_at DATETIME NULL,
             accepted_by INT NULL,
