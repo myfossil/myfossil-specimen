@@ -14,6 +14,8 @@
 
 namespace myFOSSIL\Plugin\Specimen;
 
+require_once 'partials/myfossil-specimen-admin-display.php';
+
 /**
  * The dashboard-specific functionality of the plugin.
  *
@@ -477,6 +479,7 @@ class myFOSSIL_Specimen_Admin
     public function admin_menu() {
         $this->_cleanup_metaboxes();
         $this->_add_menu_separator();
+        $this->_add_tools_page();
     }
 
     // {{{ Adminitrative Panel Fixes
@@ -524,7 +527,37 @@ class myFOSSIL_Specimen_Admin
 
         ksort( $menu );
     }
+
+    private function _add_tools_page() {
+        add_management_page( 'myFOSSIL Specimen', 'myFOSSIL Specimen',
+                'manage_options', 'myfossil-specimen',
+                'myFOSSIL\Plugin\Specimen\admin_tools_page' );
+    }
     // }}}
+
+    /**
+     * AJAX call handler
+     */
+    public function ajax_handler() {
+        header('Content-Type: application/json');
+
+        // Check nonce
+        if ( !check_ajax_referer( 'myfs_nonce', 'nonce', false ) ) {
+            $return_args = array(
+                "result" => "Error",
+                "message" => "403 Forbidden",
+                );
+
+            echo json_encode( $return_args );
+            die;
+        }
+
+        if ( $_POST['action'] == 'myfs_load_terms' )
+            $this->load_taxonomy_terms();                
+
+        echo "1"; // tell the client it worked
+        die;
+    }
 
     // {{{ Enqueues
     /**

@@ -1,18 +1,19 @@
 <?php
-namespace myFOSSIL\Plugin\Specimen;
-
 /**
- * The file that defines the core plugin class
+ * ./includes/class-myfossil-specimen.php
  *
  * A class definition that includes attributes and functions used across both
  * the public-facing side of the site and the dashboard.
  *
- * @link       http://atmoapps.com
- * @since      0.0.1
+ * @author      Brandon Wood <bwood@atmoapps.com>
+ * @package     myFOSSIL
+ * @subpackage  myFOSSIL/includes
  *
- * @package    myFOSSIL
- * @subpackage myFOSSIL/includes
+ * @link        https://github.com/myfossil
+ * @since       0.0.1
  */
+
+namespace myFOSSIL\Plugin\Specimen;
 
 /**
  * The core plugin class.
@@ -28,7 +29,8 @@ namespace myFOSSIL\Plugin\Specimen;
  * @subpackage myFOSSIL/includes
  * @author     Brandon Wood <bwood@atmoapps.com>
  */
-class myFOSSIL_Specimen {
+class myFOSSIL_Specimen
+{
 
     /**
      * The loader that's responsible for maintaining and registering all hooks
@@ -67,7 +69,8 @@ class myFOSSIL_Specimen {
      *
      * @since    0.0.1
      */
-    public function __construct() {
+    public function __construct()
+    {
 
         $this->plugin_name = 'myfossil-specimen';
         $this->version = '0.0.1';
@@ -95,7 +98,9 @@ class myFOSSIL_Specimen {
      * @since    0.0.1
      * @access   private
      */
-    private function load_dependencies() {
+    private function load_dependencies()
+    {
+
         /**
          * Load HTTP request handling libraries
          *
@@ -145,13 +150,13 @@ class myFOSSIL_Specimen {
      * @since    0.0.1
      * @access   private
      */
-    private function set_locale() {
-
+    private function set_locale()
+    {
         $plugin_i18n = new myFOSSIL_Specimen_i18n();
         $plugin_i18n->set_domain( $this->get_plugin_name() );
 
-        $this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
+        $this->loader->add_action( 'plugins_loaded', $plugin_i18n,
+                'load_plugin_textdomain' );
     }
 
     /**
@@ -161,8 +166,8 @@ class myFOSSIL_Specimen {
      * @since    0.0.1
      * @access   private
      */
-    private function define_admin_hooks() {
-
+    private function define_admin_hooks()
+    {
         $plugin_admin = new myFOSSIL_Specimen_Admin( $this->get_plugin_name(), $this->get_version() );
 
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -170,7 +175,10 @@ class myFOSSIL_Specimen {
 
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
         $this->loader->add_action( 'init', $plugin_admin, 'register_custom_post_types' );
+
+        /* Taxonomies */
         $this->loader->add_action( 'init', $plugin_admin, 'register_taxonomies' );
+        $this->loader->add_action( 'wp_ajax_myfs_load_terms', $plugin_admin, 'ajax_handler' );
     }
 
     /**
@@ -180,7 +188,8 @@ class myFOSSIL_Specimen {
      * @since    0.0.1
      * @access   private
      */
-    private function define_public_hooks() {
+    private function define_public_hooks()
+    {
 
         $plugin_public = new myFOSSIL_Specimen_Public( $this->get_plugin_name(), $this->get_version() );
 
@@ -194,7 +203,8 @@ class myFOSSIL_Specimen {
      *
      * @since    0.0.1
      */
-    public function run() {
+    public function run()
+    {
         $this->loader->run();
     }
 
@@ -205,7 +215,8 @@ class myFOSSIL_Specimen {
      * @since     0.0.1
      * @return    string    The name of the plugin.
      */
-    public function get_plugin_name() {
+    public function get_plugin_name()
+    {
         return $this->plugin_name;
     }
 
@@ -215,7 +226,8 @@ class myFOSSIL_Specimen {
      * @since     0.0.1
      * @return    myFOSSIL_Specimen_Loader    Orchestrates the hooks of the plugin.
      */
-    public function get_loader() {
+    public function get_loader()
+    {
         return $this->loader;
     }
 
@@ -225,8 +237,30 @@ class myFOSSIL_Specimen {
      * @since     0.0.1
      * @return    string    The version number of the plugin.
      */
-    public function get_version() {
+    public function get_version()
+    {
         return $this->version;
     }
 
+}
+
+
+/**
+ * Returns SQL partial that sets default character set and collation.
+ *
+ * @todo    Add WordPress hook(s)
+ * @since   0.0.1
+ * @access  public
+ * @static
+ * @see     {@link http://codex.wordpress.org/Creating_Tables_with_Plugins}
+ * @return unknown
+ */
+function charset_collate()
+{
+    $charset_collate = '';
+    if ( !empty( $wpdb->charset ) )
+        $charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset}";
+    if ( !empty( $wpdb->collate ) )
+        $charset_collate .= " COLLATE {$wpdb->collate}";
+    return $charset_collate;
 }

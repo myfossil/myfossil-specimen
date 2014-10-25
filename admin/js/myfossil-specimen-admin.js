@@ -1,32 +1,54 @@
-(function( $ ) {
-	'use strict';
+( function( $ ) {
+    'use strict';
 
-	/**
-	 * All of the code for your Dashboard-specific JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note that this assume you're going to use jQuery, so it prepares
-	 * the $ function reference to be used within the scope of this
-	 * function.
-	 *
-	 * From here, you're able to define handlers for when the DOM is
-	 * ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * Or when the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and so on.
-	 *
-	 * Remember that ideally, we should not attach any more than a single DOM-ready or window-load handler
-	 * for any particular page. Though other scripts in WordPress core, other plugins, and other themes may
-	 * be doing this, we should try to minimize doing that in our own work.
-	 */
+    /**
+     * Instruct WordPress to load default taxonomic data
+     */
+    function load_taxonomy_terms() {
+        var button_text = 'Load default data',
+            spinner_tpl = '<i class="fa fa-fw fa-circle-o-notch fa-spin"></i>';
+        var nonce = $( '#myfs_nonce' ).val();
 
-})( jQuery );
+        $( '#load' ).prepend( spinner_tpl );
+
+        $.ajax({
+            type: 'post',
+            url: ajaxurl,
+            data: { 
+                'action': 'myfs_load_terms',
+                'nonce': nonce
+            },
+            success: function( resp ) {
+                if ( parseInt( resp ) == 1 ) {
+                    $( '#message' ).html( 
+                            '<p>Loaded default terms into taxonomies successfully.</p>'
+                        ).addClass( 'updated' );
+                } else {
+                    $( '#message' ).html( 
+                            '<p>Failed to load default data into taxonomies.</p>'
+                        ).addClass( 'error' );
+                    console.log( resp );
+                }
+            },
+            error: function( err ) {
+                console.log( err );
+            }
+        });
+
+        $( '#load' ).text( button_text );
+    }
+
+    /**
+     * Instruct WordPress to reset all taxonomy terms
+     */
+    function reset_taxonomy_terms() {
+        $.post( ajaxurl, { action: 'reset' }, 
+            function( response ) { console.log( response ); }
+        );
+    }
+
+    $( function() {
+        $( '#load' ).click( load_taxonomy_terms );
+    } );
+
+}( jQuery ) );
