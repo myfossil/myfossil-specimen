@@ -1,0 +1,80 @@
+[
+    {
+        "records": [
+            {
+                "reference_no": 5954,
+                "record_type": "reference",
+                "ref_type": "ref",
+                "author1init": "W. B.",
+                "author1last": "Harland",
+                "author2init": "R. L.",
+                "author2last": "Armstrong",
+                "otherauthors": "A. V. Cox, L. E. Craig, A. G. Smith, and D. G. Smith",
+                "pubyr": 1990,
+                "reftitle": "A Geologic Time Scale 1989",
+                "pubtitle": "Cambridge University Press, Cambridge"
+            }
+        ]
+    },
+    {
+        "records": [
+            {
+                "reference_no": 9184,
+                "record_type": "reference",
+                "ref_type": "ref",
+                "author1init": "Y.",
+                "author1last": "Jin",
+                "author2init": "B. R.",
+                "author2last": "Wardlaw",
+                "otherauthors": "B. F. Glenister, G. V. Kotlyar",
+                "pubyr": 1997,
+                "reftitle": "Permian chronostratigraphic subdivisions",
+                "pubtitle": "Episodes",
+                "pubvol": 20,
+                "firstpage": 10,
+                "lastpage": 15,
+                "publication_type": "journal article",
+                "language": "English"
+            }
+        ]
+    },
+    {
+        "records": [
+            {
+                "reference_no": 15443,
+                "record_type": "reference",
+                "ref_type": "ref",
+                "author1init": "F. M.",
+                "author1last": "Gradstein",
+                "author2init": "J. G.",
+                "author2last": "Ogg",
+                "otherauthors": "A. G. Smith",
+                "pubyr": 2004,
+                "pubtitle": "A Geologic Time Scale 2004",
+                "firstpage": 1,
+                "lastpage": 589,
+                "publication_type": "book/book chapter",
+                "language": "English"
+            }
+        ]
+    },
+    {
+        "records": [
+            {
+                "reference_no": 47900,
+                "record_type": "reference",
+                "ref_type": "ref",
+                "author1init": "F.",
+                "author1last": "Gradstein",
+                "author2init": "J.",
+                "author2last": "Ogg",
+                "otherauthors": "M. Schmitz, G. Ogg",
+                "pubyr": 2012,
+                "reftitle": "The Geologic Time Scale 2012",
+                "lastpage": 1176,
+                "publication_type": "book",
+                "language": "English"
+            }
+        ]
+    }
+]

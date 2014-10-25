@@ -179,6 +179,7 @@ class myFOSSIL_Specimen
         /* Taxonomies */
         $this->loader->add_action( 'init', $plugin_admin, 'register_taxonomies' );
         $this->loader->add_action( 'wp_ajax_myfs_load_terms', $plugin_admin, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfs_load_geochronology', $plugin_admin, 'ajax_handler' );
     }
 
     /**

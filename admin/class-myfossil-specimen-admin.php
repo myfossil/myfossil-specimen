@@ -430,7 +430,7 @@ class myFOSSIL_Specimen_Admin
     }
     // }}}
 
-    public function load_taxonomy_terms() {
+    private function _load_taxonomy_terms() {
         $this->_load_ctax_taxa();
         $this->_load_ctax_geochronologies();
         $this->_load_ctax_lithostratigraphies();
@@ -474,6 +474,100 @@ class myFOSSIL_Specimen_Admin
     }
     // }}}
 
+    // }}}
+
+    // {{{ Load Default Geochronology
+    private function _load_time_intervals() {
+        /* 
+         * Map data from PBDB to meaningful intervals.
+         *
+         * @link http://paleobiodb.org/data1.1/scales/single.txt?id=1
+         */
+        $levels = array(
+                1 => 'eon',
+                2 => 'era', 
+                3 => 'period',
+                4 => 'epoch',
+                5 => 'age'
+            );
+        $geochronology = array();
+        foreach ( $levels as $idx => $geoc )
+            $geochronology[$idx] = term_exists( ucfirst( $geoc ),
+                    'myfs_geochronologies' );
+
+        /**
+         * @todo create references posts.
+         */
+
+        /* Map columns from CSV */
+        $fields = array( 
+                'level' => 'int', 
+                'interval_name' => 'str', 
+                'color' => 'str', 
+                'late_age' => 'float',
+                'early_age' => 'float', 
+                'reference_no' => 'int' 
+            );
+
+        // Set default filename
+            $filename = plugin_dir_path( dirname( __FILE__ ) ) .
+                'admin/data/intervals.csv';
+
+        // Exit if the file doesn't exist.
+        if ( !file_exists( $filename ) )
+            return -2;
+
+        // Load the entire CSV 
+        $csv = array_map( 'str_getcsv', file( $filename ) );
+
+        // Load data as posts
+        foreach ( $csv as $raw_data ) {
+            // skip header
+            if ( $raw_data[0] == 'level' ) continue;
+
+            // Parse data from CSV reader
+            $data = array();
+            $idx = 0;
+            foreach ( $fields as $field_name => $field_type ) {
+                switch ( $field_type ) {
+                    case 'int':
+                        $data[$field_name] = (int) $raw_data[$idx];
+                        break;
+                    case 'float':
+                        $data[$field_name] = (float) $raw_data[$idx];
+                        break;
+                    case 'str':
+                        $data[$field_name] = (string) $raw_data[$idx];
+                        break;
+                }
+                $idx++;
+            }
+
+            $post_args = array(
+                    'post_title'    => $data['interval_name'],
+                    'post_status'   => 'publish',
+                    'post_type'     => 'myfs_time_interval',
+                );
+
+            // Insert the post into the database
+            $post_id = wp_insert_post( $post_args );
+
+            // Check that it actually went in
+            if ( !$post_id )
+                return -1;
+
+            // Set Geochronology
+            wp_set_post_terms( $post_id, $geochronology[$data['level']],
+                    'myfs_geochronologies' );
+    
+            // Load in ACF data for the Place
+            $acf_fields = array( 'color', 'late_age', 'early_age' );
+            foreach ( $acf_fields as $field_name )
+                update_field( $field_name, $data[$field_name], $post_id );
+        }
+
+        return 1;
+    }
     // }}}
 
     public function admin_menu() {
@@ -552,11 +646,20 @@ class myFOSSIL_Specimen_Admin
             die;
         }
 
-        if ( $_POST['action'] == 'myfs_load_terms' )
-            $this->load_taxonomy_terms();                
-
-        echo "1"; // tell the client it worked
-        die;
+        switch ( $_POST['action'] ) {
+            case 'myfs_load_terms':
+                $this->_load_taxonomy_terms();                
+                echo "1";
+                die;
+                break;
+            case 'myfs_load_geochronology':
+                if ( $this->_load_time_intervals() > 0 )
+                    echo "1";
+                else
+                    echo "0";
+                die;
+                break;
+        }
     }
 
     // {{{ Enqueues

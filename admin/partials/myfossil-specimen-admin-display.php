@@ -22,7 +22,11 @@ function admin_tools_page() {
         <div id="message"></div>
         <p>Populate Taxonomies with default data</p>
         <?php wp_nonce_field( 'myfs_nonce', 'myfs_nonce' ); ?>
-        <a class="button" id="load">Load default data</a>
+        <a class="button" id="load-taxonomies">Load WordPress Taxonomies</a>
+
+        <p>Populate Time Intervals with default data</p>
+        <?php wp_nonce_field( 'myfs_nonce', 'myfs_nonce' ); ?>
+        <a class="button" id="load-geochronology">Load Geochronology</a>
     </div>
     <?php 
 } 
