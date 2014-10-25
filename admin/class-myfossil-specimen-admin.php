@@ -59,17 +59,16 @@ class myFOSSIL_Specimen_Admin
     }
 
     public function register_custom_post_types() {
-        $this->_cpt_init_taxon();
-        $this->_cpt_init_stratum();
-        $this->_cpt_init_time_interval();
-        $this->_cpt_init_fossil();
-        $this->_cpt_init_fossil_collection();
-        $this->_cpt_init_reference();
+        $this->_cpt_taxon();
+        $this->_cpt_stratum();
+        $this->_cpt_time_interval();
+        $this->_cpt_fossil();
+        $this->_cpt_fossil_collection();
+        $this->_cpt_reference();
     }
 
-    // {{{ Custom WordPress Post Types
-    private function _cpt_init_taxon() {
-        // {{{ Labels
+    // {{{ Taxon
+    private function _cpt_taxon() {
         $labels = array(
             'name'                => __( 'Taxa', 'myfossil-specimen' ),
             'singular_name'       => __( 'Taxon', 'myfossil-specimen' ), 
@@ -85,15 +84,14 @@ class myFOSSIL_Specimen_Admin
             'not_found'           => __( 'Taxon not found', 'myfossil-specimen' ),
             'not_found_in_trash'  => __( 'Taxon not found in Trash', 'myfossil-specimen' ),
         );
-        // }}}
-        // {{{ Arguments
+
         $args = array(
             'label'               => __( 'myfs_taxon', 'myfossil-specimen' ),
             'description'         => __( 'Biological classification representations (taxa)', 'myfossil-specimen' ),
             'labels'              => $labels,
             'supports'            => array( 'title', 'author', 'thumbnail',
                 'custom-fields', 'comments' ),
-            'hierarchical'        => false,
+            'hierarchical'        => true,
             'public'              => true,
             'show_ui'             => true,
             'show_in_menu'        => true,
@@ -106,12 +104,13 @@ class myFOSSIL_Specimen_Admin
             'capability_type'     => 'post',
             'menu_icon'           => 'dashicons-editor-ul'
         );
-        // }}}
+
         register_post_type( 'myfs_taxon', $args );
     }
+    // }}}
 
-    private function _cpt_init_stratum() {
-        // {{{ Labels
+    // {{{ Stratum
+    private function _cpt_stratum() {
         $labels = array(
             'name'                => __( 'Strata', 'myfossil-specimen' ),
             'singular_name'       => __( 'Stratum', 'myfossil-specimen' ),
@@ -127,8 +126,7 @@ class myFOSSIL_Specimen_Admin
             'not_found'           => __( 'Stratum not found', 'myfossil-specimen' ),
             'not_found_in_trash'  => __( 'Stratum not found in Trash', 'myfossil-specimen' ),
         );
-        // }}}
-        // {{{ Arguments
+
         $args = array(
             'label'               => __( 'myfs_stratum', 'myfossil-specimen' ),
             'description'         => __( 'Represents a geological stratum', 'myfossil-specimen' ),
@@ -148,12 +146,13 @@ class myFOSSIL_Specimen_Admin
             'capability_type'     => 'post',
             'menu_icon'           => 'dashicons-tagcloud'
         );
-        // }}}
+
         register_post_type( 'myfs_stratum', $args );
     }
+    // }}}
 
-    private function _cpt_init_time_interval() {
-        // {{{ Labels
+    // {{{ Time Interval
+    private function _cpt_time_interval() {
         $labels = array(
             'name'                => __( 'Time Intervals', 'myfossil-specimen' ),
             'singular_name'       => __( 'Time Interval', 'myfossil-specimen' ),
@@ -169,8 +168,7 @@ class myFOSSIL_Specimen_Admin
             'not_found'           => __( 'Time Interval not found', 'myfossil-specimen' ),
             'not_found_in_trash'  => __( 'Time Interval not found in Trash', 'myfossil-specimen' ),
         );
-        // }}}
-        // {{{ Arguments
+
         $args = array(
             'label'               => __( 'myfs_time_interval', 'myfossil-specimen' ),
             'description'         => __( 'Represents a time interval', 'myfossil-specimen' ),
@@ -190,12 +188,13 @@ class myFOSSIL_Specimen_Admin
             'capability_type'     => 'post',
             'menu_icon'           => 'dashicons-backup'
         );
-        // }}}
+
         register_post_type( 'myfs_time_interval', $args );
     }
+    // }}}
 
-    private function _cpt_init_fossil() {
-        // {{{ Labels
+    // {{{ Fossil
+    private function _cpt_fossil() {
         $labels = array(
             'name'                => __( 'Fossils', 'myfossil-specimen' ),
             'singular_name'       => __( 'Fossil', 'myfossil-specimen' ),
@@ -211,8 +210,7 @@ class myFOSSIL_Specimen_Admin
             'not_found'           => __( 'Fossil not found', 'myfossil-specimen' ),
             'not_found_in_trash'  => __( 'Fossil not found in Trash', 'myfossil-specimen' ),
         );
-        // }}}
-        // {{{ Arguments
+
         $args = array(
             'label'               => __( 'myfs_fossil', 'myfossil-specimen' ),
             'description'         => __( 'Represents a fossil', 'myfossil-specimen' ),
@@ -233,12 +231,13 @@ class myFOSSIL_Specimen_Admin
             'capability_type'     => 'post',
             'menu_icon'           => 'dashicons-carrot'
         );
-        // }}}
+
         register_post_type( 'myfs_fossil', $args );
     }
+    // }}}
 
-    private function _cpt_init_fossil_collection() {
-        // {{{ Labels
+    // {{{ Fossil Collection
+    private function _cpt_fossil_collection() {
         $labels = array(
             'name'                => __( 'Fossil Collections', 'myfossil-specimen' ),
             'singular_name'       => __( 'Fossil Collection', 'myfossil-specimen' ),
@@ -254,8 +253,7 @@ class myFOSSIL_Specimen_Admin
             'not_found'           => __( 'Fossil Collection not found', 'myfossil-specimen' ),
             'not_found_in_trash'  => __( 'Fossil Collection not found in Trash', 'myfossil-specimen' ),
         );
-        // }}}
-        // {{{ Arguments
+
         $args = array(
             'label'               => __( 'myfs_fossil_collection', 'myfossil-specimen' ),
             'description'         => __( 'Represents a fossil collection', 'myfossil-specimen' ),
@@ -276,12 +274,13 @@ class myFOSSIL_Specimen_Admin
             'capability_type'     => 'post',
             'menu_icon'           => 'dashicons-admin-site'
         );
-        // }}}
+
         register_post_type( 'myfs_fossil_col', $args );
     }
+    // }}}
 
-    private function _cpt_init_reference() {
-        // {{{ Labels
+    // {{{ Reference
+    private function _cpt_reference() {
         $labels = array(
             'name'                => __( 'References', 'myfossil-specimen' ),
             'singular_name'       => __( 'Reference', 'myfossil-specimen' ), 
@@ -297,8 +296,7 @@ class myFOSSIL_Specimen_Admin
             'not_found'           => __( 'Reference not found', 'myfossil-specimen' ),
             'not_found_in_trash'  => __( 'Reference not found in Trash', 'myfossil-specimen' ),
         );
-        // }}}
-        // {{{ Arguments
+
         $args = array(
             'label'               => __( 'myfs_reference', 'myfossil-specimen' ),
             'description'         => __( 'Bibliographic reference', 'myfossil-specimen' ),
@@ -317,21 +315,22 @@ class myFOSSIL_Specimen_Admin
             'capability_type'     => 'post',
             'menu_icon'           => 'dashicons-welcome-learn-more'
         );
-        // }}}
+
         register_post_type( 'myfs_reference', $args );
     }
     // }}}
-    
+
     public function register_taxonomies() {
-        $this->_ctax_init_taxa();
+        $this->_ctax_taxa();
+        $this->_ctax_geochronology();
+        $this->_ctax_lithostratigraphy();
     }
 
-    // {{{ Custom WordPress Taxonomies
-    private function _ctax_init_taxa() {
-        // {{{ Labels
+    // {{{ Biological Taxonomy
+    private function _ctax_taxa() {
         $labels = array(
             'name'                => __( 'Taxonomic Ranks', 'myfossil-specimen' ),
-            'singular_name'       => __( 'Taxononic Rank', 'myfossil-specimen' ), 
+            'singular_name'       => __( 'Taxonomic Rank', 'myfossil-specimen' ),
             'menu_name'           => __( 'Taxonomic Ranks', 'myfossil-specimen' ),
             'parent_item_colon'   => __( 'Parent Taxonomic Rank:', 'myfossil-specimen' ),
             'all_items'           => __( 'Taxonomic Ranks', 'myfossil-specimen' ),
@@ -343,12 +342,11 @@ class myFOSSIL_Specimen_Admin
             'search_items'        => __( 'Search Taxonomic Ranks', 'myfossil-specimen' ),
             'not_found'           => __( 'Taxonomic Rank not found', 'myfossil-specimen' ),
         );
-        // }}}
-        // {{{ Arguments
+
         $args = array(
             'labels'              => $labels,
-            'rewrite'             => array( 
-                    'slug' => 'taxon', 
+            'rewrite'             => array(
+                    'slug' => 'taxon',
                     'hierarchical' => false
                 ),
             'labels'              => $labels,
@@ -356,10 +354,124 @@ class myFOSSIL_Specimen_Admin
             'public'              => true,
             'query_var'           => true,
         );
-        // }}}
+
         register_taxonomy( 'myfs_taxa', array( 'myfs_taxon' ), $args );
         register_taxonomy_for_object_type( 'myfs_taxa', 'myfs_taxon' );
     }
+    // }}}
+
+    // {{{ Geochronology
+    private function _ctax_geochronology() {
+        $labels = array(
+            'name'                => __( 'Geochronologies', 'myfossil-specimen' ),
+            'singular_name'       => __( 'Geochronology', 'myfossil-specimen' ),
+            'menu_name'           => __( 'Geochronologies', 'myfossil-specimen' ),
+            'parent_item_colon'   => __( 'Parent Geochronology:', 'myfossil-specimen' ),
+            'all_items'           => __( 'Geochronologies', 'myfossil-specimen' ),
+            'edit_item'           => __( 'Edit Geochronology', 'myfossil-specimen' ),
+            'view_item'           => __( 'View Geochronology', 'myfossil-specimen' ),
+            'update_item'         => __( 'Update Geochronology', 'myfossil-specimen' ),
+            'add_new_item'        => __( 'Add New Geochronology', 'myfossil-specimen' ),
+            'new_item_name'       => __( 'New Geochronology', 'myfossil-specimen' ),
+            'search_items'        => __( 'Search Geochronologies', 'myfossil-specimen' ),
+            'not_found'           => __( 'Geochronology not found', 'myfossil-specimen' ),
+        );
+
+        $args = array(
+            'labels'              => $labels,
+            'rewrite'             => array(
+                    'slug' => 'geochronology',
+                    'hierarchical' => false
+                ),
+            'labels'              => $labels,
+            'hierarchical'        => true,
+            'public'              => true,
+            'query_var'           => true,
+        );
+
+        register_taxonomy( 'myfs_geochronologies', array( 'myfs_time_interval' ), $args );
+        register_taxonomy_for_object_type( 'myfs_geochronologies', 'myfs_time_interval' );
+    }
+    // }}}
+
+    // {{{ Lithostratigraphy
+    private function _ctax_lithostratigraphy() {
+        $labels = array(
+            'name'                => __( 'Lithostratigraphies', 'myfossil-specimen' ),
+            'singular_name'       => __( 'Lithostratigraphy', 'myfossil-specimen' ),
+            'menu_name'           => __( 'Lithostratigraphies', 'myfossil-specimen' ),
+            'parent_item_colon'   => __( 'Parent Lithostratigraphy:', 'myfossil-specimen' ),
+            'all_items'           => __( 'Lithostratigraphies', 'myfossil-specimen' ),
+            'edit_item'           => __( 'Edit Lithostratigraphy', 'myfossil-specimen' ),
+            'view_item'           => __( 'View Lithostratigraphy', 'myfossil-specimen' ),
+            'update_item'         => __( 'Update Lithostratigraphy', 'myfossil-specimen' ),
+            'add_new_item'        => __( 'Add New Lithostratigraphy', 'myfossil-specimen' ),
+            'new_item_name'       => __( 'New Lithostratigraphy', 'myfossil-specimen' ),
+            'search_items'        => __( 'Search Lithostratigraphies', 'myfossil-specimen' ),
+            'not_found'           => __( 'Lithostratigraphy not found', 'myfossil-specimen' ),
+        );
+
+        $args = array(
+            'labels'              => $labels,
+            'rewrite'             => array(
+                    'slug' => 'lithostratigraphy',
+                    'hierarchical' => false
+                ),
+            'labels'              => $labels,
+            'hierarchical'        => true,
+            'public'              => true,
+            'query_var'           => true,
+        );
+
+        register_taxonomy( 'myfs_lithostratigraphies', array( 'myfs_stratum' ), $args );
+        register_taxonomy_for_object_type( 'myfs_lithostratigraphies', 'myfs_stratum' );
+    }
+    // }}}
+
+    public function load_taxonomy_terms() {
+        $this->_load_ctax_taxa();
+        $this->_load_ctax_geochronologies();
+        $this->_load_ctax_lithostratigraphies();
+    }
+
+    // {{{ Load Default Taxonomic Data
+    private function _load_taxonomy( $taxonomy, $terms ) {
+        $parent_id = 0;
+        foreach ( $terms as $term ) {
+            $args = array(
+                    'parent' => $parent_id,
+                    'slug' => $term,
+                );
+            $_ = wp_insert_term( ucfirst( $term ), $taxonomy, $args );
+            $parent_id = $_['term_id'];
+        }
+    }
+
+    // {{{ Load Taxa
+    private function _load_ctax_taxa() {
+        $taxonomy = 'myfs_taxa';
+        $terms = array( 'domain', 'kingdom', 'phylum', 'class', 'order',
+                'family', 'genus', 'species' );
+        $this->_load_taxonomy( $taxonomy, $terms );
+    }
+    // }}}
+
+    // {{{ Load Geochronologies
+    private function _load_ctax_geochronologies() {
+        $taxonomy = 'myfs_geochronologies';
+        $terms = array( 'eon', 'era', 'period', 'epoch', 'age', 'chron' );
+        $this->_load_taxonomy( $taxonomy, $terms );
+    }
+    // }}}
+
+    // {{{ Load Lithostratigraphies
+    private function _load_ctax_lithostratigraphies() {
+        $taxonomy = 'myfs_lithostratigraphies';
+        $terms = array( 'supergroup', 'group', 'formation', 'member', 'bed' );
+        $this->_load_taxonomy( $taxonomy, $terms );
+    }
+    // }}}
+
     // }}}
 
     public function admin_menu() {
