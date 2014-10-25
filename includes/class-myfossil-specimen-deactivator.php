@@ -38,6 +38,7 @@ class myFOSSIL_Specimen_Deactivator
      */
     public static function deactivate()
     {
+        /*
         $models = array(
                 new Taxon,
                 new Location,
@@ -48,5 +49,6 @@ class myFOSSIL_Specimen_Deactivator
 
         foreach ( $models as $model )
             $model->deactivate( true );
+        */
     }
 }

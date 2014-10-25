@@ -39,6 +39,7 @@ class myFOSSIL_Specimen_Activator
      */
     public static function activate()
     { 
+        /*
         global $wpdb;
 
         $models = array(
@@ -53,6 +54,7 @@ class myFOSSIL_Specimen_Activator
             $model->activate();
 
         self::load_data();
+        */
     }
 
     /**
