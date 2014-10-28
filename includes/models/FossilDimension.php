@@ -39,6 +39,10 @@ class FossilDimension extends Base
                 'height_meters');
     }
 
+    public function save( $recursive=false ) {
+        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+    }
+
     // {{{ Custom Post Type
     public static function register_cpt() {
         $args = array(
@@ -53,9 +57,15 @@ class FossilDimension extends Base
     // }}}
 
     public function __get( $key ) {
-        if ( in_array( $key, array( 'length', 'width', 'height' ) ) ) {
-            return $this->{$key . '_meters'};
-        }
+        if ( in_array( $key, array( 'length', 'width', 'height' ) ) )
+            $key = $key . '_meters';
+        return parent::__get( $key );
+    }
+
+    public function __set( $key, $value ) {
+        if ( in_array( $key, array( 'length', 'width', 'height' ) ) )
+            $key = $key . '_meters';
+        return parent::__set( $key, $value );
     }
 
     public function as_cm( $key ) {

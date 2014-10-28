@@ -11,7 +11,22 @@ use myFOSSIL\Plugin\Specimen\FossilLocation;
  * @subpackage  myFOSSIL/tests
  */
 class FossilLocationTest extends myFOSSIL_Specimen_Test {
-    public function testTrue() {
-        $this->assertTrue( true );
+
+    public function testSaveFossilLocation() {
+        $loc = new FossilLocation;
+        $loc->latitude = 10.0;
+        $loc->longitude = 20.0;
+        $this->assertGreaterThan( 0, $loc->save() );
+        $this->assertGreaterThan( 0, $loc->wp_post->ID );
+    }
+
+    public function testGetFossilLocation() {
+        $loc = new FossilLocation;
+        $loc->latitude = 10.0;
+        $loc->longitude = 20.0;
+        $new_loc = new FossilLocation( $loc->save() );
+
+        $this->assertEquals( $loc->latitude, $new_loc->latitude );
+        $this->assertEquals( $loc->longitude, $new_loc->longitude );
     }
 }

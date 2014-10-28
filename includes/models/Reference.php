@@ -40,6 +40,10 @@ class Reference extends Base
                 'volume', 'series_number', 'formatted', 'doi', 'editors' );
     }
 
+    public function save( $recursive=false ) {
+        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+    }
+
     // {{{ Custom Post Type
     public static function register_cpt() {
         $args = array(

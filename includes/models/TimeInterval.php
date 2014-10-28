@@ -41,6 +41,10 @@ class TimeInterval extends Base
                 'late_age_ma', 'early_age_ma', 'reference_id' );
     }
 
+    public function save( $recursive=false ) {
+        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+    }
+
     // {{{ Custom Post Type
     public static function register_cpt() {
         $labels = array(
@@ -91,6 +95,15 @@ class TimeInterval extends Base
             }
         }
 
+        if ( in_array( $key, array( 'early_age', 'late_age' ) ) )
+            $key = $key . '_ma';
+
         return parent::__get( $key );
+    }
+
+    public function __set( $key, $value ) {
+        if ( in_array( $key, array( 'early_age', 'late_age' ) ) )
+            $key = $key . '_ma';
+        return parent::__set( $key, $value );
     }
 }

@@ -42,6 +42,10 @@ class Fossil extends Base
                 'reference_id' );
     }
 
+    public function save( $recursive=false ) {
+        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+    }
+
     // {{{ Custom Post Type
     public static function register_cpt() {
         $labels = array(
@@ -158,5 +162,4 @@ class Fossil extends Base
 
         return null;
     }
-
 }

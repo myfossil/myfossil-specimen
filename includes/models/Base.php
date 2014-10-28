@@ -37,6 +37,7 @@ class Base
      * Namespace of this plugin.
      */
     const PLUGIN_PREFIX = 'myfs_';
+    const CPT_NAME = null;
 
     /**
      * PBDB query object for this class.
@@ -47,7 +48,6 @@ class Base
      * WordPress post object (since WordPress decided to make WP_Post final).
      */
     public $wp_post;
-    public $wp_post_type;
 
     /**
      * metadata properties.
@@ -60,14 +60,23 @@ class Base
      */
     public function __construct( $post_id=null, $meta=array() )
     {
+        $this->_meta = new \stdClass;
+
         /* Load the post, if defined */
-        if ( $post_id && $post_id > 0 )
+        if ( $post_id )
             $this->wp_post = get_post( $post_id );
 
         /* Load metadata from WordPress */
         if ( $this->wp_post && $this->wp_post->ID )
             foreach ( get_post_custom( $this->wp_post->ID ) as $k => $v )
-                $this->_meta->{$k} = $v;
+                if ( is_array( $v ) )
+                    if ( count( $v ) == 1 )
+                        $this->_meta->{$k} = array_pop( $v );
+                    else
+                        $this->_meta->{$k} = $v;
+                else
+                    $this->_meta->{$k} = $v;
+
 
         /* Load additional data, overwriting if defined */
         if ( is_array( $meta ) && count( $meta ) > 0 )
@@ -150,14 +159,30 @@ class Base
      * @param   bool    $recursive       (optional) Recurse saving of children objects as well, default false.
      * @return  bool                                True upon success, false upon failure.
      */
-    public function save( $recursive=false )
+    public function _save( $post_type, $recursive=false )
     {
         /* Update or create new Post */
-        $this->wp_post->ID = wp_insert_post( $this->wp_post );
+        if ( $this->wp_post && $this->wp_post->ID ) {
+            $this->wp_post->ID = wp_insert_post( $this->wp_post );
+        } else {
+            $post_args = array( 
+                    'post_type' => $post_type
+                );
+            $post_id = wp_insert_post( $post_args );
+            $this->wp_post = get_post( $post_id );
+        }
 
         /* Update or create new meta data */
-        foreach ( $this->_meta as $meta_key => $meta_value )
-            update_post_meta( $this->wp_post->ID, $meta_key, $meta_value );
+        foreach ( $this->_meta_keys as $meta_key )
+            if ( property_exists( $this->_meta, $meta_key )
+                    && ! empty( $this->_meta->{$meta_key} ) )
+                update_post_meta( $this->wp_post->ID, $meta_key, $this->_meta->{$meta_key} );
+
+        /* Save children objects as well, if asked to */
+        if ( $recursive )
+            foreach ( $this->_cache as $cache_key => $cached_object )
+                if ( method_exists( $cached_object, 'save' ) )
+                    $cached_object->save();
 
         return $this->wp_post->ID;
     }

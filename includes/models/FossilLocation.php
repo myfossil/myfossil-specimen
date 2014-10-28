@@ -34,6 +34,10 @@ class FossilLocation extends Base
                 'county', 'city', 'zip', 'address', 'map_url');
     }
 
+    public function save( $recursive=false ) {
+        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+    }
+
     // {{{ Custom Post Type
     public static function register_cpt() {
         $args = array(
