@@ -670,22 +670,9 @@ class myFOSSIL_Specimen_Admin
      */
     public function enqueue_styles()
     {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in myFOSSIL_Specimen_Admin_Loader as all of the hooks are
-         * defined in that particular class.
-         *
-         * The myFOSSIL_Specimen_Admin_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this class.
-         */
-
         wp_enqueue_style( $this->name, plugin_dir_url( __FILE__ ) .
             'css/myfossil-specimen-admin.css', array(), $this->version,
             'all' );
-
     }
 
     /**
@@ -695,22 +682,9 @@ class myFOSSIL_Specimen_Admin
      */
     public function enqueue_scripts()
     {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in myFOSSIL_Specimen_Admin_Loader as all of the hooks are
-         * defined in that particular class.
-         *
-         * The myFOSSIL_Specimen_Admin_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this class.
-         */
-
         wp_enqueue_script( $this->name, plugin_dir_url( __FILE__ ) .
             'js/myfossil-specimen-admin.js', array( 'jquery' ),
             $this->version, false );
-
     }
     // }}}
 }
