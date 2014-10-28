@@ -35,7 +35,7 @@ class Fossil extends Base
     {
         parent::__construct( $post_id, $args );
 
-        $this->pbdb = new PBDB\Fossil;
+        $this->pbdb = new PBDB\FossilOccurence;
 
         $this->_meta_keys = array( 'pbdb_id', 'taxon_id', 'location_id',
                 'time_interval_id', 'stratum_id', 'dimension_id',
@@ -138,7 +138,7 @@ class Fossil extends Base
             case 'dim':
             case 'dimension':
                 if ( $this->dimension_id ) {
-                    $this->_cache->fossil_dimension = new FossilDimension( $this->dimension_id );
+                    $this->_cache->dimension = new FossilDimension( $this->dimension_id );
                     return $this->_cache->dimension;
                 }
                 break;

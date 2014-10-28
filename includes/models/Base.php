@@ -54,6 +54,7 @@ class Base
      */
     protected $_meta;
     protected $_meta_keys;
+    protected $_cache;
 
     /**
      * Create Base class.
@@ -61,6 +62,7 @@ class Base
     public function __construct( $post_id=null, $meta=array() )
     {
         $this->_meta = new \stdClass;
+        $this->_cache = new \stdClass;
 
         /* Load the post, if defined */
         if ( $post_id )
@@ -100,6 +102,10 @@ class Base
      */
     public function __get( $key )
     {
+        if ( ( $key == 'post_id' || $key == 'id' ) && $this->wp_post &&
+                $this->wp_post->ID )
+            return $this->wp_post->ID;
+
         /* Try local property */
         if ( property_exists( $this, $key ) )
             return $this->$key;
@@ -113,7 +119,7 @@ class Base
             return $this->wp_post->{$key};
 
         /* Try PBDB */
-        if ( $this->pbdb->$key )
+        if ( $this->pbdb && property_exists( $this->pbdb, $key ) )
             return $this->pbdb->{$key};
 
         return; // null
@@ -172,17 +178,20 @@ class Base
             $this->wp_post = get_post( $post_id );
         }
 
+        /* Save children objects as well, if asked to */
+        if ( $this->_cache ) {
+            foreach ( $this->_cache as $cache_key => $cached_object ) {
+                if ( $recursive && method_exists( $cached_object, 'save' ) )
+                    $cached_object->save();
+                $this->_meta->{$cache_key . '_id'} = $cached_object->wp_post->ID;
+            }
+        }
+
         /* Update or create new meta data */
         foreach ( $this->_meta_keys as $meta_key )
             if ( property_exists( $this->_meta, $meta_key )
                     && ! empty( $this->_meta->{$meta_key} ) )
                 update_post_meta( $this->wp_post->ID, $meta_key, $this->_meta->{$meta_key} );
-
-        /* Save children objects as well, if asked to */
-        if ( $recursive )
-            foreach ( $this->_cache as $cache_key => $cached_object )
-                if ( method_exists( $cached_object, 'save' ) )
-                    $cached_object->save();
 
         return $this->wp_post->ID;
     }
