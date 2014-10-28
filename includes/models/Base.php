@@ -33,46 +33,10 @@ use myFOSSIL\PBDB;
  */
 class Base
 {
-    const TABLE_PREFIX = 'myfs_';
-
     /**
-     * Properties that are to be stored in the database.
-     *
-     * @since   0.0.1
-     * @access  protected
-     * @var     array
+     * Namespace of this plugin.
      */
-    protected $_properties = array();
-
-    /**
-     * Keys that are to be stored in the database.
-     *
-     * Types of the keys to be stored in the database.
-     *
-     * Should be in the format of %s for string, %d for number.
-     *
-     * @since   0.0.1
-     * @access  protected
-     * @var     array
-     */
-    protected $_keys = array();
-
-    /**
-     * Cache for objects.
-     *
-     * @since   0.0.1
-     * @access  protected
-     */
-    protected $_cache;
-
-    /**
-     * WordPress database table name.
-     *
-     * @since   0.0.1
-     * @access  public
-     * @var     string  $table_name;
-     */
-    public $table_name;
+    const PLUGIN_PREFIX = 'myfs_';
 
     /**
      * PBDB query object for this class.
@@ -80,35 +44,70 @@ class Base
     public $pbdb;
 
     /**
+     * WordPress post object (since WordPress decided to make WP_Post final).
+     */
+    public $wp_post;
+    public $wp_post_type;
+
+    /**
+     * metadata properties.
+     */
+    protected $_meta;
+    protected $_meta_keys;
+
+    /**
      * Create Base class.
      */
-    public function __construct()
+    public function __construct( $post_id=null, $meta=array() )
     {
-        $this->_cache = new \stdClass;
+        /* Load the post, if defined */
+        if ( $post_id && $post_id > 0 )
+            $this->wp_post = get_post( $post_id );
+
+        /* Load metadata from WordPress */
+        if ( $this->wp_post && $this->wp_post->ID )
+            foreach ( get_post_custom( $this->wp_post->ID ) as $k => $v )
+                $this->_meta->{$k} = $v;
+
+        /* Load additional data, overwriting if defined */
+        if ( is_array( $meta ) && count( $meta ) > 0 )
+            foreach ( $meta as $k => $v )
+                $this->_meta->{$k} = $v;
     }
 
     /**
      * Custom getter for properties that span multiple data sources.
      *
+     * First attempts to get a local property, then tries the property private
+     * array, then tries WordPress metadata, then tries PBDB, and then gives
+     * up (returns null).
+     *
+     * Object Property => Object Meta Properties => WordPress => PBDB
+     *
      * @since   0.0.1
      * @access  public
-     * @param string $key
-     * @return mixed    value of the property, null if not found.
+     * @param   string $key
+     * @return  mixed    value of the property, null if not found.
      */
     public function __get( $key )
     {
+        /* Try local property */
         if ( property_exists( $this, $key ) )
             return $this->$key;
 
-        if ( array_key_exists( $key, $this->_properties ) )
-            return $this->_properties[ $key ];
+        /* Try local metadata */
+        if ( property_exists( $this->_meta, $key ) )
+            return $this->_meta->{$key};
 
-        if ( !$this->pbdb || $key == 'id' ) return;
+        /* Try WordPress */
+        if ( $this->wp_post->ID && $this->wp_post->{$key} )
+            return $this->wp_post->{$key};
 
+        /* Try PBDB */
         if ( $this->pbdb->$key )
-            return $this->pbdb->$key;
+            return $this->pbdb->{$key};
 
-        return;
+        return; // null
     }
 
     /**
@@ -121,40 +120,19 @@ class Base
      */
     public function __set( $key, $value )
     {
-        if ( $key == 'pbdbid' && $this->pbdb )
-            $this->pbdb->pbdbid = $value;
+        /* Special cases when setting the PBDB ID */
+        if ( $this->pbdb )
+            if ( $key == 'pbdbid' || $key == 'pbdb_id' )
+                $this->pbdb->pbdbid = $value;
+            elseif ( $key == 'parent_pbdb_id' || $key == 'parent_pbdbid' )
+                $this->pbdb->parent_no = $value;
 
+        /* Set local properties of Object */
         if ( property_exists( $this, $key ) ) {
-            $this->$key = $value;
+            $this->{$key} = $value;
         } else {
-            /*
-            if ( !array_key_exists( $key, $this->_keys ) )
-                trigger_error( sprintf( "Setting unknown property %s in %s.",
-                        $key, __CLASS__ ), E_USER_WARNING );
-            */
-            $this->_properties[ $key ] = $value;
+            $this->_meta->{$key} = $value;
         }
-    }
-
-    /**
-     * Destroy (drop) table to represent Taxa using $wpdb.
-     *
-     * @todo    Add WordPress hook(s)
-     * @since   0.0.1
-     * @access  public
-     * @param bool    $destroy (optional) Destroy table and data.
-     * @return mixed
-     */
-    public function deactivate( $destroy=false )
-    {
-        // Exit if we're not destroying data
-        if ( !$destroy ) return;
-
-        $tpl = "DROP TABLE %s";
-        $sql = sprintf( $tpl, $this->table_name );
-
-        global $wpdb;
-        return $wpdb->query( $sql );
     }
 
     /**
@@ -165,100 +143,23 @@ class Base
      * id set to $this->id, otherwise overwrite all properties of the object
      * and update the last modified column.
      *
-     * @todo    Implement history of objects, using parent_id.
      * @todo    Add WordPress hook(s)
      *
      * @since   0.0.1
      * @access  public
-     * @see     {@link http://codex.wordpress.org/Class_Reference/wpdb#UPDATE_rows}
-     *
-     * @param   bool    $force_overwrite (optional) Overwrite values in the database, default false.
+     * @param   bool    $recursive       (optional) Recurse saving of children objects as well, default false.
      * @return  bool                                True upon success, false upon failure.
      */
-    public function save( $force_overwrite=false )
+    public function save( $recursive=false )
     {
-        if ( !$this->id ) return $this->create();
+        /* Update or create new Post */
+        $this->wp_post->ID = wp_insert_post( $this->wp_post );
 
-        $tpl = "SELECT * FROM %s WHERE id = %d";
-        $sql = sprintf( $tpl, $this->table_name, $this->id );
+        /* Update or create new meta data */
+        foreach ( $this->_meta as $meta_key => $meta_value )
+            update_post_meta( $this->wp_post->ID, $meta_key, $meta_value );
 
-        global $wpdb;
-        if ( !is_null( $wpdb->get_var( $sql ) ) ) {
-            // Object exists in database, update
-            return $this->update( $force_overwrite );
-        } else {
-            // Object does not yet exist in database, create
-            return $this->create();
-        }
-    }
-
-    /**
-     * Create arrays for $wpdb->update and $wpdb->insert.
-     *
-     * @param bool  $include_empty (optional)
-     * @return mixed
-     */
-    public function describe_properties( $include_empty=false )
-    {
-        $properties = array();
-        $types = array();
-        foreach ( $this->_keys as $k => $t ) {
-            if ( array_key_exists( $k, $this->_properties ) ) {
-                $v = $this->_properties[ $k ];
-                if ( !empty( $v ) || $include_empty ) {
-                    $properties[ $k ] = $v;
-                    $types[] = $t;
-                }
-            }
-        }
-
-        if ( count( $properties ) > 0 )
-            return array( $properties, $types );
-        else
-            return false;
-    }
-
-    /**
-     * Update the object in the database.
-     *
-     * @param bool  $force_overwrite (optional)
-     * @return mixed
-     */
-    public function update( $force_overwrite=false )
-    {
-        if ( $r = $this->describe_properties( $force_overwrite ) ) {
-            $properties = $r[0];
-            $types = $r[1];
-
-            global $wpdb;
-            if ( !( $wpdb->update( $this->table_name, $properties,
-                        array( 'id' => $this->id ), $types, array( '%d' ) )
-                    === false ) ) {
-                return $this->id;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Create new object in the database, assumes that it does not exist.
-     *
-     * @return mixed
-     */
-    public function create()
-    {
-        if ( $r = $this->describe_properties() ) {
-            $properties = $r[0];
-            $types = $r[1];
-
-            global $wpdb;
-            $wpdb->insert( $this->table_name, $properties, $types );
-
-            $this->id = $wpdb->insert_id;
-            return $this->id;
-        } else {
-            return false;
-        }
+        return $this->wp_post->ID;
     }
 
     /**
@@ -267,47 +168,12 @@ class Base
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
      * @access  public
-     * @param   bool    $overwrite (optional)   Overwrite local properties with values from database.
-     * @return  bool                            True upon success, false upon failure.
+     * @return  bool        True upon success, false upon failure.
      */
-    public function load( $overwrite=false )
+    public function load( $post_id=null )
     {
-        if ( !$this->id ) {
-            trigger_error( sprintf( "Cannot load %s without an id.", get_class( $this ) ) );
-            return false;
-        }
-
-        // Prepare query
-        $tpl = "SELECT * FROM %s WHERE id = %d";
-        $sql = sprintf( $tpl, $this->table_name, $this->id );
-
-        // Query database and load properties
-        global $wpdb;
-        if ( !is_null( $r = $wpdb->get_row( $sql, ARRAY_A ) ) ) {
-            foreach ( $r as $k => $v ) {
-                if ( !empty( $v ) && empty( $this->$k ) || $overwrite ) {
-                    $this->$k = $v;
-                }
-            }
-        }
-        
+        $this->wp_post = $post_id ? get_post( $post_id ) : get_post( $this->wp_post->ID );
         return $this;
-    }
-
-    /**
-     * Delete Taxon object from database.
-     *
-     * @todo    Add WordPress hook(s)
-     * @since   0.0.1
-     * @access  public
-     * @return  bool    True upon success, false upon failure.
-     */
-    public function delete()
-    {
-        if ( !$this->id ) return;
-
-        global $wpdb;
-        return $wpdb->delete( $this->table_name, array( 'id' => $this->id ), array( '%d' ) );
     }
 
     /**

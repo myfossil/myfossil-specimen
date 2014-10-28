@@ -39,22 +39,6 @@ class myFOSSIL_Specimen_Activator
      */
     public static function activate()
     { 
-        /*
-        global $wpdb;
-
-        $models = array(
-                new Taxon,
-                new Location,
-                new GeologicalTimeScale,
-                new GeologicalTimeInterval,
-                new FossilOccurence
-            );
-
-        foreach ( $models as $model )
-            $model->activate();
-
-        self::load_data();
-        */
     }
 
     /**

@@ -40,40 +40,45 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Dependencies.
  */
-require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+require_once( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
 
 /**
  * The code that defines the custom objects to be used.
  */
-require_once plugin_dir_path( __FILE__ ) . 'includes/models.php';
+require_once( plugin_dir_path( __FILE__ ) . 'includes/models.php' );
 
 /**
  * The code that runs during plugin activation.
  */
-require_once plugin_dir_path( __FILE__ ) . 'includes/class-myfossil-specimen-activator.php';
+require_once( plugin_dir_path( __FILE__ ) .
+        'includes/class-myfossil-specimen-activator.php' );
 
 /**
  * The code that runs during plugin deactivation.
  */
-require_once plugin_dir_path( __FILE__ ) . 'includes/class-myfossil-specimen-deactivator.php';
+require_once( plugin_dir_path( __FILE__ ) .
+        'includes/class-myfossil-specimen-deactivator.php' );
 
 /**
  * This action is documented in:
  *  - includes/class-myfossil-specimen-activator.php
  */
-register_activation_hook( __FILE__, array( __NAMESPACE__ . '\myFOSSIL_Specimen_Activator', 'activate' ) );
+register_activation_hook( __FILE__, array( __NAMESPACE__ .
+            '\myFOSSIL_Specimen_Activator', 'activate' ) );
 
 /**
  * This action is documented in:
  *  - includes/class-myfossil-specimen-deactivator.php
  */
-register_deactivation_hook( __FILE__, array( __NAMESPACE__ . '\myFOSSIL_Specimen_Deactivator', 'deactivate' ) );
+register_deactivation_hook( __FILE__, array( __NAMESPACE__ .
+            '\myFOSSIL_Specimen_Deactivator', 'deactivate' ) );
 
 /**
  * The core plugin class that is used to define internationalization,
  * dashboard-specific hooks, and public-facing site hooks.
  */
-require_once plugin_dir_path( __FILE__ ) . 'includes/class-myfossil-specimen.php';
+require_once( plugin_dir_path( __FILE__ ) .
+        'includes/class-myfossil-specimen.php' );
 
 
 /**
