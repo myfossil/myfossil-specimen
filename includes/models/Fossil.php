@@ -162,4 +162,53 @@ class Fossil extends Base
 
         return null;
     }
+
+
+    public static function load_defaults() {
+        $taxon = new Taxon( null, 
+                array( 'name' => 'Ostracoda', 'rank' => 'class' ) );
+        $taxon->save();
+
+        $location = new FossilLocation( null, 
+                array( 
+                    'latitude' => 38.8765,
+                    'longitude' => -113.4678,
+                    'state' => 'UT',
+                    'county' => 'Millard'
+                ) 
+            );
+        $location->save();
+
+        $stratum = new Stratum( null, 
+                array(
+                    'name' => 'Kanosh Shale',
+                    'level' => 'formation'
+                )
+            );
+        $stratum->save();
+
+        $time_interval = new TimeInterval( null, 
+                array( 'name' => 'Middle Ordovician', 'level' => 'age' ) );
+
+        $time_interval->save();
+
+        $fossil = new Fossil( null,
+                array(
+                    'taxon_id' => $taxon->id,
+                    'location_id' => $location->id,
+                    'stratum_id' => $stratum->id,
+                    'time_interval_id' => $time_interval->id
+                )
+            );
+        $fossil->save();
+
+        // Write a few more times so that we have data...
+        $fossil->wp_post = null; $fossil->save();
+        $fossil->wp_post = null; $fossil->save();
+        $fossil->wp_post = null; $fossil->save();
+        $fossil->wp_post = null; $fossil->save();
+
+        return true;
+    }
+
 }

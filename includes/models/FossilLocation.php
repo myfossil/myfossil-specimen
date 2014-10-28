@@ -38,6 +38,16 @@ class FossilLocation extends Base
         return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
     }
 
+    public function __toString() {
+        if ( $this->city && $this->state )
+            return sprintf( "%s, %s\n", $this->city, $this->state );
+        if ( $this->county && $this->state )
+            return sprintf( "%s, %s\n", $this->county, $this->state );
+        if ( $this->state && $this->country )
+            return sprintf( "%s, %s\n", $this->state, $this->country );
+        return $this->country;
+    }
+
     // {{{ Custom Post Type
     public static function register_cpt() {
         $args = array(

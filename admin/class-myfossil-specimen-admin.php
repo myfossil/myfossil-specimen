@@ -407,6 +407,13 @@ class myFOSSIL_Specimen_Admin
                     echo "0";
                 die;
                 break;
+            case 'myfs_load_default_fossils':
+                if ( Fossil::load_defaults() )
+                    echo "1";
+                else
+                    echo "0";
+                die;
+                break;
         }
     }
 

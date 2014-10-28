@@ -102,6 +102,20 @@ class Base
      */
     public function __get( $key )
     {
+        if ( $key == 'name' && $this->wp_post && $this->wp_post->post_title )
+            return $this->wp_post->post_title;
+
+        if ( $key == 'author' && $this->wp_post ) {
+            if ( ! $this->wp_post->post_author ) return;
+            $u = new \WP_User( $this->wp_post->post_author );
+            return $u->data->display_name;
+        }
+
+        if ( $key == 'created_at' || $key == 'updated_at' ) {
+            if ( ! $this->wp_post->post_author ) return;
+            return $this->wp_post->post_date;
+        }
+
         if ( ( $key == 'post_id' || $key == 'id' ) && $this->wp_post &&
                 $this->wp_post->ID )
             return $this->wp_post->ID;
@@ -135,6 +149,12 @@ class Base
      */
     public function __set( $key, $value )
     {
+        if ( $key == 'name' )
+            if ( $this->wp_post )
+                $this->wp_post->post_title = $value;
+            else
+                $this->_meta->name = $value;
+
         /* Special cases when setting the PBDB ID */
         if ( $this->pbdb )
             if ( $key == 'pbdbid' || $key == 'pbdb_id' )
@@ -171,8 +191,10 @@ class Base
         if ( $this->wp_post && $this->wp_post->ID ) {
             $this->wp_post->ID = wp_insert_post( $this->wp_post );
         } else {
+            $post_title = property_exists( $this->_meta, 'name' ) ? $this->_meta->name : null;
             $post_args = array( 
-                    'post_type' => $post_type
+                    'post_type' => $post_type,
+                    'post_title' => $post_title
                 );
             $post_id = wp_insert_post( $post_args );
             $this->wp_post = get_post( $post_id );

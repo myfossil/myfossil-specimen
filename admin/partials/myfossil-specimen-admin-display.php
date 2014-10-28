@@ -27,6 +27,10 @@ function admin_tools_page() {
         <p>Populate Time Intervals with default data</p>
         <?php wp_nonce_field( 'myfs_nonce', 'myfs_nonce' ); ?>
         <a class="button" id="load-geochronology">Load Geochronology</a>
+
+        <p>Populate Fossils with default data</p>
+        <?php wp_nonce_field( 'myfs_nonce', 'myfs_nonce' ); ?>
+        <a class="button" id="load-fossils">Load Fossils</a>
     </div>
     <?php 
 } 

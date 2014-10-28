@@ -37,7 +37,7 @@ class TimeInterval extends Base
 
         $this->pbdb = new PBDB\GeologicalTimeInterval;
 
-        $this->_meta_keys = array( 'pbdb_id', 'parent_pbdb_id', 'color',
+        $this->_meta_keys = array( 'pbdb_id', 'parent_pbdb_id', 'level', 'color',
                 'late_age_ma', 'early_age_ma', 'reference_id' );
     }
 
@@ -105,5 +105,11 @@ class TimeInterval extends Base
         if ( in_array( $key, array( 'early_age', 'late_age' ) ) )
             $key = $key . '_ma';
         return parent::__set( $key, $value );
+    }
+
+    public function __toString() {
+        return sprintf( 
+            "<span class=\"label label-default\">%s</span> %s", 
+            $this->level, $this->name );
     }
 }

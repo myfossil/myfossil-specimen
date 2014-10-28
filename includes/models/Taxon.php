@@ -49,7 +49,7 @@ class Taxon extends Base
         parent::__construct( $post_id, $meta );
 
         $this->_meta_keys = array( 'pbdb_id', 'parent_pbdb_id', 'common_name',
-                'reference_id' );
+                'rank', 'reference_id' );
 
         $this->pbdb = new PBDB\Taxon;
     }
@@ -111,5 +111,11 @@ class Taxon extends Base
         }
 
         return parent::__get( $key );
+    }
+
+    public function __toString() {
+        return sprintf( 
+            "<span class=\"label label-default\">%s</span> %s", 
+            $this->rank, $this->name );
     }
 }

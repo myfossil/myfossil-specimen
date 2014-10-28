@@ -36,7 +36,7 @@ class Stratum extends Base
     {
         parent::__construct( $post_id, $args );
 
-        $this->_meta_keys = array( 'pbdb_id', 'parent_pbdb_id', 'color',
+        $this->_meta_keys = array( 'pbdb_id', 'parent_pbdb_id', 'color', 'level',
                 'reference_id' );
     }
 
@@ -95,5 +95,11 @@ class Stratum extends Base
         }
 
         return parent::__get( $key );
+    }
+
+    public function __toString() {
+        return sprintf( 
+            "<span class=\"label label-default\">%s</span> %s", 
+            $this->level, $this->name );
     }
 }
