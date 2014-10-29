@@ -115,7 +115,7 @@ class Taxon extends Base
 
     public function __toString() {
         return sprintf( 
-            "<span class=\"label label-default\">%s</span> %s", 
+            "<span class=\"label label-primary\">%s</span> %s", 
             $this->rank, $this->name );
     }
 }

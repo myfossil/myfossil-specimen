@@ -154,6 +154,11 @@ class Fossil extends Base
                 return null;
                 break;
 
+            case 'image':
+                if ( ! $this->id ) return;
+                $_ = get_attached_media( 'image', $this->id );
+                $m = array_pop( $_ );
+                return $m->guid;
             default:
                 return parent::__get( $key );
                 break;
@@ -165,48 +170,122 @@ class Fossil extends Base
 
 
     public static function load_defaults() {
-        $taxon = new Taxon( null, 
-                array( 'name' => 'Ostracoda', 'rank' => 'class' ) );
-        $taxon->save();
+        // {{{ Fossil data
+        $data = array(
+                'taxons' => array(
+                        array( 'name' => 'Ostracoda', 'rank' => 'class' ),
+                        array( 'name' => 'Salicaceae', 'rank' => 'family' ),
+                        array( 'name' => 'Pecopteris', 'rank' => 'genus' ),
+                    ),
 
-        $location = new FossilLocation( null, 
-                array( 
-                    'latitude' => 38.8765,
-                    'longitude' => -113.4678,
-                    'state' => 'UT',
-                    'county' => 'Millard'
-                ) 
+                'locations' => array(
+                        array( 
+                            'latitude' => 38.8765,
+                            'longitude' => -113.4678,
+                            'state' => 'UT',
+                            'county' => 'Millard'
+                        ),
+                        array( 
+                            'state' => 'WY',
+                        ),
+                        array( 
+                            'latitude' => 41.305,
+                            'longitude' => -88.15,
+                            'state' => 'IL',
+                            'county' => 'Grundy'
+                        ),
+                    ),
+
+                'strata' => array(
+                        array(
+                            'name' => 'Kanosh Shale',
+                            'level' => 'formation'
+                        ),
+                        null,
+                        array(
+                            'name' => 'Francis Creek Shale',
+                            'level' => 'formation'
+                        ),
+                    ),
+
+                'time_intervals' => array(
+                        array( 'name' => 'Middle Ordovician', 'level' => 'age', 'color' => '#4DB47E' ),
+                        array( 'name' => 'Eocene', 'level' => 'age', 'color' => '#FDB46C' ),
+                        array( 'name' => 'Pennsylvanian', 'level' => 'age', 'color' => '#99C2B5' ),
+                    ),
+
+                'media' => array(
+                        array( 'Ostracoda.jpg' ),
+                        array( 'Willow.jpg' ),
+                        array( 'Mazon Creek_1.jpg', 'Mazon Creek_2.jpg' )
+                    )
             );
-        $location->save();
+        // }}}
 
-        $stratum = new Stratum( null, 
-                array(
-                    'name' => 'Kanosh Shale',
-                    'level' => 'formation'
-                )
-            );
-        $stratum->save();
+        $obj_ids = array();
+        foreach ( array( 'taxon', 'location', 'stratum', 'time_interval', 'media' ) as $k )
+            $obj_ids[$k] = array();
 
-        $time_interval = new TimeInterval( null, 
-                array( 'name' => 'Middle Ordovician', 'level' => 'age' ) );
+        foreach ( $data as $obj_type => $obj_data ) {
+            foreach ( $obj_data as $obj_datum ) {
+                switch ( $obj_type ) {
+                    case 'taxons':
+                        $obj = new Taxon( null, $obj_datum );
+                        $obj->save();
+                        wp_publish_post( $obj->id );
+                        array_push( $obj_ids['taxon'], $obj->id );
+                        break;
+                    case 'locations':
+                        $obj = new FossilLocation( null, $obj_datum );
+                        $obj->save();
+                        wp_publish_post( $obj->id );
+                        array_push( $obj_ids['location'], $obj->id );
+                        break;
+                    case 'strata':
+                        $obj = new Stratum( null, $obj_datum );
+                        $obj->save();
+                        wp_publish_post( $obj->id );
+                        array_push( $obj_ids['stratum'], $obj->id );
+                        break;
+                    case 'time_intervals':
+                        $obj = new TimeInterval( null, $obj_datum );
+                        $obj->save();
+                        wp_publish_post( $obj->id );
+                        array_push( $obj_ids['time_interval'], $obj->id );
+                        break;
+                }
+            }
+        }
 
-        $time_interval->save();
+        for ( $i = 0; $i < 3; $i++ ) {
+            $fossil = new Fossil( null, 
+                    array(
+                        'taxon_id'         => $obj_ids['taxon'][$i],
+                        'location_id'      => $obj_ids['location'][$i],
+                        'stratum_id'       => $obj_ids['stratum'][$i],
+                        'time_interval_id' => $obj_ids['time_interval'][$i]
+                    )
+                );
 
-        $fossil = new Fossil( null,
-                array(
-                    'taxon_id' => $taxon->id,
-                    'location_id' => $location->id,
-                    'stratum_id' => $stratum->id,
-                    'time_interval_id' => $time_interval->id
-                )
-            );
-        $fossil->save();
+            $fid = $fossil->save();
+            wp_publish_post( $fid );
 
-        // Write a few more times so that we have data...
-        $fossil->wp_post = null; $fossil->save();
-        $fossil->wp_post = null; $fossil->save();
-        $fossil->wp_post = null; $fossil->save();
-        $fossil->wp_post = null; $fossil->save();
+            /* Add media */
+            foreach( $data['media'][$i] as $filename ) {
+                $att = array(
+                        'guid' => plugins_url( 'myfossil-specimen/admin/data/media/' . $filename ),
+                        'post_mime_type' => wp_check_filetype( $filename, null )['type'],
+                        'post_title' => $filename,
+                        'post_content' => '',
+                        'post_status' => 'inherit'
+                    );
+                $att_id = wp_insert_attachment( $att, $filename, $fid );
+
+                require_once( ABSPATH . 'wp-admin/includes/image.php' );
+                $att_dat = wp_generate_attachment_metadata( $att_id, $filename );
+                wp_update_attachment_metadata( $att_id, $att_dat );
+            }
+        }
 
         return true;
     }

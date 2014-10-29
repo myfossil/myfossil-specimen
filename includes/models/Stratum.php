@@ -98,8 +98,12 @@ class Stratum extends Base
     }
 
     public function __toString() {
-        return sprintf( 
-            "<span class=\"label label-default\">%s</span> %s", 
-            $this->level, $this->name );
+        if ( $this->level && $this->name )
+            return sprintf( 
+                "<span class=\"label label-primary\">%s</span> %s", 
+                $this->level, $this->name );
+        else
+            return sprintf( "<span class=\"label
+                    label-default\">Unknown</span>" );
     }
 }

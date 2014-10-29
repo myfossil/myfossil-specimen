@@ -319,7 +319,7 @@ class myFOSSIL_Specimen_Admin
     // }}}
 
     public function admin_menu() {
-        $this->_cleanup_metaboxes();
+        // $this->_cleanup_metaboxes();
         $this->_add_menu_separator();
         $this->_add_tools_page();
     }
@@ -415,6 +415,17 @@ class myFOSSIL_Specimen_Admin
                 die;
                 break;
         }
+    }
+
+    public function add_buddypress_comments( $post_types ) {
+        $post_types[] = Fossil::PLUGIN_PREFIX          . Fossil::CPT_NAME;
+        $post_types[] = FossilDimension::PLUGIN_PREFIX . FossilDimension::CPT_NAME;
+        $post_types[] = FossilLocation::PLUGIN_PREFIX  . FossilLocation::CPT_NAME;
+        $post_types[] = Reference::PLUGIN_PREFIX       . Reference::CPT_NAME;
+        $post_types[] = Stratum::PLUGIN_PREFIX         . Stratum::CPT_NAME;
+        $post_types[] = Taxon::PLUGIN_PREFIX           . Taxon::CPT_NAME;
+        $post_types[] = TimeInterval::PLUGIN_PREFIX    . TimeInterval::CPT_NAME;
+        return $post_types;
     }
 
     // {{{ Enqueues

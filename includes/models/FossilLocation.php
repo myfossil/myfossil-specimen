@@ -45,7 +45,10 @@ class FossilLocation extends Base
             return sprintf( "%s, %s\n", $this->county, $this->state );
         if ( $this->state && $this->country )
             return sprintf( "%s, %s\n", $this->state, $this->country );
-        return $this->country;
+        foreach ( array( 'country', 'state', 'county', 'city' ) as $k )
+            if ( $this->{$k} )
+                return $this->{$k};
+        return null;
     }
 
     // {{{ Custom Post Type

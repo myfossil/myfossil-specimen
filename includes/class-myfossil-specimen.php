@@ -176,6 +176,9 @@ class myFOSSIL_Specimen
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
         $this->loader->add_action( 'init', $plugin_admin, 'register_custom_post_types' );
 
+        $this->loader->add_filter( 'bp_blogs_record_comment_post_types',
+                $plugin_admin, 'add_buddypress_comments' );
+
         /* Taxonomies */
         $this->loader->add_action( 'init', $plugin_admin, 'register_taxonomies' );
         $this->loader->add_action( 'wp_ajax_myfs_load_terms', $plugin_admin, 'ajax_handler' );
