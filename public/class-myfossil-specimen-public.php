@@ -103,6 +103,19 @@ class myFOSSIL_Specimen_Public {
                 echo json_encode( $fossil->save() );
                 die;
                 break;
+
+            case 'myfossil_save_location':
+                $location = new FossilLocation;
+                foreach ( array( 'latitude', 'longitude', 'country', 'state',
+                            'county', 'city' ) as $k ) 
+                    $location->{ $k } = $_POST['location'][$k];
+
+                $fossil = new Fossil( $_POST['post_id'] );
+                $fossil->location_id = $location->save();
+
+                echo json_encode( $fossil->save() );
+                die;
+                break;
         }
 
     }

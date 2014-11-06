@@ -13,7 +13,7 @@
 
             input.keyup( function() {
                 if ( $.isNumeric( input.val() ) )
-                    view.text( input.val() );
+                    view.text( input.val() + ' cm' );
             });
         });
     }
