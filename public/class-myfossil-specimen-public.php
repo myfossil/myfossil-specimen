@@ -135,10 +135,12 @@ class myFOSSIL_Specimen_Public {
          * relationship between the defined hooks and the functions defined in
          * this class.
 		 */
+        $scripts = array( 'classification', 'dimensions', 'geochronology',
+                'lithostratigraphy', 'location' );
 
-        wp_enqueue_script( $this->name, plugin_dir_url( __FILE__ ) .
-                'js/myfossil-specimen-public.js', array( 'jquery' ),
-                $this->version, false );
+        foreach ( $scripts as $script )
+            wp_enqueue_script( $script, plugin_dir_url( __FILE__ ) .  'js/' .
+                    $script . '.js', array( 'jquery' ), $this->version, false );
 
 	}
 
