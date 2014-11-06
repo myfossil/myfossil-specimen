@@ -1,36 +1,30 @@
-/*
 ( function( $ ) {
     'use strict';
 
-    function load_taxa() {
+    function update_taxon( post_id, taxon ) {
+        var nonce = $( '#myfossil_specimen_nonce' ).val(); 
+        var json = null;
+
         $.ajax({
+            async: false,
             type: 'post',
             url: ajaxurl,
             data: { 
-                'action': 'myfs_load_default_fossils',
-                'nonce': nonce
-            },
-            success: function( resp ) {
-                if ( parseInt( resp ) == 1 ) {
-                    $( '#message' ).html( 
-                            '<p>Loaded default time intervals into fossils.</p>'
-                        ).addClass( 'updated' );
-                } else {
-                    $( '#message' ).html( 
-                            '<p>Failed to load default data into fossils.</p>'
-                        ).addClass( 'error' );
-                    console.log( resp );
+                    'action': 'myfossil_update_taxon',
+                    'nonce': nonce,
+                    'post_id': post_id,
+                    'taxon': taxon
+                },
+            dataType: 'json',
+            success: function( data ) {
+                    json = data;
+                },
+            error: function ( err ) {
+                    console.log( err );
                 }
-            },
-            error: function( err ) {
-                console.log( err );
-            }
         });
+
+        return json;
     }
 
-    $( function() {
-        load_taxa();
-    } );
-
 }( jQuery ) );
-*/

@@ -105,10 +105,10 @@ class Base
         if ( $key == 'name' && $this->wp_post && $this->wp_post->post_title )
             return $this->wp_post->post_title;
 
-        if ( $key == 'author' && $this->wp_post ) {
+        if ( $key == 'author' ) {
             if ( ! $this->wp_post->post_author ) return;
             $u = new \WP_User( $this->wp_post->post_author );
-            return $u->data->display_name;
+            return $u;
         }
 
         if ( $key == 'created_at' || $key == 'updated_at' ) {

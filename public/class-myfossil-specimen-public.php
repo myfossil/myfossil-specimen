@@ -55,6 +55,44 @@ class myFOSSIL_Specimen_Public {
 
 	}
 
+
+    // {{{ AJAX for saving
+    /**
+     * ajax call handler
+     *
+     * @todo abstract state and type listings
+     */
+    public function ajax_handler() {
+        header('Content-Type: application/json');
+
+        // Check nonce
+        if ( !check_ajax_referer( 'myfossil_specimen', 'nonce', false ) ) {
+            $return_args = array(
+                "result" => "Error",
+                "message" => "403 Forbidden",
+                );
+
+            echo json_encode( $return_args );
+            die;
+        }
+
+        switch ( $_POST['action'] ) {
+            case 'myfossil_update_taxon':
+                $taxon_arr = $_POST['taxon'];
+                $taxon = new Taxon;
+                $taxon->pbdb_id = $taxon_arr['taxon_no'];
+                $taxon->name = $taxon_arr['taxon_name'];
+                $taxon->rank = $taxon_arr['taxon_rank'];
+                $fossil = new Fossil( $_POST['post_id'] );
+                $fossil->taxon_id = $taxon->save();
+                echo json_encode( $fossil->save() );
+                die;
+                break;
+        }
+
+    }
+    // }}}
+
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
