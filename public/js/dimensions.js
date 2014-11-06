@@ -8,12 +8,12 @@
             var input = $( 'input#edit-fossil-dimension-' + dim );
             var view = $( 'td#fossil-dimension-' + dim );
 
-            if ( $.isNumeric( view.text() ) )
-                input.val( view.text() );
+            if ( $.isNumeric( view.attr( 'value' ) ) )
+                input.val( view.attr( 'value' ) );
 
             input.keyup( function() {
                 if ( $.isNumeric( input.val() ) )
-                    view.text( input.val() + ' cm' );
+                    view.text( input.val() + ' cm' ).attr( 'value', input.val() );
             });
         });
     }
@@ -44,6 +44,7 @@
                 },
             complete: function( data ) {
                     $( '#fossil-dimensions-loading' ).hide();
+                    init_dimensions();
                 },
             error: function ( err ) {
                     console.error( err );
