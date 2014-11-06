@@ -202,7 +202,15 @@ class myFOSSIL_Specimen
         $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
         /* should not be able to update taxon of a specimen without logging in */
-        $this->loader->add_action( 'wp_ajax_myfossil_update_taxon',
+        $this->loader->add_action( 'wp_ajax_myfossil_save_taxon',
+                $plugin_public, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfossil_save_dimensions',
+                $plugin_public, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfossil_save_location',
+                $plugin_public, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfossil_save_geochronology',
+                $plugin_public, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfossil_save_lithostratigraphy',
                 $plugin_public, 'ajax_handler' );
 
     }

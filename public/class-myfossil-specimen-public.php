@@ -55,12 +55,8 @@ class myFOSSIL_Specimen_Public {
 
 	}
 
-
-    // {{{ AJAX for saving
     /**
-     * ajax call handler
-     *
-     * @todo abstract state and type listings
+     * AJAX call handler
      */
     public function ajax_handler() {
         header('Content-Type: application/json');
@@ -77,22 +73,41 @@ class myFOSSIL_Specimen_Public {
         }
 
         switch ( $_POST['action'] ) {
-            case 'myfossil_update_taxon':
-                $taxon_arr = $_POST['taxon'];
+            case 'myfossil_save_taxon':
                 $taxon = new Taxon;
-                $taxon->pbdb_id = $taxon_arr['taxon_no'];
-                $taxon->name = $taxon_arr['taxon_name'];
-                $taxon->rank = $taxon_arr['taxon_rank'];
+                $taxon->pbdb_id = $_POST['taxon']['pbdb'];
+                $taxon->name    = $_POST['taxon']['name'];
+                $taxon->rank    = $_POST['taxon']['rank'];
+
                 $fossil = new Fossil( $_POST['post_id'] );
                 $fossil->taxon_id = $taxon->save();
+
+                echo json_encode( $fossil->save() );
+                die;
+                break;
+
+            case 'myfossil_save_dimensions':
+                // Dimensions coming in as *centimeters*
+                $length = (float) $_POST['length'];
+                $width  = (float) $_POST['width'];
+                $height = (float) $_POST['height'];
+                
+                $dim = new FossilDimension;
+                $dim->length = $length / 100; // convert to meters
+                $dim->width  = $width  / 100; // convert to meters
+                $dim->height = $height / 100; // convert to meters
+
+                $fossil = new Fossil( $_POST['post_id'] );
+                $fossil->dimension_id = $dim->save();
+
                 echo json_encode( $fossil->save() );
                 die;
                 break;
         }
 
     }
-    // }}}
 
+    // {{{ WordPress: Enqueues
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
@@ -144,4 +159,5 @@ class myFOSSIL_Specimen_Public {
 
 	}
 
+    // }}}
 }
