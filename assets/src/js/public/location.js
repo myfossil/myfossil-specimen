@@ -32,9 +32,16 @@
     function init_location_edit() {
         var keys = [ 'latitude', 'longitude', 'country', 'state', 'county', 'city' ];
         $.map( keys, function( k ) { 
-            $( '#edit-fossil-location-' + k).val( $( '#fossil-location-' + k ).text().trim() );
+            $( '#edit-fossil-location-' + k).val( 
+                    $( '#fossil-location-' + k ).text().trim() 
+                );
+
+            $( '#edit-fossil-location-' + k).keyup( function() {
+                $( '#fossil-location-' + k).text( $( '#edit-fossil-location-' + k).val() );
+            });
         });
     }
+
 
     // {{{ save_location 
     function save_location() {
