@@ -338,6 +338,31 @@
         });
     }
 
+    function init_edit_geochronology() {
+        var select = $( 'select#edit-fossil-geochronology' );
+        var url = "http://paleobiodb.org/data1.1/intervals/list.json?vocab=pbdb&scale=1";
+
+        $.ajax({
+            type: 'post',
+            url: url,
+            dataType: 'json',
+            success: function( data ) {
+                    $.map( data.records, function( time_interval ) {
+                        var option = $( '<option></option>' );
+                        option
+                            .val( time_interval.interval_name )
+                            .text( time_interval.interval_name )
+                            .css( 'background-color', time_interval.color );
+                        select.append( option );
+                    });
+                },
+            error: function( err ) {
+                    console.error( err );
+                }
+        });
+
+    }
+
     // {{{ save_geochronology 
     function save_geochronology() {
         var nonce = $( '#myfossil_specimen_nonce' ).val(); 
@@ -381,6 +406,7 @@
 
     $( function() {
         load_geochronology();
+        init_edit_geochronology();
 
         $( '#edit-fossil-geochronology' ).popup(
                 {
