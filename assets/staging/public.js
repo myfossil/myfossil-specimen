@@ -125,6 +125,8 @@
                 + "?limit=20&vocab=pbdb&name="
                 + $( this ).val();
 
+        var results = [];
+
         // Query the PBDB with the current taxon name partial.
         $.ajax(
             {
@@ -141,6 +143,12 @@
 
                             // Filter out misspellings.
                             if ( !! taxon.misspelling ) return true;
+
+                            // Deduplicate
+                            if ( $.inArray( taxon.taxon_name, results ) !== -1 )
+                                return true;
+                            else
+                                results.push( taxon.taxon_name );
 
                             // Build list item, including phylopic.
                             var taxon_li = $( '<li></li>' )
