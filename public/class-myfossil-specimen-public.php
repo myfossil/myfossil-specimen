@@ -1,6 +1,8 @@
 <?php
 namespace myFOSSIL\Plugin\Specimen;
 
+require_once( 'partials/myfossil-specimen-public-display.php' );
+
 /**
  * The public-facing functionality of the plugin.
  *

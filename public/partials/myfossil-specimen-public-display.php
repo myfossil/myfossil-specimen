@@ -12,4 +12,12 @@ namespace myFOSSIL\Plugin\Specimen;
  * @package    myFOSSIL
  * @subpackage myFOSSIL/public/partials
  */
-?>
+
+include_once( 'fossils/single/header.php' );
+include_once( 'fossils/single/comments.php' );
+include_once( 'fossils/single/dimensions.php' );
+include_once( 'fossils/single/geochronology.php' );
+include_once( 'fossils/single/lithostratigraphy.php' );
+include_once( 'fossils/single/location.php' );
+include_once( 'fossils/single/taxonomy.php' );
+
