@@ -16,11 +16,17 @@
                         $( '#fossil-taxon-' + taxon.rank ).text( taxon.taxon_name );
                     }
                 );
+                $( '#fossil-taxon-success' ).show().fadeOut();
             },
+            complete: function( data ) {
+                    $( '#fossil-taxon-loading' ).hide();
+                },
             error: function( err ) {
                 console.log( err );
+                $( '#fossil-taxon-error' ).show().fadeOut();
             }
         });
+
     }
 
     function get_taxon_img( taxon_no ) {

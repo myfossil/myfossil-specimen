@@ -1,6 +1,14 @@
 ( function( $ ) {
     'use strict';
 
+    var SCALES = {
+            1: 'eon',
+            2: 'era',
+            3: 'period',
+            4: 'epoch',
+            5: 'age'
+        };
+
     function load_geochronology() {
         var url = "http://paleobiodb.org/data1.1/intervals/list.json"
                 + "?scale=1&vocab=pbdb";
@@ -10,12 +18,12 @@
             url: url,
             dataType: 'json',
             success: function( resp ) {
-                // Re-organize results from the PBFDB.
+                // Re-organize results from the PBDB.
                 var intervals = [], match;
                 resp.records.forEach(
                     function( interval ) {
                         intervals[interval.interval_no] = interval;
-                        if ( $( '#fossil-time_interval-name' ).val() == interval.interval_name )
+                        if ( $( '#fossil-geochronology-name' ).val() == interval.interval_name )
                             match = interval.interval_no;
                     }
                 );
@@ -23,13 +31,19 @@
                 var current_interval = intervals[match];
 
                 while ( current_interval ) {
-                    $( '#geochronology-' + current_interval.level )
+                    $( '#fossil-geochronology-' + SCALES[current_interval.level] )
                         .text( current_interval.interval_name );
                     current_interval = intervals[current_interval.parent_no];
                 }
+
+                $( '#fossil-geochronology-success' ).show().fadeOut();
             },
+            complete: function( data ) {
+                    $( '#fossil-geochronology-loading' ).hide();
+                },
             error: function( err ) {
                 console.log( err );
+                $( '#fossil-geochronology-error' ).show().fadeOut();
             }
         });
     }
