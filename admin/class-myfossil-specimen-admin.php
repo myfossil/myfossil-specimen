@@ -428,29 +428,4 @@ class myFOSSIL_Specimen_Admin
         return $post_types;
     }
 
-    // {{{ Enqueues
-    /**
-     * Register the stylesheets for the Dashboard.
-     *
-     * @since    0.0.1
-     */
-    public function enqueue_styles()
-    {
-        wp_enqueue_style( $this->name, plugin_dir_url( __FILE__ ) .
-            'css/myfossil-specimen-admin.css', array(), $this->version,
-            'all' );
-    }
-
-    /**
-     * Register the JavaScript for the dashboard.
-     *
-     * @since    0.0.1
-     */
-    public function enqueue_scripts()
-    {
-        wp_enqueue_script( $this->name, plugin_dir_url( __FILE__ ) .
-            'js/myfossil-specimen-admin.js', array( 'jquery' ),
-            $this->version, false );
-    }
-    // }}}
 }

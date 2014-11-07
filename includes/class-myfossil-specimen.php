@@ -170,8 +170,6 @@ class myFOSSIL_Specimen
     {
         $plugin_admin = new myFOSSIL_Specimen_Admin( $this->get_plugin_name(), $this->get_version() );
 
-        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
         $this->loader->add_action( 'init', $plugin_admin, 'register_custom_post_types' );
@@ -198,8 +196,6 @@ class myFOSSIL_Specimen
 
         $plugin_public = new myFOSSIL_Specimen_Public( $this->get_plugin_name(), $this->get_version() );
 
-        $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-        $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
         /* should not be able to update taxon of a specimen without logging in */
         $this->loader->add_action( 'wp_ajax_myfossil_save_taxon',
