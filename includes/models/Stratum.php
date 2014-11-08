@@ -23,7 +23,7 @@ use myFOSSIL\PBDB;
 class Stratum extends Base
 {
 
-    const CPT_NAME =  'stratum';
+    const CPT_NAME = 'stratum';
 
     /**
      * Stratum.
@@ -85,6 +85,10 @@ class Stratum extends Base
         register_post_type( self::PLUGIN_PREFIX . self::CPT_NAME, $args );
     }
     // }}}
+
+    public static function get_ranks() {
+        return array( 'member', 'formation', 'group' );
+    }
 
     public function __get( $key ) {
         if ( $key == 'reference' ) {

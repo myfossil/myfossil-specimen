@@ -31,7 +31,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
                     'location_id' => $location->id,
                     'dimension_id' => $dimension->id,
                     'reference_id' => $reference->id,
-                    'stratum_id' => $stratum->id,
+                    'stratum_formation_id' => $stratum->id,
                     'time_interval_id' => $time_interval->id
                 )
             );
@@ -53,7 +53,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
 
         $this->assertEquals( $reference->year, $fossil->reference->year );
 
-        $this->assertEquals( $stratum->color, $fossil->stratum->color );
+        $this->assertEquals( $stratum->color, $fossil->strata->formation->color );
 
         $this->assertEquals( $time_interval->early_age, $fossil->time_interval->early_age );
         $this->assertEquals( $time_interval->late_age, $fossil->time_interval->late_age );

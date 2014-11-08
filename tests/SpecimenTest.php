@@ -18,7 +18,7 @@ namespace myFOSSIL\Plugin\Specimen\Tests;
  *
  * @since   0.0.1
  */
-class myFOSSIL_Specimen_Test extends \WP_UnitTestCase {
+abstract class myFOSSIL_Specimen_Test extends \WP_UnitTestCase {
 
     /**
      * Plugin namespace for scope resolution.

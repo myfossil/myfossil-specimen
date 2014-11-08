@@ -28,7 +28,7 @@ gulp.task('scripts-public', function() {
       .pipe(plugins.concat('public.js'))
       .pipe(gulp.dest('assets/staging'))
       .pipe(plugins.rename({ suffix: '.min' }))
-      .pipe(plugins.uglify())
+      //.pipe(plugins.uglify())
       .pipe(plugins.livereload(server))
       .pipe(gulp.dest(build + '/js/'));
 });
@@ -40,7 +40,7 @@ gulp.task('scripts-admin', function() {
       .pipe(plugins.concat('admin.js'))
       .pipe(gulp.dest('assets/staging'))
       .pipe(plugins.rename({ suffix: '.min' }))
-      .pipe(plugins.uglify())
+      //.pipe(plugins.uglify())
       .pipe(plugins.livereload(server))
       .pipe(gulp.dest(build + '/js/'));
 });

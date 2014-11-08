@@ -1,5 +1,7 @@
 <?php
 
+use myFOSSIL\Plugin\Specimen\Stratum;
+
 function fossil_view_lithostratigraphy( $fossil=null ) { 
     ?>
 
@@ -14,27 +16,24 @@ function fossil_view_lithostratigraphy( $fossil=null ) {
     </h3>
 
     <table class="table">
-        <?php
-        foreach ( array( 'group', 'formation', 'member', 'notes' ) as $n => $k ):
-            ?>
+        <?php foreach ( Stratum::get_ranks() as $n => $k ): ?>
             <tr>
                 <td class="fossil-property"><?=ucwords( $k ) ?></td>
-                <td class="fossil-property-value" 
-                        id="lithostratigraphy-<?=($n + 1 ) ?>">
-                    <?php if ( $fossil->stratum->level == $k ): ?>
-                        <?=$fossil->stratum->name ?>
+                <td class="fossil-property-value"
+                        id="fossil-stratum-<?=$k ?>">
+                    <?php if ( property_exists( $fossil->strata, $k ) ): ?>
+                        <?=$fossil->strata->{ $k }->name ?>
                     <?php else: ?>
                         <span class="unknown">Unknown</span>
                     <?php endif; ?> 
                 </td>
                 <td class="fossil-property-options">
-                    <a class="edit-fossil-lithostratigraphy_open" data-popup-ordinal="1">
+                    <a class="edit-fossil-stratum-<?=$k ?>_open" data-popup-ordinal="1">
                         <i class="ion-compose"></i>
                     </a>
                 </td>
             </tr>
-            <?php
-        endforeach; ?>
+        <?php endforeach; ?>
     </table>
 
     <?php

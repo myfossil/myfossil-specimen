@@ -38,8 +38,8 @@ class Fossil extends Base
         $this->pbdb = new PBDB\FossilOccurence;
 
         $this->_meta_keys = array( 'pbdb_id', 'taxon_id', 'location_id',
-                'time_interval_id', 'stratum_id', 'dimension_id',
-                'reference_id' );
+                'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
+                'stratum_member_id', 'dimension_id', 'reference_id' );
     }
 
     public function save( $recursive=false ) {
@@ -127,12 +127,23 @@ class Fossil extends Base
                 }
                 break;
 
-            case 'stratum':
-            case 'lithostratigraphy':
-                if ( $this->stratum_id ) {
-                    $this->_cache->stratum = new Stratum( $this->stratum_id );
-                    return $this->_cache->stratum;
+            case 'strata':
+                if ( ! property_exists( $this->_cache, 'strata' ) )
+                    $this->_cache->strata = new \stdClass;
+
+                foreach ( Stratum::get_ranks() as $rank ) {
+                    $stratum_key = sprintf( 'stratum_%s_id', $rank );
+
+                    if ( ! $this->{ $stratum_key } ) 
+                        continue;
+
+                    if ( ! property_exists( $this->_cache->strata, $rank ) 
+                            || $this->_cache->strata->{ $rank }->id !== $this->{ $stratum_key } )
+                        $this->_cache->strata->{ $rank } = new Stratum( $this->{ $stratum_key } );
                 }
+
+                return $this->_cache->strata;
+                    
                 break;
 
             case 'dim':

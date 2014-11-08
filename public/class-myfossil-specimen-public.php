@@ -100,6 +100,21 @@ class myFOSSIL_Specimen_Public {
                 die;
                 break;
 
+            case 'myfossil_save_lithostratigraphy':
+                foreach ( Stratum::get_ranks() as $rank ) {
+                    if ( ! array_key_exists( $rank, $_POST['strata'] ) )
+                        continue;
+
+                    $stratum = new Stratum;
+                    $stratum->name = $_POST['strata'][$rank];
+                    $stratum_id_key = sprintf( 'stratum_%s_id', $rank );
+                    $fossil->{ $stratum_id_key } = $stratum->save();
+                }
+
+                echo json_encode( $fossil->save() );
+                die;
+                break;
+
             case 'myfossil_save_dimensions':
                 // Dimensions coming in as *centimeters*
                 $length = (float) $_POST['length'];
