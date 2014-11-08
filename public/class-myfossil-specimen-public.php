@@ -74,6 +74,8 @@ class myFOSSIL_Specimen_Public {
             die;
         }
 
+        $fossil = new Fossil( $_POST['post_id'] );
+
         switch ( $_POST['action'] ) {
             case 'myfossil_save_taxon':
                 $taxon = new Taxon;
@@ -81,9 +83,19 @@ class myFOSSIL_Specimen_Public {
                 $taxon->name    = $_POST['taxon']['name'];
                 $taxon->rank    = $_POST['taxon']['rank'];
 
-                $fossil = new Fossil( $_POST['post_id'] );
                 $fossil->taxon_id = $taxon->save();
 
+                echo json_encode( $fossil->save() );
+                die;
+                break;
+
+            case 'myfossil_save_geochronology':
+                $ti = new TimeInterval;
+                $ti->pbdb_id = $_POST['geochronology']['pbdb'];
+                $ti->color   = $_POST['geochronology']['color'];
+                $ti->level   = $_POST['geochronology']['level'];
+                $ti->name    = $_POST['geochronology']['name'];
+                $fossil->time_interval_id = $ti->save();
                 echo json_encode( $fossil->save() );
                 die;
                 break;
@@ -99,7 +111,6 @@ class myFOSSIL_Specimen_Public {
                 $dim->width  = $width  / 100; // convert to meters
                 $dim->height = $height / 100; // convert to meters
 
-                $fossil = new Fossil( $_POST['post_id'] );
                 $fossil->dimension_id = $dim->save();
 
                 echo json_encode( $fossil->save() );
@@ -112,7 +123,6 @@ class myFOSSIL_Specimen_Public {
                             'county', 'city' ) as $k ) 
                     $location->{ $k } = $_POST['location'][$k];
 
-                $fossil = new Fossil( $_POST['post_id'] );
                 $fossil->location_id = $location->save();
 
                 echo json_encode( $fossil->save() );
