@@ -21,7 +21,7 @@ function fossil_view_dimensions( $fossil=null ) {
         <?php foreach ( array( 'length', 'width', 'height' ) as $k ) { ?>
             <tr>
                 <td class="fossil-property"><?=ucwords( $k ) ?></td>
-                <?php if ( $v = $fossil->dimension->{ $k } * 100 ): ?>
+                <?php if ( $fossil->dimension && $v = $fossil->dimension->{ $k } * 100 ): ?>
                     <td class="fossil-property-value" id="fossil-dimension-<?=$k ?>" value="<?=$v ?>">
                         <?=$v ?> cm
                     </td>

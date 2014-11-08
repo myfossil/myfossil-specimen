@@ -85,15 +85,13 @@ function myfossil_enqueue_scripts() {
     wp_enqueue_script( 'myfossil_specimen_public', plugin_dir_url( __FILE__ ) .
             'static/js/public.min.js', array( 'jquery' ) );
 }
-add_action( 'wp_enqueue_scripts', 
-        __namespace__ . '\myfossil_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', __namespace__ . '\myfossil_enqueue_scripts' );
 
 function myfossil_admin_enqueue_scripts() {
     wp_enqueue_script( 'myfossil_specimen_admin', plugin_dir_url( __FILE__ ) .
             'static/js/admin.min.js', array( 'jquery' ) );
 }
-add_action( 'admin_enqueue_scripts', 
-        __namespace__ . '\myfossil_admin_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', __namespace__ . '\myfossil_admin_enqueue_scripts' );
 
 function myfossil_bp_blogs_record_post_post_types( $post_types ) {
     if ( ! in_array( Fossil::POST_TYPE, $post_types ) )
