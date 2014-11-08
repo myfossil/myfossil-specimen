@@ -214,6 +214,8 @@ class myFOSSIL_Specimen
 
         $this->loader->add_action( 'bp_register_activity_actions',
                 $plugin_public, 'bp_register_activity_actions' );
+        $this->loader->add_action( 'bp_setup_nav', $plugin_public,
+                'bp_add_member_fossil_nav_items', 100 );
 
     }
 

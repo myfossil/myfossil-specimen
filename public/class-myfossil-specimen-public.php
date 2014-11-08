@@ -61,6 +61,23 @@ class myFOSSIL_Specimen_Public {
         return Fossil::register_buddypress_activities();
     }
 
+    public function bp_add_member_fossil_nav_items() {
+        global $bp;
+
+        \bp_core_new_nav_item(
+            array(
+                'name' => 'Fossils',
+                'slug' => 'fossils',
+                'default_subnav_slug' => 'fossils',
+                'parent_url' => bp_displayed_user_domain(),
+                'parent_slug' => $bp->members->slug . bp_displayed_user_id(),
+                'position' => 50,
+                'show_for_displayed_user' => true,
+                'screen_function' => 'fossil_view_member_fossils'
+            )
+        );
+    }
+
     /**
      * AJAX call handler
      */
