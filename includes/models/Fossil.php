@@ -22,7 +22,7 @@ use myFOSSIL\PBDB;
  */
 class Fossil extends Base
 {
-    const CPT_NAME = 'fossil';
+    const POST_TYPE = 'myfossil_fossil';
 
     /**
      * Fossil.
@@ -43,7 +43,25 @@ class Fossil extends Base
     }
 
     public function save( $recursive=false ) {
-        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+        $current_id = $this->id;
+        $id = parent::_save( self::POST_TYPE, $recursive );
+
+        if ( self::bp() ) {
+            $bp_activity_type = $current_id
+                ? sprintf( '%s_update', self::POST_TYPE )
+                : sprintf( '%s_create', self::POST_TYPE );
+
+            $args = array(
+                    'item_id' => $this->id,
+                    'user_id' => \bp_loggedin_user_id(),
+                    'item_secondary_id' => $this->wp_post->post_author,
+                    'type' => $bp_activity_type
+                );
+
+            \bp_activity_add( $args );
+        }
+        
+        return $this->id;
     }
 
     // {{{ Custom Post Type
@@ -65,7 +83,7 @@ class Fossil extends Base
         );
 
         $args = array(
-            'label'               => __( self::PLUGIN_PREFIX . self::CPT_NAME, 'myfossil-specimen' ),
+            'label'               => __( self::POST_TYPE, 'myfossil-specimen' ),
             'description'         => __( 'Represents a fossil', 'myfossil-specimen' ),
             'labels'              => $labels,
             'supports'            => array( 'title', 'editor', 'author',
@@ -85,9 +103,43 @@ class Fossil extends Base
             'menu_icon'           => 'dashicons-carrot'
         );
 
-        register_post_type( self::PLUGIN_PREFIX . self::CPT_NAME, $args );
+        register_post_type( self::POST_TYPE, $args );
     }
     // }}}
+
+    /**
+     * BuddyPress registrations
+     */
+    public static function register_buddypress_activities() {
+        // bail if buddypress doesn't exist or have activity enabled
+        if ( ! self::bp() || ! \bp_is_active( 'activity' ) ) return false;
+
+        foreach ( array( 'update', 'comment', 'delete', 'create' ) as $t ) {
+            $component_id = self::POST_TYPE;
+            $type = self::POST_TYPE . '_' . $t;
+            $description = sprintf( 'Fossil %sd', $t );
+            $format_callback = __namespace__ . '\Fossil::bp_format_activity';
+            $label = 'Fossils';
+            $context = array( 'activity', 'member', 'member_groups', 'group' );
+            bp_activity_set_action( $component_id, $type, $description, $format_callback, $label, $context );
+        }
+    }
+
+    public static function get_url( $fossil_id ) {
+        return sprintf( '%s/fossils/%d', get_site_url(), $fossil_id ); 
+    }
+
+    public static function bp_format_activity( $action, $activity ) {
+        $fossil_link = self::get_url( $activity->item_id );
+        $initiator_link = bp_core_get_userlink( $activity->user_id );
+        $verb = end( explode( '_', $activity->type) );
+
+        $owner_link = ( $activity->user_id == $activity->secondary_item_id ) 
+            ? 'their own' : sprintf( "%s's", bp_core_get_userlink( $activity->secondary_item_id ) );
+        if ( $owner_link == 'their own' && $verb == 'created' )
+            $owner_link = 'a';
+        $action = sprintf( '%s %s %s <a href="%s">fossil</a>', $initiator_link, $verb, $owner_link, $fossil_link );
+    }
 
     /**
      * Custom getters specific to Fossil's
@@ -242,25 +294,28 @@ class Fossil extends Base
                 switch ( $obj_type ) {
                     case 'taxons':
                         $obj = new Taxon( null, $obj_datum );
-                        $obj->save();
+                        echo $obj->save();
                         wp_publish_post( $obj->id );
                         array_push( $obj_ids['taxon'], $obj->id );
                         break;
+
                     case 'locations':
                         $obj = new FossilLocation( null, $obj_datum );
-                        $obj->save();
+                        echo $obj->save();
                         wp_publish_post( $obj->id );
                         array_push( $obj_ids['location'], $obj->id );
                         break;
+
                     case 'strata':
                         $obj = new Stratum( null, $obj_datum );
-                        $obj->save();
+                        echo $obj->save();
                         wp_publish_post( $obj->id );
                         array_push( $obj_ids['stratum'], $obj->id );
                         break;
+
                     case 'time_intervals':
                         $obj = new TimeInterval( null, $obj_datum );
-                        $obj->save();
+                        echo $obj->save();
                         wp_publish_post( $obj->id );
                         array_push( $obj_ids['time_interval'], $obj->id );
                         break;
@@ -273,12 +328,13 @@ class Fossil extends Base
                     array(
                         'taxon_id'         => $obj_ids['taxon'][$i],
                         'location_id'      => $obj_ids['location'][$i],
-                        'stratum_id'       => $obj_ids['stratum'][$i],
+                        'stratum_formation_id'       => $obj_ids['stratum'][$i],
                         'time_interval_id' => $obj_ids['time_interval'][$i]
                     )
                 );
 
             $fid = $fossil->save();
+            echo $fid;
             wp_publish_post( $fid );
 
             /* Add media */

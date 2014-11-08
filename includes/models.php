@@ -11,8 +11,6 @@
  */
 
 require_once 'models/Base.php';
-require_once 'models/WordPress.php';
-require_once 'models/CRUD.php';
 require_once 'models/Fossil.php';
 require_once 'models/FossilLocation.php';
 require_once 'models/FossilDimension.php';

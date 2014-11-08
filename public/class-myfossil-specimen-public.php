@@ -57,6 +57,10 @@ class myFOSSIL_Specimen_Public {
 
 	}
 
+    public function bp_register_activity_actions() {
+        Fossil::register_buddypress_activities();
+    }
+
     /**
      * AJAX call handler
      */

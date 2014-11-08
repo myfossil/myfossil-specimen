@@ -23,7 +23,7 @@ use myFOSSIL\PBDB;
 class Reference extends Base
 {
 
-    const CPT_NAME =  'reference';
+    const POST_TYPE =  'myfossil_reference';
 
     /**
      * Reference.
@@ -41,7 +41,7 @@ class Reference extends Base
     }
 
     public function save( $recursive=false ) {
-        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+        return parent::_save( self::POST_TYPE, $recursive );
     }
 
     // {{{ Custom Post Type
@@ -53,7 +53,7 @@ class Reference extends Base
             'rewrite'             => false,
         );
 
-        register_post_type( self::PLUGIN_PREFIX . self::CPT_NAME, $args );
+        register_post_type( self::POST_TYPE, $args );
     }
     // }}}
 }

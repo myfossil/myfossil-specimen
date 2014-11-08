@@ -33,11 +33,7 @@ use myFOSSIL\PBDB;
  */
 class Base
 {
-    /**
-     * Namespace of this plugin.
-     */
-    const PLUGIN_PREFIX = 'myfs_';
-    const CPT_NAME = null;
+    const POST_TYPE = null;
 
     /**
      * PBDB query object for this class.
@@ -55,6 +51,7 @@ class Base
     protected $_meta;
     protected $_meta_keys;
     protected $_cache;
+    protected $_updated;
 
     /**
      * Create Base class.
@@ -63,6 +60,7 @@ class Base
     {
         $this->_meta = new \stdClass;
         $this->_cache = new \stdClass;
+        $this->_updated = array();
 
         /* Load the post, if defined */
         if ( $post_id )
@@ -129,7 +127,7 @@ class Base
             return $this->_meta->{$key};
 
         /* Try WordPress */
-        if ( $this->wp_post->ID && $this->wp_post->{$key} )
+        if ( $this->wp_post && $this->wp_post->ID && $this->wp_post->{$key} )
             return $this->wp_post->{$key};
 
         /* Try PBDB */
@@ -185,7 +183,7 @@ class Base
      * @param   bool    $recursive       (optional) Recurse saving of children objects as well, default false.
      * @return  bool                                True upon success, false upon failure.
      */
-    public function _save( $post_type, $recursive=false )
+    protected function _save( $post_type, $recursive=false )
     {
         /* Update or create new Post */
         if ( $this->wp_post && $this->wp_post->ID ) {
@@ -216,6 +214,10 @@ class Base
                 update_post_meta( $this->wp_post->ID, $meta_key, $this->_meta->{$meta_key} );
 
         return $this->wp_post->ID;
+    }
+
+    public static function bp() {
+        return function_exists( '\bp_is_active' );
     }
 
     /**

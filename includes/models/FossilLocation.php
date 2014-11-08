@@ -24,7 +24,7 @@ namespace myFOSSIL\Plugin\Specimen;
  */
 class FossilLocation extends Base 
 {
-    const CPT_NAME =  'fossil_loc';
+    const POST_TYPE = 'myfossil_fossil_loc';
     
     public function __construct( $post_id=null, $meta=array() )
     {
@@ -35,7 +35,7 @@ class FossilLocation extends Base
     }
 
     public function save( $recursive=false ) {
-        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+        return parent::_save( self::POST_TYPE, $recursive );
     }
 
     public function __toString() {
@@ -60,7 +60,7 @@ class FossilLocation extends Base
             'rewrite'             => false,
         );
 
-        register_post_type( self::PLUGIN_PREFIX . self::CPT_NAME, $args );
+        register_post_type( self::POST_TYPE, $args );
     }
     // }}}
 }

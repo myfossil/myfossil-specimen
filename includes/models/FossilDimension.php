@@ -22,7 +22,7 @@ use myFOSSIL\PBDB;
  */
 class FossilDimension extends Base
 {
-    const CPT_NAME =  'fossil_dim';
+    const POST_TYPE = 'myfossil_fossil_dim';
 
     /**
      * FossilDimension.
@@ -40,7 +40,7 @@ class FossilDimension extends Base
     }
 
     public function save( $recursive=false ) {
-        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+        return parent::_save( self::POST_TYPE, $recursive );
     }
 
     // {{{ Custom Post Type
@@ -52,7 +52,7 @@ class FossilDimension extends Base
             'rewrite'             => false,
         );
 
-        register_post_type( self::PLUGIN_PREFIX . self::CPT_NAME, $args );
+        register_post_type( self::POST_TYPE, $args );
     }
     // }}}
 

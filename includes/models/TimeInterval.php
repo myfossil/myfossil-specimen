@@ -22,7 +22,7 @@ use myFOSSIL\PBDB;
  */
 class TimeInterval extends Base 
 {
-    const CPT_NAME =  'time_interval';
+    const POST_TYPE =  'myfossil_geochron';
 
     /**
      * TimeInterval.
@@ -42,7 +42,7 @@ class TimeInterval extends Base
     }
 
     public function save( $recursive=false ) {
-        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+        return parent::_save( self::POST_TYPE, $recursive );
     }
 
     // {{{ Custom Post Type
@@ -83,7 +83,7 @@ class TimeInterval extends Base
             'menu_icon'           => 'dashicons-backup'
         );
 
-        register_post_type( self::PLUGIN_PREFIX . self::CPT_NAME, $args );
+        register_post_type( self::POST_TYPE, $args );
     }
     // }}}
 

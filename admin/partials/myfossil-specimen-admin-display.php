@@ -20,16 +20,14 @@ function admin_tools_page() {
     <div class="wrap">
         <h2>myFOSSIL Specimen</h2>
         <div id="message"></div>
+        <?php wp_nonce_field( 'myfossil_nonce', 'myfossil_nonce' ); ?>
         <p>Populate Taxonomies with default data</p>
-        <?php wp_nonce_field( 'myfs_nonce', 'myfs_nonce' ); ?>
         <a class="button" id="load-taxonomies">Load WordPress Taxonomies</a>
 
         <p>Populate Time Intervals with default data</p>
-        <?php wp_nonce_field( 'myfs_nonce', 'myfs_nonce' ); ?>
         <a class="button" id="load-geochronology">Load Geochronology</a>
 
         <p>Populate Fossils with default data</p>
-        <?php wp_nonce_field( 'myfs_nonce', 'myfs_nonce' ); ?>
         <a class="button" id="load-fossils">Load Fossils</a>
     </div>
     <?php 

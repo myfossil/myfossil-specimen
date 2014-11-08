@@ -23,7 +23,7 @@ use myFOSSIL\PBDB;
 class Stratum extends Base
 {
 
-    const CPT_NAME = 'stratum';
+    const POST_TYPE = 'myfossil_stratum';
 
     /**
      * Stratum.
@@ -41,7 +41,7 @@ class Stratum extends Base
     }
 
     public function save( $recursive=false ) {
-        return parent::_save( self::PLUGIN_PREFIX . self::CPT_NAME, $recursive );
+        return parent::_save( self::POST_TYPE, $recursive );
     }
 
     // {{{ Custom Post Type
@@ -63,7 +63,7 @@ class Stratum extends Base
         );
 
         $args = array(
-            'label'               => __( self::PLUGIN_PREFIX . self::CPT_NAME, 'myfossil-specimen' ),
+            'label'               => __( self::POST_TYPE, 'myfossil-specimen' ),
             'description'         => __( 'Represents a geological stratum', 'myfossil-specimen' ),
             'labels'              => $labels,
             'supports'            => array( 'title', 'author', 'thumbnail',
@@ -82,7 +82,7 @@ class Stratum extends Base
             'menu_icon'           => 'dashicons-tagcloud'
         );
 
-        register_post_type( self::PLUGIN_PREFIX . self::CPT_NAME, $args );
+        register_post_type( self::POST_TYPE, $args );
     }
     // }}}
 

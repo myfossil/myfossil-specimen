@@ -59,4 +59,8 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $this->assertEquals( $time_interval->late_age, $fossil->time_interval->late_age );
     }
 
+    public function testLoadDefaults() {
+        $this->assertTrue( Specimen\Fossil::load_defaults() );
+    }
+
 }

@@ -105,8 +105,8 @@ class myFOSSIL_Specimen_Admin
             'query_var'           => true,
         );
 
-        register_taxonomy( 'myfs_taxa', array( 'myfs_taxon' ), $args );
-        register_taxonomy_for_object_type( 'myfs_taxa', 'myfs_taxon' );
+        register_taxonomy( 'myfossil_taxa', array( 'myfossil_taxon' ), $args );
+        register_taxonomy_for_object_type( 'myfossil_taxa', 'myfossil_taxon' );
     }
     // }}}
 
@@ -139,8 +139,8 @@ class myFOSSIL_Specimen_Admin
             'query_var'           => true,
         );
 
-        register_taxonomy( 'myfs_geochronologies', array( 'myfs_time_interval' ), $args );
-        register_taxonomy_for_object_type( 'myfs_geochronologies', 'myfs_time_interval' );
+        register_taxonomy( 'myfossil_geochronologies', array( 'myfossil_time_interval' ), $args );
+        register_taxonomy_for_object_type( 'myfossil_geochronologies', 'myfossil_time_interval' );
     }
     // }}}
 
@@ -173,8 +173,8 @@ class myFOSSIL_Specimen_Admin
             'query_var'           => true,
         );
 
-        register_taxonomy( 'myfs_lithostratigraphies', array( 'myfs_stratum' ), $args );
-        register_taxonomy_for_object_type( 'myfs_lithostratigraphies', 'myfs_stratum' );
+        register_taxonomy( 'myfossil_lithostratigraphies', array( 'myfossil_stratum' ), $args );
+        register_taxonomy_for_object_type( 'myfossil_lithostratigraphies', 'myfossil_stratum' );
     }
     // }}}
 
@@ -199,7 +199,7 @@ class myFOSSIL_Specimen_Admin
 
     // {{{ Load Taxa
     private function _load_ctax_taxa() {
-        $taxonomy = 'myfs_taxa';
+        $taxonomy = 'myfossil_taxa';
         $terms = array( 'domain', 'kingdom', 'phylum', 'class', 'order',
                 'family', 'genus', 'species' );
         $this->_load_taxonomy( $taxonomy, $terms );
@@ -208,7 +208,7 @@ class myFOSSIL_Specimen_Admin
 
     // {{{ Load Geochronologies
     private function _load_ctax_geochronologies() {
-        $taxonomy = 'myfs_geochronologies';
+        $taxonomy = 'myfossil_geochronologies';
         $terms = array( 'eon', 'era', 'period', 'epoch', 'age', 'chron' );
         $this->_load_taxonomy( $taxonomy, $terms );
     }
@@ -216,7 +216,7 @@ class myFOSSIL_Specimen_Admin
 
     // {{{ Load Lithostratigraphies
     private function _load_ctax_lithostratigraphies() {
-        $taxonomy = 'myfs_lithostratigraphies';
+        $taxonomy = 'myfossil_lithostratigraphies';
         $terms = array( 'supergroup', 'group', 'formation', 'member', 'bed' );
         $this->_load_taxonomy( $taxonomy, $terms );
     }
@@ -241,7 +241,7 @@ class myFOSSIL_Specimen_Admin
         $geochronology = array();
         foreach ( $levels as $idx => $geoc )
             $geochronology[$idx] = term_exists( ucfirst( $geoc ),
-                    'myfs_geochronologies' );
+                    'myfossil_geochronologies' );
 
         /**
          * @todo create references posts.
@@ -294,7 +294,7 @@ class myFOSSIL_Specimen_Admin
             $post_args = array(
                     'post_title'    => $data['interval_name'],
                     'post_status'   => 'publish',
-                    'post_type'     => 'myfs_time_interval',
+                    'post_type'     => 'myfossil_time_interval',
                 );
 
             // Insert the post into the database
@@ -306,7 +306,7 @@ class myFOSSIL_Specimen_Admin
 
             // Set Geochronology
             wp_set_post_terms( $post_id, $geochronology[$data['level']],
-                    'myfs_geochronologies' );
+                    'myfossil_geochronologies' );
     
             // Load in ACF data for the Place
             $acf_fields = array( 'color', 'late_age', 'early_age' );
@@ -326,7 +326,7 @@ class myFOSSIL_Specimen_Admin
 
     // {{{ Adminitrative Panel Fixes
     private function _cleanup_metaboxes() {
-        $prefix = 'myfs_';
+        $prefix = 'myfossil_';
         $cpts = array( 'taxon', 'stratum', 'time_interval', 'fossil',
             'fossil_col', 'reference' );
         foreach ( $cpts as $cpt )
@@ -384,7 +384,7 @@ class myFOSSIL_Specimen_Admin
         header('Content-Type: application/json');
 
         // Check nonce
-        if ( !check_ajax_referer( 'myfs_nonce', 'nonce', false ) ) {
+        if ( !check_ajax_referer( 'myfossil_nonce', 'nonce', false ) ) {
             $return_args = array(
                 "result" => "Error",
                 "message" => "403 Forbidden",
@@ -395,19 +395,19 @@ class myFOSSIL_Specimen_Admin
         }
 
         switch ( $_POST['action'] ) {
-            case 'myfs_load_terms':
+            case 'myfossil_load_terms':
                 $this->_load_taxonomy_terms();                
                 echo "1";
                 die;
                 break;
-            case 'myfs_load_geochronology':
+            case 'myfossil_load_geochronology':
                 if ( $this->_load_time_intervals() > 0 )
                     echo "1";
                 else
                     echo "0";
                 die;
                 break;
-            case 'myfs_load_default_fossils':
+            case 'myfossil_load_default_fossils':
                 if ( Fossil::load_defaults() )
                     echo "1";
                 else
@@ -418,13 +418,13 @@ class myFOSSIL_Specimen_Admin
     }
 
     public function add_buddypress_comments( $post_types ) {
-        $post_types[] = Fossil::PLUGIN_PREFIX          . Fossil::CPT_NAME;
-        $post_types[] = FossilDimension::PLUGIN_PREFIX . FossilDimension::CPT_NAME;
-        $post_types[] = FossilLocation::PLUGIN_PREFIX  . FossilLocation::CPT_NAME;
-        $post_types[] = Reference::PLUGIN_PREFIX       . Reference::CPT_NAME;
-        $post_types[] = Stratum::PLUGIN_PREFIX         . Stratum::CPT_NAME;
-        $post_types[] = Taxon::PLUGIN_PREFIX           . Taxon::CPT_NAME;
-        $post_types[] = TimeInterval::PLUGIN_PREFIX    . TimeInterval::CPT_NAME;
+        $post_types[] = Fossil::POST_TYPE;
+        $post_types[] = FossilDimension::POST_TYPE;
+        $post_types[] = FossilLocation::POST_TYPE;
+        $post_types[] = Reference::POST_TYPE; 
+        $post_types[] = Stratum::POST_TYPE; 
+        $post_types[] = Taxon::POST_TYPE; 
+        $post_types[] = TimeInterval::POST_TYPE;
         return $post_types;
     }
 

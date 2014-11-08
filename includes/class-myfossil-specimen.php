@@ -179,9 +179,12 @@ class myFOSSIL_Specimen
 
         /* Taxonomies */
         $this->loader->add_action( 'init', $plugin_admin, 'register_taxonomies' );
-        $this->loader->add_action( 'wp_ajax_myfs_load_terms', $plugin_admin, 'ajax_handler' );
-        $this->loader->add_action( 'wp_ajax_myfs_load_geochronology', $plugin_admin, 'ajax_handler' );
-        $this->loader->add_action( 'wp_ajax_myfs_load_default_fossils', $plugin_admin, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfossil_load_terms',
+                $plugin_admin, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfossil_load_geochronology',
+                $plugin_admin, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfossil_load_default_fossils',
+                $plugin_admin, 'ajax_handler' );
     }
 
     /**
@@ -194,8 +197,8 @@ class myFOSSIL_Specimen
     private function define_public_hooks()
     {
 
-        $plugin_public = new myFOSSIL_Specimen_Public( $this->get_plugin_name(), $this->get_version() );
-
+        $plugin_public = new myFOSSIL_Specimen_Public(
+                $this->get_plugin_name(), $this->get_version() );
 
         /* should not be able to update taxon of a specimen without logging in */
         $this->loader->add_action( 'wp_ajax_myfossil_save_taxon',
@@ -208,6 +211,9 @@ class myFOSSIL_Specimen
                 $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_save_lithostratigraphy',
                 $plugin_public, 'ajax_handler' );
+
+        $this->loader->add_action( 'bp_register_activity_actions',
+                $plugin_public, 'bp_register_activity_actions' );
 
     }
 
