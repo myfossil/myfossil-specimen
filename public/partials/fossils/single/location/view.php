@@ -16,12 +16,14 @@ function fossil_view_location( $fossil=null ) {
     <?php if ( $fossil->location->latitude && $fossil->location->longitude ): ?>
         <div class="edit-fossil hidden-xs hidden-sm col-md-6 col-lg-6">
             <div class="edit-fossil-body">
-                <div id="map-container"></div>
+                <div id="fossil-map-container"></div>
             </div>
         </div>
     <?php else: ?>
-        <div id="map-container" class="hidden-xs hidden-sm col-md-6 col-lg-6" style="height: 300px; background-color: #eee;">
-            <p class="unknown" style="position: absolute; top: 45%; width: 100%; text-align: center">Insufficient information available to create map</p>
+        <div id="fossil-map-container" class="hidden-xs hidden-sm col-md-6 col-lg-6" style="height: 300px; background-color: #eee;">
+            <p class="unknown" style="position: absolute; top: 45%; width: 100%; text-align: center">
+                Insufficient information available to create map
+            </p>
         </div>
     <?php endif; ?>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">

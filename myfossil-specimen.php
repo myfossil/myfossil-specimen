@@ -83,7 +83,9 @@ require_once( plugin_dir_path( __FILE__ ) .
 
 function myfossil_enqueue_scripts() {
     wp_enqueue_script( 'myfossil_specimen_public', plugin_dir_url( __FILE__ ) .
-            'static/js/public.min.js', array( 'jquery' ) );
+            'static/js/public-single.min.js', array( 'jquery' ) );
+    wp_enqueue_script( 'myfossil_specimen_public', plugin_dir_url( __FILE__ ) .
+            'static/js/public-list.min.js', array( 'jquery' ) );
 }
 add_action( 'wp_enqueue_scripts', __namespace__ . '\myfossil_enqueue_scripts' );
 

@@ -2,31 +2,25 @@
     'use strict';
 
     function init_map() {
+        var mapNode = document.getElementById( 'fossil-map-container' );
+        if ( ! mapNode ) return; // bail if no mapNode to make map
+
         var loc = new google.maps.LatLng( 
                 parseFloat( $( '#fossil-location-latitude' ).text() ),
                 parseFloat( $( '#fossil-location-longitude' ).text() )
             );
 
-        var mapoptions = {
+        var mapOptions = {
                 center: loc,
                 zoom: 14,
                 mapTypeId: google.maps.MapTypeId.SATELLITE
             };
 
-        var marker = new google.maps.Marker(
-                {
-                    position: loc,
-                    map: map,
-                    title: $( '#fossil-taxon-name' ).val(),
-                    clickable: false,
-                }
-            );
-
-        var map = new google.maps.Map( 
-                document.getElementById("map-container"), mapoptions
-            );
-
-        marker.setMap(map); 
+        var marker = new google.maps.Marker({
+            position: loc,
+            title: $( '#fossil-taxon-name' ).val(),
+            clickable: false,
+        }).setMap( new google.maps.Map( mapNode, mapOptions ) );
     }
 
     function init_location_edit() {
@@ -81,7 +75,7 @@
     // }}}
 
     $( function() {
-        google.maps.event.addDomListener(window, 'load', init_map);
+        google.maps.event.addDomListener( window, 'load', init_map );
 
         init_location_edit();
 

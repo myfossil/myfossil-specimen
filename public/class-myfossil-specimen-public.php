@@ -98,6 +98,7 @@ class myFOSSIL_Specimen_Public {
         $fossil = new Fossil( $_POST['post_id'] );
 
         switch ( $_POST['action'] ) {
+            // {{{ save
             case 'myfossil_save_taxon':
                 $taxon = new Taxon;
                 $taxon->pbdb_id = $_POST['taxon']['pbdb'];
@@ -164,6 +165,15 @@ class myFOSSIL_Specimen_Public {
                 echo json_encode( $fossil->save() );
                 die;
                 break;
+            // }}}
+
+            // {{{ create
+            case 'myfossil_create_fossil':
+                $fossil = new Fossil;
+                echo json_encode( $fossil->save() );
+                die;
+                break;
+            // }}}
         }
 
     }

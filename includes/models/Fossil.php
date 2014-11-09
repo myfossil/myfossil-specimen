@@ -134,7 +134,7 @@ class Fossil extends Base
         $fossil = new Fossil( $activity->item_id );
         $initiator_link = \bp_core_get_userlink( $activity->user_id );
         $verbs = explode( '_', $activity->type);
-        $verb = end( $verbs );
+        $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs ) . 'd';
 
         $owner_link = ( $activity->user_id == $activity->secondary_item_id ) 
             ? 'their own' : sprintf( "%s's", \bp_core_get_userlink( $activity->secondary_item_id ) );
