@@ -29,7 +29,7 @@ gulp.task('scripts-public-single', function() {
       .pipe(plugins.concat('public-single.js'))
       .pipe(gulp.dest('assets/staging'))
       .pipe(plugins.rename({ suffix: '.min' }))
-      //.pipe(plugins.uglify())
+      .pipe(plugins.uglify())
       .pipe(plugins.livereload(server))
       .pipe(plugins.sourcemaps.write())
       .pipe(gulp.dest(build + '/js/'));
@@ -42,7 +42,7 @@ gulp.task('scripts-public-list', function() {
       .pipe(plugins.concat('public-list.js'))
       .pipe(gulp.dest('assets/staging'))
       .pipe(plugins.rename({ suffix: '.min' }))
-      //.pipe(plugins.uglify())
+      .pipe(plugins.uglify())
       .pipe(plugins.livereload(server))
       .pipe(plugins.sourcemaps.write())
       .pipe(gulp.dest(build + '/js/'));
@@ -55,7 +55,7 @@ gulp.task('scripts-public-plugins', function() {
       .pipe(plugins.concat('public-plugins.js'))
       .pipe(gulp.dest('assets/staging'))
       .pipe(plugins.rename({ suffix: '.min' }))
-      //.pipe(plugins.uglify())
+      .pipe(plugins.uglify())
       .pipe(plugins.livereload(server))
       .pipe(plugins.sourcemaps.write())
       .pipe(gulp.dest(build + '/js/'));
@@ -71,7 +71,7 @@ gulp.task('scripts-admin', function() {
       .pipe(plugins.concat('admin.js'))
       .pipe(gulp.dest('assets/staging'))
       .pipe(plugins.rename({ suffix: '.min' }))
-      //.pipe(plugins.uglify())
+      .pipe(plugins.uglify())
       .pipe(plugins.livereload(server))
       .pipe(plugins.sourcemaps.write())
       .pipe(gulp.dest(build + '/js/'));
