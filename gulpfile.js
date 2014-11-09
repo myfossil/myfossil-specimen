@@ -32,6 +32,7 @@ gulp.task('scripts-public-single', function() {
       .pipe(plugins.livereload(server))
       .pipe(gulp.dest(build + '/js/'));
 });
+
 gulp.task('scripts-public-list', function() {
   return gulp.src(['assets/src/js/public/list.js', '!assets/src/js/plugins.js'])
       .pipe(plugins.jshint('.jshintrc'))
@@ -43,7 +44,19 @@ gulp.task('scripts-public-list', function() {
       .pipe(plugins.livereload(server))
       .pipe(gulp.dest(build + '/js/'));
 });
-gulp.task('scripts-public', ['scripts-public-single', 'scripts-public-list']);
+
+gulp.task('scripts-public-plugins', function() {
+  return gulp.src(['assets/src/js/public/plugins/**/*.js', '!assets/src/js/plugins.js'])
+      .pipe(plugins.jshint.reporter('default'))
+      .pipe(plugins.concat('public-plugins.js'))
+      .pipe(gulp.dest('assets/staging'))
+      .pipe(plugins.rename({ suffix: '.min' }))
+      //.pipe(plugins.uglify())
+      .pipe(plugins.livereload(server))
+      .pipe(gulp.dest(build + '/js/'));
+});
+
+gulp.task('scripts-public', ['scripts-public-single', 'scripts-public-list', 'scripts-public-plugins']);
 
 gulp.task('scripts-admin', function() {
   return gulp.src(['assets/src/js/admin/*.js', '!assets/src/js/plugins.js'])
