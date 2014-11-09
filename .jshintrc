@@ -5,7 +5,7 @@
     "immed": true,
     "newcap": true,
     "esnext": true,
-    "camelcase": true,
+    "camelcase": false,
     "latedef": true,
     "noarg": true,
     "node": true,
@@ -13,11 +13,15 @@
     "browser": true,
     "trailing": true,
     "jquery": true,
-    "curly": true,
+    "curly": false,
     "supernew": true,
+    "laxbreak": true,
+    "validthis": true,
     "globals": {
         "Backbone": true,
         "_": true,
-        "jQuery": true
+        "jQuery": true,
+        "google": true,
+        "ajaxurl": true
     }
 }

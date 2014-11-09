@@ -14,6 +14,7 @@ namespace myFOSSIL\Plugin\Specimen;
  */
 
 include_once( 'fossils/single/header.php' );
+include_once( 'fossils/single/images.php' );
 include_once( 'fossils/single/comments.php' );
 include_once( 'fossils/single/dimensions.php' );
 include_once( 'fossils/single/geochronology.php' );

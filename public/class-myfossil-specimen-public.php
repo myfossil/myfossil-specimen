@@ -78,6 +78,40 @@ class myFOSSIL_Specimen_Public {
         );
     }
 
+    public static function upload_user_file( $file=array(), $post_id=0 )
+    {
+        require_once( ABSPATH . 'wp-admin/includes/admin.php' );
+
+        $file_return = wp_handle_upload( $file, array( 'test_form' => false ) );
+
+        if ( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
+            return array( $file_return, $file );
+        } else {
+            $filename = $file_return['file'];
+
+            $attachment = array(
+                'post_mime_type' => $file_return['type'],
+                'post_title' => preg_replace( '/\.[^.]+$/', '', basename( $filename ) ),
+                'post_content' => '',
+                'post_status' => 'inherit',
+                'guid' => $file_return['url']
+            );
+
+            $attachment_id = wp_insert_attachment( $attachment, $file_return['url'], $post_id );
+
+            require_once( ABSPATH . 'wp-admin/includes/image.php' );
+
+            $attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+            wp_update_attachment_metadata( $attachment_id, $attachment_data );
+
+            if ( 0 < intval( $attachment_id ) ) {
+                return $attachment_id;
+            }
+        }
+
+        return -2;
+    }
+
     /**
      * AJAX call handler
      */
@@ -180,6 +214,27 @@ class myFOSSIL_Specimen_Public {
                 die;
                 break;
             // }}}
+
+            case 'myfossil_upload_fossil_image':
+                if ( empty( $_FILES ) ) {
+                    header( 'HTTP/1.0 400 Bad Request' );
+                    echo json_encode(
+                            array(
+                                'result' => 'Error',
+                                'message' => '400 Bad Request'
+                            )
+                        );
+                    die;
+                }
+
+                $fh = $_FILES['files'];
+                foreach ( $_FILES['files'] as $k => $v ) {
+                    $fh[$k] = $v[0];
+                }
+
+                echo json_encode( self::upload_user_file( $fh, $_POST['post_id'] ) );
+                die;
+                break;
         }
 
     }

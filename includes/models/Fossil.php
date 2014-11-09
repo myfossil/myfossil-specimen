@@ -225,7 +225,9 @@ class Fossil extends Base
                 if ( ! $this->id ) return;
                 $_ = get_attached_media( 'image', $this->id );
                 $m = array_pop( $_ );
-                return $m->guid;
+                if ( $m && $m->guid )
+                    return $m->guid;
+                return null;
             default:
                 return parent::__get( $key );
                 break;

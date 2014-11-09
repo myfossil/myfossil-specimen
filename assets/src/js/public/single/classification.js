@@ -118,9 +118,11 @@
 
     // {{{ autocomplete_taxon
     function autocomplete_taxon() {
+        var input = this;
+
         // PBDB auto-complete requires least 3 characters before returning a
         // response.
-        if ( parseInt( $( this ).val().length ) < 3 )
+        if ( parseInt( $( input ).val().length ) < 3 )
             return;
 
         // Auto-complete unordered list.
@@ -173,7 +175,7 @@
                     );
                 },
                 error: function( err ) { 
-                    console.log( err ) 
+                    console.log( err );
                 }
             }
         );
@@ -218,13 +220,13 @@
     function _taxon_normalize_rank( rank ) {
         var _rank = rank.split( '' );
 
-        if ( _rank.slice( 0, 3 ) == 'sub' )
+        if ( _rank.slice( 0, 3 ) === 'sub' )
             return _rank.slice( 3 ).join( '' );
 
-        if ( _rank.slice( 0, 4 ) == 'infra' )
+        if ( _rank.slice( 0, 4 ) === 'infra' )
             return _rank.slice( 4 ).join( '' );
 
-        if ( _rank.slice( 0, 5 ) == 'super' )
+        if ( _rank.slice( 0, 5 ) === 'super' )
             return _rank.slice( 5 ).join( '' );
 
         return rank;
