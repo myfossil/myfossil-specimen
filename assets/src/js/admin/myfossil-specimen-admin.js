@@ -19,7 +19,7 @@
                 'nonce': nonce
             },
             success: function( resp ) {
-                if ( parseInt( resp ) == 1 ) {
+                if ( parseInt( resp ) === 1 ) {
                     $( '#message' ).html( 
                             '<p>Loaded default terms into taxonomies successfully.</p>'
                         ).addClass( 'updated' );
@@ -56,7 +56,7 @@
                 'nonce': nonce
             },
             success: function( resp ) {
-                if ( parseInt( resp ) == 1 ) {
+                if ( parseInt( resp ) === 1 ) {
                     $( '#message' ).html( 
                             '<p>Loaded default time intervals into geochronology.</p>'
                         ).addClass( 'updated' );
@@ -93,7 +93,7 @@
                 'nonce': nonce
             },
             success: function( resp ) {
-                if ( parseInt( resp ) == 1 ) {
+                if ( parseInt( resp ) === 1 ) {
                     $( '#message' ).html( 
                             '<p>Loaded default time intervals into fossils.</p>'
                         ).addClass( 'updated' );

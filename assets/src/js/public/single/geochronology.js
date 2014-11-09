@@ -31,7 +31,7 @@
                 resp.records.forEach(
                     function( interval ) {
                         intervals[interval.interval_no] = interval;
-                        if ( $( '#fossil-geochronology-name' ).val() == interval.interval_name )
+                        if ( $( '#fossil-geochronology-name' ).val() === interval.interval_name )
                             match = interval.interval_no;
                     }
                 );
@@ -80,7 +80,7 @@
                             .data( 'level', SCALES[time_interval.level] )
                             .data( 'name', time_interval.interval_name );
 
-                        select.append( option )
+                        select.append( option );
                     });
 
                     select.change( function() {

@@ -49,9 +49,9 @@
 
     // {{{ autocomplete_lithostratigraphy
     function autocomplete_stratum() {
-        var query = $( this ).val();
+        if ( $( this ).val().length < 1 ) return;
 
-        if ( query.length < 1 ) return;
+        var query = $( this ).val();
 
         var rank = $( this ).data( 'rank' );
 
@@ -73,7 +73,7 @@
                 autocomplete_update_results( rank, data.records );
             },
             error: function( err ) { 
-                console.log( err ) 
+                console.log( err );
             }
         });
     }
