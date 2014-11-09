@@ -9,7 +9,7 @@
         );
     }
 
-    function enabled_create_fossil_button() {
+    function enable_create_fossil_button() {
         var btn = $( 'button#fossil-create-new' );
         btn.removeClass( 'disabled' );
 
@@ -44,8 +44,6 @@
 
     }
     // }}}
-        });
-    }
 
     $( function() {
         enable_hover_hand();

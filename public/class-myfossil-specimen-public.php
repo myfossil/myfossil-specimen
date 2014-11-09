@@ -86,6 +86,7 @@ class myFOSSIL_Specimen_Public {
 
         // Check nonce
         if ( !check_ajax_referer( 'myfossil_specimen', 'nonce', false ) ) {
+            header( 'HTTP/1.0 403 Forbidden' );
             $return_args = array(
                 "result" => "Error",
                 "message" => "403 Forbidden",
@@ -95,7 +96,6 @@ class myFOSSIL_Specimen_Public {
             die;
         }
 
-        $fossil = new Fossil( $_POST['post_id'] );
 
         switch ( $_POST['action'] ) {
             // {{{ save
@@ -105,6 +105,7 @@ class myFOSSIL_Specimen_Public {
                 $taxon->name    = $_POST['taxon']['name'];
                 $taxon->rank    = $_POST['taxon']['rank'];
 
+                $fossil = new Fossil( $_POST['post_id'] );
                 $fossil->taxon_id = $taxon->save();
 
                 echo json_encode( $fossil->save() );
@@ -117,12 +118,16 @@ class myFOSSIL_Specimen_Public {
                 $ti->color   = $_POST['geochronology']['color'];
                 $ti->level   = $_POST['geochronology']['level'];
                 $ti->name    = $_POST['geochronology']['name'];
+
+                $fossil = new Fossil( $_POST['post_id'] );
                 $fossil->time_interval_id = $ti->save();
                 echo json_encode( $fossil->save() );
                 die;
                 break;
 
             case 'myfossil_save_lithostratigraphy':
+                $fossil = new Fossil( $_POST['post_id'] );
+
                 foreach ( Stratum::get_ranks() as $rank ) {
                     if ( ! array_key_exists( $rank, $_POST['strata'] ) )
                         continue;
@@ -160,6 +165,7 @@ class myFOSSIL_Specimen_Public {
                             'county', 'city' ) as $k ) 
                     $location->{ $k } = $_POST['location'][$k];
 
+                $fossil = new Fossil( $_POST['post_id'] );
                 $fossil->location_id = $location->save();
 
                 echo json_encode( $fossil->save() );
