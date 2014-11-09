@@ -49,7 +49,7 @@ gulp.task('scripts-public-list', function() {
 });
 
 gulp.task('scripts-public-plugins', function() {
-  return gulp.src(['assets/src/js/public/plugins/**/*.js', '!assets/src/js/plugins.js'])
+  return gulp.src(['assets/src/js/public/plugins/jquery-file-upload/jquery.ui.widget.js', 'assets/src/js/public/plugins/**/*.js', '!assets/src/js/plugins.js'])
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.jshint.reporter('default'))
       .pipe(plugins.concat('public-plugins.js'))
