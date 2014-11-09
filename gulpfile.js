@@ -21,17 +21,29 @@ gulp.task('plugins', function() {
       .pipe(gulp.dest(build));
 });
 
-gulp.task('scripts-public', function() {
-  return gulp.src(['assets/src/js/public/*.js', '!assets/src/js/plugins.js'])
+gulp.task('scripts-public-single', function() {
+  return gulp.src(['assets/src/js/public/single/*.js', '!assets/src/js/plugins.js'])
       .pipe(plugins.jshint('.jshintrc'))
       .pipe(plugins.jshint.reporter('default'))
-      .pipe(plugins.concat('public.js'))
+      .pipe(plugins.concat('public-single.js'))
       .pipe(gulp.dest('assets/staging'))
       .pipe(plugins.rename({ suffix: '.min' }))
       //.pipe(plugins.uglify())
       .pipe(plugins.livereload(server))
       .pipe(gulp.dest(build + '/js/'));
 });
+gulp.task('scripts-public-list', function() {
+  return gulp.src(['assets/src/js/public/list.js', '!assets/src/js/plugins.js'])
+      .pipe(plugins.jshint('.jshintrc'))
+      .pipe(plugins.jshint.reporter('default'))
+      .pipe(plugins.concat('public-list.js'))
+      .pipe(gulp.dest('assets/staging'))
+      .pipe(plugins.rename({ suffix: '.min' }))
+      //.pipe(plugins.uglify())
+      .pipe(plugins.livereload(server))
+      .pipe(gulp.dest(build + '/js/'));
+});
+gulp.task('scripts-public', ['scripts-public-single', 'scripts-public-list']);
 
 gulp.task('scripts-admin', function() {
   return gulp.src(['assets/src/js/admin/*.js', '!assets/src/js/plugins.js'])

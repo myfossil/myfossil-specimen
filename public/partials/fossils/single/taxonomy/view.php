@@ -26,7 +26,7 @@ function fossil_view_taxonomy( $fossil=null ) {
             <tr>
                 <td class="fossil-property"><?=ucwords( $k ) ?></td>
                 <td class="fossil-property-value" id="fossil-taxon-<?=$k ?>">
-                    <?php if ( ( $fossil->taxon->{ $k } ) && ( $v = $fossil->taxon->{ $k }->name ) ): ?>
+                    <?php if ( $fossil->taxon && ( $fossil->taxon->{ $k } ) && ( $v = $fossil->taxon->{ $k }->name ) ): ?>
                         <?=$v ?>
                     <?php else: ?>
                         <span class="unknown">Unknown</span>
