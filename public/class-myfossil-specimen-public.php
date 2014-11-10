@@ -134,14 +134,16 @@ class myFOSSIL_Specimen_Public {
         switch ( $_POST['action'] ) {
             // {{{ save
             case 'myfossil_save_taxon':
-                $taxon = new Taxon;
+                $fossil = new Fossil( $_POST['post_id'] );
+
+                if ( $fossil->taxon_id )
+                    $taxon = new Taxon( $fossil->taxon_id );
+                else
+                    $taxon = new Taxon;
+
                 $taxon->pbdb_id = $_POST['taxon']['pbdb'];
                 $taxon->name    = $_POST['taxon']['name'];
                 $taxon->rank    = $_POST['taxon']['rank'];
-
-                $fossil = new Fossil( $_POST['post_id'] );
-                if ( $fossil->taxon_id )
-                    $taxon->id = $fossil->taxon_id;
 
                 $fossil->taxon_id = $taxon->save(); 
 
@@ -150,17 +152,20 @@ class myFOSSIL_Specimen_Public {
                 break;
 
             case 'myfossil_save_geochronology':
-                $ti = new TimeInterval;
+                $fossil = new Fossil( $_POST['post_id'] );
+
+                if ( $fossil->time_interval_id )
+                    $ti = new TimeInterval( $fossil->time_interval_id );
+                else
+                    $ti = new TimeInterval;
+
                 $ti->pbdb_id = $_POST['geochronology']['pbdb'];
                 $ti->color   = $_POST['geochronology']['color'];
                 $ti->level   = $_POST['geochronology']['level'];
                 $ti->name    = $_POST['geochronology']['name'];
 
-                $fossil = new Fossil( $_POST['post_id'] );
-                if ( $fossil->time_interval_id )
-                    $ti->id = $fossil->time_interval_id;
-
                 $fossil->time_interval_id = $ti->save();
+
                 echo json_encode( $fossil->save() );
                 die;
                 break;
@@ -172,11 +177,14 @@ class myFOSSIL_Specimen_Public {
                     if ( ! array_key_exists( $rank, $_POST['strata'] ) )
                         continue;
 
-                    $stratum = new Stratum;
-                    $stratum->name = $_POST['strata'][$rank];
                     $stratum_id_key = sprintf( 'stratum_%s_id', $rank );
+
                     if ( $fossil->{ $stratum_id_key } )
-                        $stratum->id = $fossil->{ $stratum_id_key };
+                        $stratum = new Stratum( $fossil->{ $stratum_id_key } );
+                    else
+                        $stratum = new Stratum;
+
+                    $stratum->name = $_POST['strata'][$rank];
 
                     $fossil->{ $stratum_id_key } = $stratum->save();
                 }
@@ -186,19 +194,21 @@ class myFOSSIL_Specimen_Public {
                 break;
 
             case 'myfossil_save_dimensions':
+                $fossil = new Fossil( $_POST['post_id'] );
+                
+                if ( $fossil->dimension_id )
+                    $dim = new FossilDimension( $fossil->dimension_id );
+                else
+                    $dim = new FossilDimension;
+
                 // Dimensions coming in as *centimeters*
                 $length = (float) $_POST['length'];
                 $width  = (float) $_POST['width'];
                 $height = (float) $_POST['height'];
-                
-                $dim = new FossilDimension;
+
                 $dim->length = $length / 100; // convert to meters
                 $dim->width  = $width  / 100; // convert to meters
                 $dim->height = $height / 100; // convert to meters
-
-                $fossil = new Fossil( $_POST['post_id'] );
-                if ( $fossil->dimension_id )
-                    $dim->id = $fossil->dimension_id;
 
                 $fossil->dimension_id = $dim->save();
 
@@ -207,14 +217,17 @@ class myFOSSIL_Specimen_Public {
                 break;
 
             case 'myfossil_save_location':
-                $location = new FossilLocation;
-                foreach ( array( 'latitude', 'longitude', 'country', 'state',
-                            'county', 'city' ) as $k ) 
-                    $location->{ $k } = $_POST['location'][$k];
-
                 $fossil = new Fossil( $_POST['post_id'] );
+
                 if ( $fossil->location_id )
-                    $location->id = $fossil->location_id;
+                    $location = new FossilLocation( $fossil->location_id );
+                else
+                    $location = new FossilLocation;
+
+                foreach ( array( 'latitude', 'longitude', 'country', 'state',
+                            'county', 'city' ) as $k ) {
+                    $location->{ $k } = $_POST['location'][$k];
+                }
 
                 $fossil->location_id = $location->save();
 

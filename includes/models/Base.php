@@ -156,6 +156,9 @@ class Base
                 'new' => $value
             );
 
+        if ( $key == 'id' && $this->wp_post )
+            $this->wp_post->ID = $value;
+
         if ( $key == 'name' )
             if ( $this->wp_post )
                 $this->wp_post->post_title = $value;
