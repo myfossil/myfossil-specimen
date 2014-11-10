@@ -215,6 +215,8 @@ class myFOSSIL_Specimen
                 $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_upload_fossil_image',
                 $plugin_public, 'ajax_handler' );
+        $this->loader->add_action( 'wp_ajax_myfossil_save_status',
+                $plugin_public, 'ajax_handler' );
 
         $this->loader->add_action( 'bp_register_activity_actions',
                 $plugin_public, 'bp_register_activity_actions' );

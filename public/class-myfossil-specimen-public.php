@@ -205,6 +205,18 @@ class myFOSSIL_Specimen_Public {
                 echo json_encode( $fossil->save() );
                 die;
                 break;
+                
+            case 'myfossil_save_status':
+                if ( $_POST['post_id'] <= 0 ) die;
+
+                $args = array(
+                        'ID'     => $_POST['post_id'],
+                        'post_status' => $_POST['post_status']
+                    );
+
+                echo json_encode( wp_update_post( $args ) );
+                die;
+                break;
             // }}}
 
             // {{{ create
