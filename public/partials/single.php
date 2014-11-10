@@ -15,8 +15,10 @@ function myfossil_fossil_render_single( $fossil_id, $view ) {
             myfossil_fossil_render_single_main( $fossil );
             break;
         case 'history':
+            myfossil_fossil_render_single_history( $fossil );
             break;
         case 'discussion':
+            myfossil_fossil_render_single_discussion( $fossil );
             break;
     }
     ?>
