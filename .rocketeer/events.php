@@ -1,7 +1,7 @@
 <?php
 use Rocketeer\Facades\Rocketeer;
 
-Rocketeer::after( 'deploy', array(
+Rocketeer::before( 'deploy', array(
     'composer self-update',
     'composer install',
     'npm install --cache',
