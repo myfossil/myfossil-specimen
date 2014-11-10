@@ -32,7 +32,8 @@ function fossil_view_location( $fossil=null ) {
                         'longitude', 'notes' ) as $k ): ?>
                     <tr>
                         <td class="fossil-property"><?=ucwords( $k ) ?></td>
-                        <td class="fossil-property-value" id="fossil-location-<?=$k ?>">
+                        <td class="fossil-property-value" id="fossil-location-<?=$k ?>"
+                                data-value="<?=( $fossil->location ) ? $fossil->location->{ $k } : null ?>">
                             <?php if ( $fossil->location && $v = $fossil->location->{ $k } ): ?>
                                 <?=$v ?>
                             <?php else: ?>

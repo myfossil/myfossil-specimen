@@ -187,6 +187,7 @@ class myFOSSIL_Specimen_Public {
                 $dim->width  = $width  / 100; // convert to meters
                 $dim->height = $height / 100; // convert to meters
 
+                $fossil = new Fossil( $_POST['post_id'] );
                 $fossil->dimension_id = $dim->save();
 
                 echo json_encode( $fossil->save() );
