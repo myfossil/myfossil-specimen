@@ -81,7 +81,7 @@ gulp.task('watch', function() {
       return console.log(err)
     };
     gulp.watch('assets/src/js/**/*.js', ['scripts']);
-    gulp.watch('./**/*.php').on('change', function(file) { 
+    gulp.watch('**/*.php').on('change', function(file) { 
         plugins.livereload(server).changed(file.path); 
     });
   });
