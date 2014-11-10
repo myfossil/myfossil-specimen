@@ -16,7 +16,7 @@ function fossil_view_location( $fossil=null ) {
     <?php if ( $fossil->location && $fossil->location->latitude && $fossil->location->longitude ): ?>
         <div class="edit-fossil hidden-xs hidden-sm col-md-6 col-lg-6">
             <div class="edit-fossil-body">
-                <div id="fossil-map-container"></div>
+                <div style="height: 300px" id="fossil-map-container"></div>
             </div>
         </div>
     <?php else: ?>
