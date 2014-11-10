@@ -140,7 +140,10 @@ class myFOSSIL_Specimen_Public {
                 $taxon->rank    = $_POST['taxon']['rank'];
 
                 $fossil = new Fossil( $_POST['post_id'] );
-                $fossil->taxon_id = $taxon->save();
+                if ( $fossil->taxon_id )
+                    $taxon->id = $fossil->taxon_id;
+
+                $fossil->taxon_id = $taxon->save(); 
 
                 echo json_encode( $fossil->save() );
                 die;
@@ -154,6 +157,9 @@ class myFOSSIL_Specimen_Public {
                 $ti->name    = $_POST['geochronology']['name'];
 
                 $fossil = new Fossil( $_POST['post_id'] );
+                if ( $fossil->time_interval_id )
+                    $ti->id = $fossil->time_interval_id;
+
                 $fossil->time_interval_id = $ti->save();
                 echo json_encode( $fossil->save() );
                 die;
@@ -169,6 +175,9 @@ class myFOSSIL_Specimen_Public {
                     $stratum = new Stratum;
                     $stratum->name = $_POST['strata'][$rank];
                     $stratum_id_key = sprintf( 'stratum_%s_id', $rank );
+                    if ( $fossil->{ $stratum_id_key } )
+                        $stratum->id = $fossil->{ $stratum_id_key };
+
                     $fossil->{ $stratum_id_key } = $stratum->save();
                 }
 
@@ -188,6 +197,9 @@ class myFOSSIL_Specimen_Public {
                 $dim->height = $height / 100; // convert to meters
 
                 $fossil = new Fossil( $_POST['post_id'] );
+                if ( $fossil->dimension_id )
+                    $dim->id = $fossil->dimension_id;
+
                 $fossil->dimension_id = $dim->save();
 
                 echo json_encode( $fossil->save() );
@@ -201,6 +213,9 @@ class myFOSSIL_Specimen_Public {
                     $location->{ $k } = $_POST['location'][$k];
 
                 $fossil = new Fossil( $_POST['post_id'] );
+                if ( $fossil->location_id )
+                    $location->id = $fossil->location_id;
+
                 $fossil->location_id = $location->save();
 
                 echo json_encode( $fossil->save() );
