@@ -13,6 +13,8 @@ namespace myFOSSIL\Plugin\Specimen;
  * @subpackage myFOSSIL/public/partials
  */
 
+include_once( 'fossils/single.php' );
+include_once( 'fossils/single/index.php' );
 include_once( 'fossils/single/header.php' );
 include_once( 'fossils/single/images.php' );
 include_once( 'fossils/single/comments.php' );

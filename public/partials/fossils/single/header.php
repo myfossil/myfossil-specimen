@@ -1,6 +1,6 @@
 <?php
 
-function fossil_header( $fossil=null ) {
+function fossil_header( $fossil=null, $view='main' ) {
     ?>
 
     <div id="buddypress-header" class="dark">
@@ -54,9 +54,15 @@ function fossil_header( $fossil=null ) {
 
         <div id="item-nav" class="container">
             <ul class="nav nav-tabs">
-                <li class="active"><a>Information</a></li>
-                <li class="inactive disabled"><a>History</a></li>
-                <li class="inactive disabled"><a>Contributors</a></li>
+                <li class="<?=( $view == 'main' ) ? "active" : null ?>">
+                    <a href="/fossils/<?=$fossil->id ?>/">Information</a>
+                </li>
+                <li class="<?=( $view == 'history' ) ? "active" : null ?>">
+                    <a href="/fossils/<?=$fossil->id ?>/history">History</a>
+                </li>
+                <li class="<?=( $view == 'discussion' ) ? "active" : null ?>">
+                    <a href="/fossils/<?=$fossil->id ?>/discussion">Discussion</a>
+                </li>
             </ul>
         </div>
     </div>

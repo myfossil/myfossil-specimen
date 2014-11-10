@@ -52,6 +52,7 @@ class Base
     protected $_meta_keys;
     protected $_cache;
     protected $_updated;
+    protected $_history;
 
     /**
      * Create Base class.
@@ -61,6 +62,7 @@ class Base
         $this->_meta = new \stdClass;
         $this->_cache = new \stdClass;
         $this->_updated = array();
+        $this->_history = array();
 
         /* Load the post, if defined */
         if ( $post_id )
@@ -114,8 +116,8 @@ class Base
             return $this->wp_post->post_date;
         }
 
-        if ( ( $key == 'post_id' || $key == 'id' ) && $this->wp_post &&
-                $this->wp_post->ID )
+        if ( ( $key == 'post_id' || $key == 'id' ) && $this->wp_post 
+                && $this->wp_post->ID )
             return $this->wp_post->ID;
 
         /* Try local property */
@@ -147,6 +149,13 @@ class Base
      */
     public function __set( $key, $value )
     {
+        if ( $this->{ $key } )
+            $this->_history[] = array(
+                'key' => $key,
+                'current' => $this->{ $key },
+                'new' => $value
+            );
+
         if ( $key == 'name' )
             if ( $this->wp_post )
                 $this->wp_post->post_title = $value;

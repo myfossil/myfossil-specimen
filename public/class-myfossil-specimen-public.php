@@ -267,4 +267,26 @@ class myFOSSIL_Specimen_Public {
 
     }
 
+    public function add_rewrite_tags() {
+        add_rewrite_tag( '%fossil_id%', '([^&/]+)' );
+        add_rewrite_tag( '%fossil_view%', '(main|history|discussion)' );
+    }
+
+    public function fix_fossil_rewrites() {
+        add_rewrite_rule(
+                '^fossils/([^/]*)/(main|history|discussion)/?',
+                'index.php?pagename=fossils' . '&fossil_id=$matches[1]' .
+                    '&fossil_view=$matches[2]',
+                'top'
+        );
+
+        add_rewrite_rule(
+                '^fossils/([^/]*)/?',
+                'index.php?pagename=fossils' . '&fossil_id=$matches[1]' .
+                    '&fossil_view=main',
+                'top'
+        );
+
+    }
+
 }

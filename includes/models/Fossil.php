@@ -53,6 +53,7 @@ class Fossil extends Base
             $args = array(
                     'item_id' => $this->id,
                     'user_id' => \bp_loggedin_user_id(),
+                    'content' => json_encode( $this->_history ),
                     'secondary_item_id' => $this->wp_post->post_author,
                     'component' => 'myfossil',
                     'type' => $bp_activity_type
@@ -96,7 +97,12 @@ class Fossil extends Base
             'menu_position'       => null,
             'can_export'          => true,
             'has_archive'         => false,
-            'rewrite'             => false,
+            'rewrite'             => array(
+                    'slug' => 'fossils/%fossil_id%',
+                    'with_front' => false,
+                    'feed' => true,
+                    'pages' => true
+                ),
             'exclude_from_search' => true,
             'publicly_queryable'  => true,
             'capability_type'     => 'post',
