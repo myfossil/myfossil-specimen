@@ -27,11 +27,13 @@
         var keys = [ 'latitude', 'longitude', 'country', 'state', 'county', 'city' ];
         $.map( keys, function( k ) { 
             $( '#edit-fossil-location-' + k).val( 
-                    $( '#fossil-location-' + k ).text().trim() 
+                    $( '#fossil-location-' + k ).data( 'value' )
                 );
 
             $( '#edit-fossil-location-' + k).keyup( function() {
-                $( '#fossil-location-' + k).text( $( '#edit-fossil-location-' + k).val() );
+                $( '#fossil-location-' + k)
+                        .text( $( '#edit-fossil-location-' + k).val() )
+                        .data( 'value', $( '#edit-fossil-location-' + k).val() );
             });
         });
     }
