@@ -58,7 +58,12 @@ class myFOSSIL_Specimen_Public {
 	}
 
     public function bp_register_activity_actions() {
-        return Fossil::register_buddypress_activities();
+        Fossil::register_buddypress_activities( Fossil::POST_TYPE );
+        FossilDimension::register_buddypress_activities( FossilDimension::POST_TYPE );
+        FossilLocation::register_buddypress_activities( FossilLocation::POST_TYPE );
+        Stratum::register_buddypress_activities( Stratum::POST_TYPE );
+        Taxon::register_buddypress_activities( Taxon::POST_TYPE );
+        TimeInterval::register_buddypress_activities( TimeInterval::POST_TYPE );
     }
 
     public function bp_add_member_fossil_nav_items() {

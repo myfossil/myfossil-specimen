@@ -43,26 +43,7 @@ class Fossil extends Base
     }
 
     public function save( $recursive=false ) {
-        $current_id = $this->id;
-        $id = parent::_save( self::POST_TYPE, $recursive );
-
-        if ( self::bp() ) {
-            $bp_activity_type = $current_id ? 'fossil_update' :
-                'fossil_create';
-
-            $args = array(
-                    'item_id' => $this->id,
-                    'user_id' => \bp_loggedin_user_id(),
-                    'content' => json_encode( $this->_history ),
-                    'secondary_item_id' => $this->wp_post->post_author,
-                    'component' => 'myfossil',
-                    'type' => $bp_activity_type
-                );
-
-            \bp_activity_add( $args );
-        }
-        
-        return $this->id;
+        return parent::_save( self::POST_TYPE, $recursive );
     }
 
     // {{{ Custom Post Type
@@ -113,44 +94,11 @@ class Fossil extends Base
     }
     // }}}
 
-    /**
-     * BuddyPress registrations
-     */
-    public static function register_buddypress_activities() {
-        // bail if buddypress doesn't exist or have activity enabled
-        if ( ! self::bp() ) return false;
-
-        foreach ( array( 'update', 'comment', 'delete', 'create' ) as $t ) {
-            $component_id = 'myfossil';
-            $type = 'fossil_' . $t;
-            $description = sprintf( 'Fossil %s', $t );
-            $format_callback = __namespace__ . '\Fossil::bp_format_activity';
-            $label = $description;
-            $context = array( 'activity', 'member', 'member_groups', 'group' );
-            \bp_activity_set_action( $component_id, $type, $description, $format_callback, $label, $context );
-        }
-    }
-
     public static function get_url( $fossil_id ) {
         return sprintf( '/fossils/%d', $fossil_id ); 
     }
 
-    public static function bp_format_activity( $action, $activity ) {
-        $fossil_link = self::get_url( $activity->item_id );
-        $fossil = new Fossil( $activity->item_id );
-        $initiator_link = \bp_core_get_userlink( $activity->user_id );
-        $verbs = explode( '_', $activity->type);
-        $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs ) . 'd';
-
-        $owner_link = ( $activity->user_id == $activity->secondary_item_id ) 
-            ? 'their own' : sprintf( "%s's", \bp_core_get_userlink( $activity->secondary_item_id ) );
-        if ( $owner_link == 'their own' && $verb == 'created' )
-            $owner_link = 'a';
-        $action = sprintf( '%s %s %s <a href="%s">Fossil #%06d</a>', $initiator_link, $verb, $owner_link, $fossil_link, $activity->item_id );
-
-        return apply_filters( 'myfossil_fossil_format_activity_action', $action, $activity );
-    }
-
+    // {{{ __get
     /**
      * Custom getters specific to Fossil's
      *
@@ -242,8 +190,9 @@ class Fossil extends Base
 
         return null;
     }
+    // }}}
 
-
+    // {{{ load_defaults
     public static function load_defaults() {
         // {{{ Fossil data
         $data = array(
@@ -363,5 +312,7 @@ class Fossil extends Base
 
         return true;
     }
+
+    // }}}
 
 }

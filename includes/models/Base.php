@@ -149,11 +149,11 @@ class Base
      */
     public function __set( $key, $value )
     {
-        if ( $this->{ $key } )
+        if ( $this->{ $key } && (string) $this->{ $key } !== (string) $value )
             $this->_history[] = array(
                 'key' => $key,
-                'current' => $this->{ $key },
-                'new' => $value
+                'from' => $this->{ $key },
+                'to' => $value
             );
 
         if ( $key == 'id' && $this->wp_post )
@@ -197,6 +197,8 @@ class Base
      */
     protected function _save( $post_type, $recursive=false )
     {
+        $current_id = $this->id;
+
         /* Update or create new Post */
         if ( $this->wp_post && $this->wp_post->ID ) {
             $this->wp_post->ID = wp_insert_post( $this->wp_post );
@@ -225,12 +227,83 @@ class Base
                     && ! empty( $this->_meta->{$meta_key} ) )
                 update_post_meta( $this->wp_post->ID, $meta_key, $this->_meta->{$meta_key} );
 
-        return $this->wp_post->ID;
+        return $this->bp_activity_maybe_update( $post_type, $current_id );
     }
 
     public static function bp() {
         return function_exists( '\bp_is_active' );
     }
+
+    // {{{ BuddyPress integrations
+    public function bp_activity_maybe_update( $post_type, $current_id=0 ) {
+        /*
+         * Continue only if:
+         *   - BuddyPress is enabled
+         *   - We're updating something and it has changed OR we're making
+         *   something new
+         */
+        $updated = ( $current_id && $this->_history );
+        $created = ( ! $current_id );
+
+        if ( self::bp() && ( $updated || $created ) ) {
+            if ( $updated )
+                $bp_activity_type = $post_type . '_updated';
+            else
+                $bp_activity_type = $post_type . '_created';
+
+            $args = array(
+                    'item_id' => $this->id,
+                    'user_id' => \bp_loggedin_user_id(),
+                    'content' => json_encode( $this->_history ),
+                    'secondary_item_id' => $this->wp_post->post_author,
+                    'component' => 'myfossil',
+                    'type' => $bp_activity_type
+                );
+
+            bp_activity_add( $args );
+        }
+        
+        return $this->id;
+    }
+
+    /**
+     * BuddyPress registrations
+     */
+    public static function register_buddypress_activities( $post_type ) {
+        // bail if buddypress doesn't exist or have activity enabled
+        if ( ! self::bp() ) return false;
+
+        foreach ( array( 'updated', 'comment', 'deleted', 'created' ) as $t ) {
+            $component_id = 'myfossil';
+            $type = $post_type . '_' . $t;
+            $description = sprintf( '%s %s', $post_type, $t );
+            $format_callback = sprintf( '%s\%s::bp_format_activity', __NAMESPACE__, get_class() );
+            $label = $description;
+            $context = array( 'activity', 'member', 'member_groups', 'group' );
+            \bp_activity_set_action( $component_id, $type, $description, $format_callback, $label, $context );
+        }
+    }
+
+    public static function bp_format_activity( $action, $activity ) {
+        $fossil_link = self::get_url( $activity->item_id );
+        $initiator_link = \bp_core_get_userlink( $activity->user_id );
+        $verbs = explode( '_', $activity->type);
+        $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs ) . 'd';
+
+        $owner_link = ( $activity->user_id == $activity->secondary_item_id ) 
+            ? 'their own' : sprintf( "%s's", \bp_core_get_userlink( $activity->secondary_item_id ) );
+
+        if ( $owner_link == 'their own' && $verb == 'created' )
+            $owner_link = 'a';
+
+        $action = sprintf( '%s %s %s <a href="%s">Fossil #%06d</a>',
+                $initiator_link, $verb, $owner_link, $fossil_link,
+                $activity->item_id );
+
+        return apply_filters( 'bp_myfossil_' . $component_id . '_format', $action, $activity );
+    }
+
+    // }}}
 
     /**
      * Load object properties from database.
