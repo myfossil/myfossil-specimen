@@ -277,9 +277,10 @@ class Base
             $component_id = 'myfossil';
             $type = $post_type . '_' . $t;
             $description = sprintf( '%s %s', $post_type, $t );
-            $format_callback = sprintf( "%s\Base::bp_format_activity",
-                    __NAMESPACE__ );
-            $label = $description;
+            $format_callback = sprintf( "%s::bp_format_activity",
+                    \get_called_class() );
+
+            $label = $post_type;
             $context = array( 'activity' );
             \bp_activity_set_action( $component_id, $type, $description,
                     $format_callback, $label, $context );
@@ -301,7 +302,11 @@ class Base
         $action = sprintf( '%s %s %s fossil', $initiator_link, $verb,
                 $owner_link );
 
-        return apply_filters( 'bp_myfossil_activity_format', $action, $activity );
+        if ( property_exists( $activity, 'template' ) )
+            $activity->content = $activity->template;
+
+        return apply_filters( 'bp_myfossil_activity_' . $activity->type .
+                '_format', $action, $activity );
     }
 
     // }}}

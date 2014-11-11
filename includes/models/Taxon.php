@@ -112,9 +112,45 @@ class Taxon extends Base
         return parent::__get( $key );
     }
 
+    public static function bp_format_activity( $action, $activity ) {
+        if ( $activity->content ) {
+            $from = new Taxon;
+            $to = new Taxon;
+            foreach ( json_decode( $activity->content ) as $ch_set ) {
+                $from->{ $ch_set->key } = $ch_set->from;
+                $to->{ $ch_set->key } = $ch_set->to;
+            }
+
+            $activity->content = sprintf( 'Changed Taxon from <span
+                    class="border">%s</span> to <span class="border">
+                    %s</span>', $from,
+                    $to );
+
+            unset( $from );
+            unset( $to );
+        }
+
+        return parent::bp_format_activity( $action, $activity );
+    }
+
     public function __toString() {
+        $colors = array(
+                "life"    => "#777fff",
+                "domain"  => "#77c3ff",
+                "kingdom" => "#58fff7",
+                "phylum"  => "#58ffa5",
+                "class"   => "#5dff58",
+                "order"   => "#b0ff58",
+                "family"  => "#fffd58",
+                "genus"   => "#ffaa58",
+                "species" => "#e28d54"
+            );
+
+        $bgcolor = array_key_exists( $this->rank, $colors ) ?
+            $colors[$this->rank] : '#eee';
+
         return sprintf( 
-            "<span class=\"label label-primary\">%s</span> %s", 
-            $this->rank, $this->name );
+            '<span class="label" style="background-color: %s; color: #333">%s</span> %s',
+            $bgcolor, $this->rank, $this->name );
     }
 }
