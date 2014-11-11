@@ -20,7 +20,8 @@ function fossil_view_lithostratigraphy( $fossil=null ) {
             <tr>
                 <td class="fossil-property"><?=ucwords( $k ) ?></td>
                 <td class="fossil-property-value"
-                        id="fossil-stratum-<?=$k ?>">
+                        id="fossil-stratum-<?=$k ?>"
+                        data-name="<?=( property_exists( $fossil->strata, $k ) ) ? $fossil->strata->{ $k }->name : null ?>">
                     <?php if ( property_exists( $fossil->strata, $k ) ): ?>
                         <?=$fossil->strata->{ $k }->name ?>
                     <?php else: ?>

@@ -52,6 +52,7 @@ class Base
     protected $_meta_keys;
     protected $_cache;
     protected $_updated;
+    protected $_history;
 
     /**
      * Create Base class.
@@ -61,6 +62,7 @@ class Base
         $this->_meta = new \stdClass;
         $this->_cache = new \stdClass;
         $this->_updated = array();
+        $this->_history = array();
 
         /* Load the post, if defined */
         if ( $post_id )
@@ -114,8 +116,8 @@ class Base
             return $this->wp_post->post_date;
         }
 
-        if ( ( $key == 'post_id' || $key == 'id' ) && $this->wp_post &&
-                $this->wp_post->ID )
+        if ( ( $key == 'post_id' || $key == 'id' ) && $this->wp_post 
+                && $this->wp_post->ID )
             return $this->wp_post->ID;
 
         /* Try local property */
@@ -147,6 +149,16 @@ class Base
      */
     public function __set( $key, $value )
     {
+        if ( $this->{ $key } && (string) $this->{ $key } !== (string) $value )
+            $this->_history[] = array(
+                'key' => $key,
+                'from' => $this->{ $key },
+                'to' => $value
+            );
+
+        if ( $key == 'id' && $this->wp_post )
+            $this->wp_post->ID = $value;
+
         if ( $key == 'name' )
             if ( $this->wp_post )
                 $this->wp_post->post_title = $value;
@@ -185,6 +197,8 @@ class Base
      */
     protected function _save( $post_type, $recursive=false )
     {
+        $current_id = $this->id;
+
         /* Update or create new Post */
         if ( $this->wp_post && $this->wp_post->ID ) {
             $this->wp_post->ID = wp_insert_post( $this->wp_post );
@@ -213,12 +227,89 @@ class Base
                     && ! empty( $this->_meta->{$meta_key} ) )
                 update_post_meta( $this->wp_post->ID, $meta_key, $this->_meta->{$meta_key} );
 
-        return $this->wp_post->ID;
+        return $this->bp_activity_maybe_update( $post_type, $current_id );
     }
 
     public static function bp() {
         return function_exists( '\bp_is_active' );
     }
+
+    // {{{ BuddyPress integrations
+    public function bp_activity_maybe_update( $post_type, $current_id=0 ) {
+        /*
+         * Continue only if:
+         *   - BuddyPress is enabled
+         *   - We're updating something and it has changed OR we're making
+         *   something new
+         */
+        $updated = ( $current_id && $this->_history );
+        $created = ( ! $current_id );
+
+        if ( self::bp() && ( $updated || $created ) ) {
+            if ( $updated )
+                $bp_activity_type = $post_type . '_updated';
+            else
+                $bp_activity_type = $post_type . '_created';
+
+            $args = array(
+                    'item_id' => $this->id,
+                    'user_id' => \bp_loggedin_user_id(),
+                    'content' => json_encode( $this->_history ),
+                    'secondary_item_id' => $this->wp_post->post_author,
+                    'component' => 'myfossil',
+                    'type' => $bp_activity_type
+                );
+
+            bp_activity_add( $args );
+        }
+        
+        return $this->id;
+    }
+
+    /**
+     * BuddyPress registrations
+     */
+    public static function register_buddypress_activities( $post_type ) {
+        // bail if buddypress doesn't exist or have activity enabled
+        if ( ! self::bp() ) return false;
+
+        foreach ( array( 'updated', 'comment', 'deleted', 'created' ) as $t ) {
+            $component_id = 'myfossil';
+            $type = $post_type . '_' . $t;
+            $description = sprintf( '%s %s', $post_type, $t );
+            $format_callback = sprintf( "%s::bp_format_activity",
+                    \get_called_class() );
+
+            $label = $post_type;
+            $context = array( 'activity' );
+            \bp_activity_set_action( $component_id, $type, $description,
+                    $format_callback, $label, $context );
+        }
+    }
+
+    public static function bp_format_activity( $action, $activity ) {
+        $initiator_link = \bp_core_get_userlink( $activity->user_id );
+        $verbs = explode( '_', $activity->type );
+        $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs );
+
+        $owner_link = ( $activity->user_id == $activity->secondary_item_id ) 
+            ? 'their own' : sprintf( "%s's", \bp_core_get_userlink(
+                        $activity->secondary_item_id ) );
+
+        if ( $owner_link == 'their own' && $verb == 'created' )
+            $owner_link = 'a';
+
+        $action = sprintf( '%s %s %s fossil', $initiator_link, $verb,
+                $owner_link );
+
+        if ( property_exists( $activity, 'template' ) )
+            $activity->content = $activity->template;
+
+        return apply_filters( 'bp_myfossil_activity_' . $activity->type .
+                '_format', $action, $activity );
+    }
+
+    // }}}
 
     /**
      * Load object properties from database.

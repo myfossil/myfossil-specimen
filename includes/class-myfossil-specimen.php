@@ -200,6 +200,11 @@ class myFOSSIL_Specimen
         $plugin_public = new myFOSSIL_Specimen_Public(
                 $this->get_plugin_name(), $this->get_version() );
 
+        $this->loader->add_action( 'init', $plugin_public,
+                'add_rewrite_tags' );
+        $this->loader->add_action( 'init', $plugin_public,
+                'fix_fossil_rewrites' );
+
         /* should not be able to update taxon of a specimen without logging in */
         $this->loader->add_action( 'wp_ajax_myfossil_save_taxon',
                 $plugin_public, 'ajax_handler' );

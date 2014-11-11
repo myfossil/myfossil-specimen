@@ -71,4 +71,41 @@ class FossilDimension extends Base
     public function as_cm( $key ) {
         return $this->$key * 100.;
     }
+
+    public static function bp_format_activity( $action, $activity ) {
+        if ( $activity->content ) {
+            $from = new FossilDimension;
+            $to = new FossilDimension;
+            foreach ( json_decode( $activity->content ) as $ch_set ) {
+                $from->{ $ch_set->key } = $ch_set->from;
+                $to->{ $ch_set->key } = $ch_set->to;
+            }
+
+            $activity->content = sprintf( 'Changed Dimensions from <span
+                    class="border">%s</span> to <span class="border">
+                    %s</span>', $from,
+                    $to );
+
+            unset( $from );
+            unset( $to );
+        }
+
+        return parent::bp_format_activity( $action, $activity );
+    }
+
+    public function __toString() {
+        if ( $this->length && $this->width )
+            if ( $this->height )
+                return sprintf( '%12.1f &times; %12.1f &times; %12.1f cm', 
+                        $this->as_cm( 'length' ), 
+                        $this->as_cm( 'width' ), 
+                        $this->as_cm( 'height' ) );
+            else
+                return sprintf( '%12.1f &times; %12.1f cm', 
+                        $this->as_cm( 'length' ), 
+                        $this->as_cm( 'width' ) );
+        else
+            return 'undefined';
+
+    }
 }
