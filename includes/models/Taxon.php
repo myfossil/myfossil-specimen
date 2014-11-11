@@ -113,6 +113,8 @@ class Taxon extends Base
     }
 
     public static function bp_format_activity( $action, $activity ) {
+        return parent::bp_format_activity( $action, $activity );
+
         if ( $activity->content ) {
             $from = new Taxon;
             $to = new Taxon;

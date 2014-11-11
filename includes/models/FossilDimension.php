@@ -73,6 +73,8 @@ class FossilDimension extends Base
     }
 
     public static function bp_format_activity( $action, $activity ) {
+        return parent::bp_format_activity( $action, $activity );
+
         if ( $activity->content ) {
             $from = new FossilDimension;
             $to = new FossilDimension;
