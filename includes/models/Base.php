@@ -277,30 +277,31 @@ class Base
             $component_id = 'myfossil';
             $type = $post_type . '_' . $t;
             $description = sprintf( '%s %s', $post_type, $t );
-            $format_callback = false; // sprintf( '%s\%s::bp_format_activity', __NAMESPACE__, get_class() );
+            $format_callback = sprintf( "%s\Base::bp_format_activity",
+                    __NAMESPACE__ );
             $label = $description;
-            $context = array( 'activity', 'member', 'member_groups', 'group' );
-            \bp_activity_set_action( $component_id, $type, $description, $format_callback, $label, $context );
+            $context = array( 'activity' );
+            \bp_activity_set_action( $component_id, $type, $description,
+                    $format_callback, $label, $context );
         }
     }
 
     public static function bp_format_activity( $action, $activity ) {
-        // $fossil_link = self::get_url( $activity->item_id );
         $initiator_link = \bp_core_get_userlink( $activity->user_id );
         $verbs = explode( '_', $activity->type );
         $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs );
 
         $owner_link = ( $activity->user_id == $activity->secondary_item_id ) 
-            ? 'their own' : sprintf( "%s's", \bp_core_get_userlink( $activity->secondary_item_id ) );
+            ? 'their own' : sprintf( "%s's", \bp_core_get_userlink(
+                        $activity->secondary_item_id ) );
 
         if ( $owner_link == 'their own' && $verb == 'created' )
             $owner_link = 'a';
 
-        $action = sprintf( '%s %s %s <a href="%s">Fossil #%06d</a>',
-                $initiator_link, $verb, $owner_link, '#', // $fossil_link
-                $activity->item_id );
+        $action = sprintf( '%s %s %s fossil', $initiator_link, $verb,
+                $owner_link );
 
-        return apply_filters( 'bp_myfossil_' . $component_id . '_format', $action, $activity );
+        return apply_filters( 'bp_myfossil_activity_format', $action, $activity );
     }
 
     // }}}
