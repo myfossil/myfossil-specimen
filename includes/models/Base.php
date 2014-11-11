@@ -346,6 +346,19 @@ abstract class Base
     }
     // }}}
 
+    // {{{ get_meta_keys
+    /**
+     * Return the metadata keys that can be retrieved from this class.
+     *
+     * @since   0.0.1
+     * @access  public
+     * @return  array   Returns array of meta keys for this class.
+     */
+    public function get_meta_keys() {
+        return $this->_meta_keys ? $this->_meta_keys : array();
+    }
+    // }}}
+    
     // {{{ load
     /**
      * Load WordPress post object from database.
