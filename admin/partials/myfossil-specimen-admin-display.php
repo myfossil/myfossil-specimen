@@ -17,6 +17,7 @@ namespace myFOSSIL\Plugin\Specimen;
 
 function admin_tools_page() { 
     ?>
+
     <div class="wrap">
         <h2>myFOSSIL Specimen</h2>
         <div id="message"></div>
@@ -26,9 +27,7 @@ function admin_tools_page() {
 
         <p>Populate Time Intervals with default data</p>
         <a class="button" id="load-geochronology">Load Geochronology</a>
-
-        <p>Populate Fossils with default data</p>
-        <a class="button" id="load-fossils">Load Fossils</a>
     </div>
+
     <?php 
 } 

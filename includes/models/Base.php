@@ -350,7 +350,7 @@ abstract class Base
     /**
      * Return the metadata keys that can be retrieved from this class.
      *
-     * @since   0.0.1
+     * @since   0.1.1
      * @access  public
      * @return  array   Returns array of meta keys for this class.
      */

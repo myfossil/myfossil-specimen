@@ -14,6 +14,9 @@
 
 namespace myFOSSIL\Plugin\Specimen;
 
+/**
+ * Template partials functions.
+ */
 require_once 'partials/myfossil-specimen-admin-display.php';
 
 /**
@@ -60,6 +63,30 @@ class myFOSSIL_Specimen_Admin
         $this->version = $version;
     }
 
+    /**
+     * Returns the post_type strings of all paleontoligcal objects.
+     *
+     * @return  array   Array of WordPress post_types.
+     */
+    public static function post_types() {
+        return array(
+                Fossil::POST_TYPE,
+                FossilDimension::POST_TYPE,
+                FossilLocation::POST_TYPE,
+                Reference::POST_TYPE,
+                Stratum::POST_TYPE,
+                Taxon::POST_TYPE,
+                TimeInterval::POST_TYPE
+            );
+    }
+
+
+    // {{{ WordPress: Setup and default data
+    /**
+     * Callback to register custom post types with WordPress.
+     *
+     * @access  public
+     */
     public function register_custom_post_types() {
         Fossil::register_cpt();
         FossilDimension::register_cpt();
@@ -70,13 +97,17 @@ class myFOSSIL_Specimen_Admin
         TimeInterval::register_cpt();
     }
 
+    /**
+     * Callback to register custom taxonomies with WordPress.
+     *
+     * @access  public
+     */
     public function register_taxonomies() {
         $this->_ctax_taxa();
         $this->_ctax_geochronology();
         $this->_ctax_lithostratigraphy();
     }
-
-    // {{{ Biological Taxonomy
+    // {{{ WordPress taxonomy definition: Biological Taxonomy
     private function _ctax_taxa() {
         $labels = array(
             'name'                => __( 'Taxonomic Ranks', 'myfossil-specimen' ),
@@ -109,8 +140,7 @@ class myFOSSIL_Specimen_Admin
         register_taxonomy_for_object_type( 'myfossil_taxa', 'myfossil_taxon' );
     }
     // }}}
-
-    // {{{ Geochronology
+    // {{{ WordPress taxonomy definition: Geochronology
     private function _ctax_geochronology() {
         $labels = array(
             'name'                => __( 'Geochronologies', 'myfossil-specimen' ),
@@ -143,8 +173,7 @@ class myFOSSIL_Specimen_Admin
         register_taxonomy_for_object_type( 'myfossil_geochronologies', 'myfossil_time_interval' );
     }
     // }}}
-
-    // {{{ Lithostratigraphy
+    // {{{ WordPress taxonomy definition: Lithostratigraphy
     private function _ctax_lithostratigraphy() {
         $labels = array(
             'name'                => __( 'Lithostratigraphies', 'myfossil-specimen' ),
@@ -178,13 +207,13 @@ class myFOSSIL_Specimen_Admin
     }
     // }}}
 
+
     private function _load_taxonomy_terms() {
         $this->_load_ctax_taxa();
         $this->_load_ctax_geochronologies();
         $this->_load_ctax_lithostratigraphies();
     }
-
-    // {{{ Load Default Taxonomic Data
+    // {{{ WordPress taxonomy data loader: Biological Taxonomy
     private function _load_taxonomy( $taxonomy, $terms ) {
         $parent_id = 0;
         foreach ( $terms as $term ) {
@@ -223,8 +252,7 @@ class myFOSSIL_Specimen_Admin
     // }}}
 
     // }}}
-
-    // {{{ Load Default Geochronology
+    // {{{ WordPress taxonomy data loader: Geochronology
     private function _load_time_intervals() {
         /* 
          * Map data from PBDB to meaningful intervals.
@@ -317,22 +345,38 @@ class myFOSSIL_Specimen_Admin
         return 1;
     }
     // }}}
+    // }}}
 
+    // {{{ WordPress: Admininstration panel UI
+    /**
+     * Callback to make the admin panel cleaner with respect to this plugin.
+     *
+     * @since   0.0.1
+     */
     public function admin_menu() {
-        // $this->_cleanup_metaboxes();
+        $this->_cleanup_metaboxes();
         $this->_add_menu_separator();
         $this->_add_tools_page();
     }
-
-    // {{{ Adminitrative Panel Fixes
+    // {{{ Adminitrative menu cleanup: Remove custom field metaboxes
+    /**
+     * Removes custom field metaboxes from post types.
+     */
     private function _cleanup_metaboxes() {
-        $prefix = 'myfossil_';
-        $cpts = array( 'taxon', 'stratum', 'time_interval', 'fossil',
-            'fossil_col', 'reference' );
-        foreach ( $cpts as $cpt )
-            remove_meta_box( 'postcustom', $prefix . $cpt, 'normal' );
+        foreach ( self::post_types() as $cpt ) {
+            remove_meta_box( 'postcustom', $cpt, 'normal' );
+        }
     }
-
+    // }}}
+    // {{{ Adminitrative menu cleanup: Add menu separators
+    /**
+     * Callback to add administration panel menu items.
+     *
+     * Adds menu separators to differentiate post types in the admin menu that
+     * are part of this plugin.
+     *
+     * @access  private
+     */
     private function _add_menu_separator() {
         global $menu;
 
@@ -369,16 +413,29 @@ class myFOSSIL_Specimen_Admin
 
         ksort( $menu );
     }
-
+    // }}}
+    // {{{ Adminitrative menu cleanup: Add Tools page
+    /**
+     * Callback to add a page for this plugin in the admin Tools menu.
+     *
+     * @access  private
+     */
     private function _add_tools_page() {
         add_management_page( 'myFOSSIL Specimen', 'myFOSSIL Specimen',
                 'manage_options', 'myfossil-specimen',
                 'myFOSSIL\Plugin\Specimen\admin_tools_page' );
     }
     // }}}
+    // }}}
 
+    // {{{ AJAX
     /**
-     * AJAX call handler
+     * AJAX callback for wp_ajax_ hooks in the administration panel.
+     *
+     * @todo refactor to return more information than 0|1
+     * @todo refactor to use more secure noncing
+     *
+     * @since   0.0.2
      */
     public function ajax_handler() {
         header('Content-Type: application/json');
@@ -400,6 +457,7 @@ class myFOSSIL_Specimen_Admin
                 echo "1";
                 die;
                 break;
+
             case 'myfossil_load_geochronology':
                 if ( $this->_load_time_intervals() > 0 )
                     echo "1";
@@ -407,25 +465,24 @@ class myFOSSIL_Specimen_Admin
                     echo "0";
                 die;
                 break;
-            case 'myfossil_load_default_fossils':
-                if ( Fossil::load_defaults() )
-                    echo "1";
-                else
-                    echo "0";
-                die;
-                break;
         }
     }
+    // }}}
 
-    public function add_buddypress_comments( $post_types ) {
-        $post_types[] = Fossil::POST_TYPE;
-        $post_types[] = FossilDimension::POST_TYPE;
-        $post_types[] = FossilLocation::POST_TYPE;
-        $post_types[] = Reference::POST_TYPE; 
-        $post_types[] = Stratum::POST_TYPE; 
-        $post_types[] = Taxon::POST_TYPE; 
-        $post_types[] = TimeInterval::POST_TYPE;
-        return $post_types;
+    // {{{ BuddyPress
+    /**
+     * Callback for enabling BuddyPress comments on custom post types.
+     *
+     * @access  public
+     * @since   0.1.0
+     * @param   array   $bp_post_types  Current list of post types that support BuddyPress comments.
+     * @return  array   Array of WordPress post_type strings of all supported paleontological objects.
+     */
+    public function add_buddypress_comments( $bp_post_types ) {
+        foreach ( self::post_types() as $pt ) {
+            array_push( $bp_post_types, $pt );
+        }
+        return $bp_post_types;
     }
-
+    // }}}
 }

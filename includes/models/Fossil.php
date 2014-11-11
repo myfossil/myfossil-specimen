@@ -23,6 +23,11 @@ use myFOSSIL\PBDB;
 /**
  * Fossil.
  *
+ * Represents a fossil specimen instance, which is expressed in WordPress as a
+ * custom post type (CPT). This class contents methods that can setup the CPT
+ * in WordPress and BuddyPress, if possible. Additionally, this class handles
+ * all CRUD operations for Fossil specimen.
+ *
  * @since      0.0.1
  * @package    myFOSSIL
  * @subpackage myFOSSIL/includes
@@ -30,20 +35,25 @@ use myFOSSIL\PBDB;
  */
 class Fossil extends Base
 {
+    /**
+     * WordPress post_type.
+     *
+     * @access  const
+     * @var     string  POST_TYPE
+     */
     const POST_TYPE = 'myfossil_fossil';
 
     /**
      * Fossil.
      *
-     * @todo    Add WordPress hook(s)
      * @since   0.0.1
      * @access  public
-     * @param unknown $post_id (optional)
-     * @param unknown $args    (optional)
+     * @param int   $post_id (optional) WordPress post ID for this object.
+     * @param array $meta    (optional) Metadata to associate with this object.
      */
-    public function __construct( $post_id=null, $args=array() )
+    public function __construct( $post_id=null, $meta=array() )
     {
-        parent::__construct( $post_id, $args );
+        parent::__construct( $post_id, $meta );
 
         $this->pbdb = new PBDB\FossilOccurence;
 
@@ -52,19 +62,35 @@ class Fossil extends Base
             'stratum_member_id', 'dimension_id', 'reference_id' );
     }
 
+    // {{{ _save
     /**
+     * Update or create new object in the database.
      *
+     * If this object does not currently exist in the database, identified by
+     * $this->id, then a new object will be created in the database and the new
+     * id set to $this->id, otherwise overwrite all properties of the object
+     * and update the last modified column.
      *
-     * @param unknown $recursive (optional)
-     * @return unknown
+     * @todo    Add WordPress hook(s)
+     *
+     * @since   0.0.1
+     * @access  public
+     * @param   bool    $recursive (optional)   Recurse saving of children objects as well, default false.
+     * @param   bool    $publish (optional)     Whether to publish the post immediately, default false.
+     * @return  bool    True upon success, false upon failure to save.
      */
-    public function save( $recursive=false )
+    public function save( $recursive=false, $publish=false )
     {
-        return parent::_save( self::POST_TYPE, $recursive );
+        return parent::_save( self::POST_TYPE, $recursive, $publish );
     }
+    // }}}
 
+    // {{{ Custom Post Type
     /**
-     * {{{ Custom Post Type
+     * Register the custom post type for this class.
+     *
+     * Defines labels and arguments that will represent the custom post type
+     * in Wordpress.
      */
     public static function register_cpt()
     {
@@ -115,10 +141,13 @@ class Fossil extends Base
     // }}}
 
     /**
+     * Return the URL for a given fossil post_id.
      *
+     * @todo    refactor to use internal WordPress routing information, rather than this constant.
      *
-     * @param unknown $fossil_id
-     * @return unknown
+     * @since   0.1.0
+     * @param   int      $fossil_id
+     * @return  string   Base URL for the fossil, does not include domain (e.g. '/fossils/240')
      */
     public static function get_url( $fossil_id )
     {
@@ -130,6 +159,7 @@ class Fossil extends Base
      * Custom getters specific to Fossil's
      *
      * @todo    Break up swith statements into private methods
+     *
      * @since   0.0.1
      * @access  public
      * @param unknown $key
@@ -208,7 +238,8 @@ class Fossil extends Base
             $m = array_pop( $_ );
             if ( $m && $m->guid )
                 return $m->guid;
-            return null;
+            break;
+
         default:
             return parent::__get( $key );
             break;
@@ -217,134 +248,6 @@ class Fossil extends Base
 
         return null;
     }
-    // }}}
-
-    /**
-     * {{{ load_defaults
-     *
-     * @return unknown
-     */
-    public static function load_defaults()
-    {
-        // {{{ Fossil data
-        $data = array(
-            'taxons' => array(
-                array( 'name' => 'Ostracoda', 'rank' => 'class' ),
-                array( 'name' => 'Salicaceae', 'rank' => 'family' ),
-                array( 'name' => 'Pecopteris', 'rank' => 'genus' ),
-            ),
-
-            'locations' => array(
-                array(
-                    'latitude' => 38.8765,
-                    'longitude' => -113.4678,
-                    'state' => 'UT',
-                    'county' => 'Millard'
-                ),
-                array(
-                    'state' => 'WY',
-                ),
-                array(
-                    'latitude' => 41.305,
-                    'longitude' => -88.15,
-                    'state' => 'IL',
-                    'county' => 'Grundy'
-                ),
-            ),
-
-            'strata' => array(
-                array(
-                    'name' => 'Kanosh Shale',
-                    'level' => 'formation'
-                ),
-                null,
-                array(
-                    'name' => 'Francis Creek Shale',
-                    'level' => 'formation'
-                ),
-            ),
-
-            'time_intervals' => array(
-                array( 'name' => 'Middle Ordovician', 'level' => 'age', 'color' => '#4DB47E' ),
-                array( 'name' => 'Eocene', 'level' => 'age', 'color' => '#FDB46C' ),
-                array( 'name' => 'Pennsylvanian', 'level' => 'age', 'color' => '#99C2B5' ),
-            ),
-
-            'media' => array(
-                array( 'Ostracoda.jpg' ),
-                array( 'Willow.jpg' ),
-                array( 'Mazon Creek_1.jpg', 'Mazon Creek_2.jpg' )
-            )
-        );
-        // }}}
-
-        $obj_ids = array();
-        foreach ( array( 'taxon', 'location', 'stratum', 'time_interval', 'media' ) as $k )
-            $obj_ids[$k] = array();
-
-        foreach ( $data as $obj_type => $obj_data ) {
-            foreach ( $obj_data as $obj_datum ) {
-                switch ( $obj_type ) {
-                case 'taxons':
-                    $obj = new Taxon( null, $obj_datum );
-                    wp_publish_post( $obj->id );
-                    array_push( $obj_ids['taxon'], $obj->id );
-                    break;
-
-                case 'locations':
-                    $obj = new FossilLocation( null, $obj_datum );
-                    wp_publish_post( $obj->id );
-                    array_push( $obj_ids['location'], $obj->id );
-                    break;
-
-                case 'strata':
-                    $obj = new Stratum( null, $obj_datum );
-                    wp_publish_post( $obj->id );
-                    array_push( $obj_ids['stratum'], $obj->id );
-                    break;
-
-                case 'time_intervals':
-                    $obj = new TimeInterval( null, $obj_datum );
-                    wp_publish_post( $obj->id );
-                    array_push( $obj_ids['time_interval'], $obj->id );
-                    break;
-                }
-            }
-        }
-
-        for ( $i = 0; $i < 3; $i++ ) {
-            $fossil = new Fossil( null,
-                array(
-                    'taxon_id'         => $obj_ids['taxon'][$i],
-                    'location_id'      => $obj_ids['location'][$i],
-                    'stratum_formation_id'       => $obj_ids['stratum'][$i],
-                    'time_interval_id' => $obj_ids['time_interval'][$i]
-                )
-            );
-
-            $fid = $fossil->save();
-            wp_publish_post( $fid );
-
-            /* Add media */
-            foreach ( $data['media'][$i] as $filename ) {
-                $att = array(
-                    'guid' => plugins_url( 'myfossil-specimen/admin/data/media/' . $filename ),
-                    'post_mime_type' => wp_check_filetype( $filename, null )['type'],
-                    'post_title' => $filename,
-                    'post_content' => '',
-                    'post_status' => 'inherit'
-                );
-                $att_id = wp_insert_attachment( $att, $filename, $fid );
-
-                require_once ABSPATH . 'wp-admin/includes/image.php';
-                $att_dat = wp_generate_attachment_metadata( $att_id, $filename );
-                wp_update_attachment_metadata( $att_id, $att_dat );
-            }
-        }
-
-        return true;
-    }
-
     // }}}
 
 }
