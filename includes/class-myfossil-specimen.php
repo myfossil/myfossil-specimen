@@ -169,23 +169,30 @@ class myFOSSIL_Specimen
      */
     private function define_admin_hooks()
     {
-        $plugin_admin = new myFOSSIL_Specimen_Admin( $this->get_plugin_name(), $this->get_version() );
+        $plugin_admin = new myFOSSIL_Specimen_Admin( $this->get_plugin_name(),
+                $this->get_version() );
 
-
+        /* Administration UI fixes */
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
-        $this->loader->add_action( 'init', $plugin_admin, 'register_custom_post_types' );
 
-        $this->loader->add_filter( 'bp_blogs_record_comment_post_types',
-            $plugin_admin, 'add_buddypress_comments' );
+        /* WordPress custom post types */
+        $this->loader->add_action( 'init', 
+            $plugin_admin, 'register_custom_post_types' );
 
-        /* Taxonomies */
-        $this->loader->add_action( 'init', $plugin_admin, 'register_taxonomies' );
+        /* WordPress custom taxonomies */
+        $this->loader->add_action( 'init', 
+            $plugin_admin, 'register_taxonomies' );
         $this->loader->add_action( 'wp_ajax_myfossil_load_terms',
             $plugin_admin, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_load_geochronology',
             $plugin_admin, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_load_default_fossils',
             $plugin_admin, 'ajax_handler' );
+
+        /* BuddyPress setup */
+        $this->loader->add_filter( 'bp_blogs_record_comment_post_types',
+            $plugin_admin, 'add_buddypress_comments' );
+
     }
 
     /**
@@ -203,10 +210,11 @@ class myFOSSIL_Specimen
 
         $this->loader->add_action( 'init', $plugin_public,
             'add_rewrite_tags' );
+
         $this->loader->add_action( 'init', $plugin_public,
             'fix_fossil_rewrites' );
 
-        /* should not be able to update taxon of a specimen without logging in */
+        /* Should not be able to update taxon of a specimen without logging in */
         $this->loader->add_action( 'wp_ajax_myfossil_save_taxon',
             $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_save_dimensions',
