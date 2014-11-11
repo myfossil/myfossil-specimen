@@ -1,4 +1,12 @@
 <?php
+/**
+ * ./class-myfossil-specimen-loader.php
+ *
+ * @author Brandon Wood <bwood@atmoapps.com>
+ * @package myFOSSIL
+ */
+
+
 namespace myFOSSIL\Plugin\Specimen;
 
 /**
@@ -22,7 +30,8 @@ namespace myFOSSIL\Plugin\Specimen;
  * @subpackage myFOSSIL/includes
  * @author     Brandon Wood <bwood@atmoapps.com>
  */
-class myFOSSIL_Specimen_Loader {
+class myFOSSIL_Specimen_Loader
+{
 
     /**
      * The array of actions registered with WordPress.
@@ -47,7 +56,8 @@ class myFOSSIL_Specimen_Loader {
      *
      * @since    0.0.1
      */
-    public function __construct() {
+    public function __construct()
+    {
 
         $this->actions = array();
         $this->filters = array();
@@ -63,8 +73,14 @@ class myFOSSIL_Specimen_Loader {
      * @var      string               $callback         The name of the function definition on the $component.
      * @var      int      Optional    $priority         The priority at which the function should be fired.
      * @var      int      Optional    $accepted_args    The number of arguments that should be passed to the $callback.
+     * @param unknown $hook
+     * @param unknown $component
+     * @param unknown $callback
+     * @param unknown $priority      (optional)
+     * @param unknown $accepted_args (optional)
      */
-    public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+    public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 )
+    {
         $this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
     }
 
@@ -77,8 +93,14 @@ class myFOSSIL_Specimen_Loader {
      * @var      string               $callback         The name of the function definition on the $component.
      * @var      int      Optional    $priority         The priority at which the function should be fired.
      * @var      int      Optional    $accepted_args    The number of arguments that should be passed to the $callback.
+     * @param unknown $hook
+     * @param unknown $component
+     * @param unknown $callback
+     * @param unknown $priority      (optional)
+     * @param unknown $accepted_args (optional)
      */
-    public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
+    public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 )
+    {
         $this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
     }
 
@@ -94,9 +116,16 @@ class myFOSSIL_Specimen_Loader {
      * @var      string               $callback         The name of the function definition on the $component.
      * @var      int      Optional    $priority         The priority at which the function should be fired.
      * @var      int      Optional    $accepted_args    The number of arguments that should be passed to the $callback.
+     * @param unknown $hooks
+     * @param unknown $hook
+     * @param unknown $component
+     * @param unknown $callback
+     * @param unknown $priority
+     * @param unknown $accepted_args
      * @return   type                                   The collection of actions and filters registered with WordPress.
      */
-    private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
+    private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args )
+    {
 
         $hooks[] = array(
             'hook'          => $hook,
@@ -115,18 +144,19 @@ class myFOSSIL_Specimen_Loader {
      *
      * @since    0.0.1
      */
-    public function run() {
+    public function run()
+    {
 
         foreach ( $this->filters as $hook ) {
             add_filter( $hook['hook'], array( $hook['component'],
-                        $hook['callback'] ), $hook['priority'],
-                        $hook['accepted_args'] );
+                    $hook['callback'] ), $hook['priority'],
+                $hook['accepted_args'] );
         }
 
         foreach ( $this->actions as $hook ) {
             add_action( $hook['hook'], array( $hook['component'],
-                        $hook['callback'] ), $hook['priority'],
-                        $hook['accepted_args'] );
+                    $hook['callback'] ), $hook['priority'],
+                $hook['accepted_args'] );
         }
 
     }

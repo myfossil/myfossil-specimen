@@ -1,4 +1,12 @@
 <?php
+/**
+ * ./models/Stratum.php
+ *
+ * @author Brandon Wood <bwood@atmoapps.com>
+ * @package myFOSSIL
+ */
+
+
 namespace myFOSSIL\Plugin\Specimen;
 
 /**
@@ -31,21 +39,33 @@ class Stratum extends Base
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
      * @access  public
+     * @param unknown $post_id (optional)
+     * @param unknown $args    (optional)
      */
     public function __construct( $post_id=null, $args=array() )
     {
         parent::__construct( $post_id, $args );
 
         $this->_meta_keys = array( 'pbdb_id', 'parent_pbdb_id', 'color', 'level',
-                'reference_id' );
+            'reference_id' );
     }
 
-    public function save( $recursive=false ) {
+    /**
+     *
+     *
+     * @param unknown $recursive (optional)
+     * @return unknown
+     */
+    public function save( $recursive=false )
+    {
         return parent::_save( self::POST_TYPE, $recursive );
     }
 
-    // {{{ Custom Post Type
-    public static function register_cpt() {
+    /**
+     * {{{ Custom Post Type
+     */
+    public static function register_cpt()
+    {
         $labels = array(
             'name'                => __( 'Strata', 'myfossil-specimen' ),
             'singular_name'       => __( 'Stratum', 'myfossil-specimen' ),
@@ -86,11 +106,24 @@ class Stratum extends Base
     }
     // }}}
 
-    public static function get_ranks() {
+    /**
+     *
+     *
+     * @return unknown
+     */
+    public static function get_ranks()
+    {
         return array( 'group', 'formation', 'member' );
     }
 
-    public function __get( $key ) {
+    /**
+     *
+     *
+     * @param unknown $key
+     * @return unknown
+     */
+    public function __get( $key )
+    {
         if ( $key == 'reference' ) {
             if ( $this->reference_id ) {
                 $this->_cache->reference = new Reference( $this->reference_id );
@@ -101,10 +134,16 @@ class Stratum extends Base
         return parent::__get( $key );
     }
 
-    public function __toString() {
+    /**
+     *
+     *
+     * @return unknown
+     */
+    public function __toString()
+    {
         if ( $this->level && $this->name )
-            return sprintf( 
-                "<span class=\"label label-primary\">%s</span> %s", 
+            return sprintf(
+                "<span class=\"label label-primary\">%s</span> %s",
                 $this->level, $this->name );
         else
             return sprintf( "<span class=\"label

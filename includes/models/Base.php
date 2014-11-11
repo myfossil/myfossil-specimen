@@ -2,13 +2,14 @@
 /**
  * ./includes/models/Base.php
  *
- * @author      Brandon Wood <bwood@atmoapps.com>
- * @package     myFOSSIL
  *
  * @link        https://github.com/myfossil
  * @since       0.0.1
  * @subpackage  myFOSSIL/includes
+ * @author      Brandon Wood <bwood@atmoapps.com>
+ * @package     myFOSSIL
  */
+
 
 namespace myFOSSIL\Plugin\Specimen;
 
@@ -56,6 +57,9 @@ class Base
 
     /**
      * Create Base class.
+     *
+     * @param unknown $post_id (optional)
+     * @param unknown $meta    (optional)
      */
     public function __construct( $post_id=null, $meta=array() )
     {
@@ -74,10 +78,10 @@ class Base
                 if ( is_array( $v ) )
                     if ( count( $v ) == 1 )
                         $this->_meta->{$k} = array_pop( $v );
-                    else
-                        $this->_meta->{$k} = $v;
-                else
-                    $this->_meta->{$k} = $v;
+            else
+                $this->_meta->{$k} = $v;
+        else
+            $this->_meta->{$k} = $v;
 
 
         /* Load additional data, overwriting if defined */
@@ -97,7 +101,7 @@ class Base
      *
      * @since   0.0.1
      * @access  public
-     * @param   string $key
+     * @param string  $key
      * @return  mixed    value of the property, null if not found.
      */
     public function __get( $key )
@@ -116,8 +120,8 @@ class Base
             return $this->wp_post->post_date;
         }
 
-        if ( ( $key == 'post_id' || $key == 'id' ) && $this->wp_post 
-                && $this->wp_post->ID )
+        if ( ( $key == 'post_id' || $key == 'id' ) && $this->wp_post
+            && $this->wp_post->ID )
             return $this->wp_post->ID;
 
         /* Try local property */
@@ -144,8 +148,8 @@ class Base
      *
      * @since   0.0.1
      * @access  public
-     * @param string $key
-     * @param mixed $value
+     * @param string  $key
+     * @param mixed   $value
      */
     public function __set( $key, $value )
     {
@@ -153,8 +157,8 @@ class Base
             $this->_history[] = array(
                 'key' => $key,
                 'from' => $this->{ $key },
-                'to' => $value
-            );
+            'to' => $value
+        );
 
         if ( $key == 'id' && $this->wp_post )
             $this->wp_post->ID = $value;
@@ -165,19 +169,19 @@ class Base
             else
                 $this->_meta->name = $value;
 
-        /* Special cases when setting the PBDB ID */
-        if ( $this->pbdb )
-            if ( $key == 'pbdbid' || $key == 'pbdb_id' )
-                $this->pbdb->pbdbid = $value;
-            elseif ( $key == 'parent_pbdb_id' || $key == 'parent_pbdbid' )
-                $this->pbdb->parent_no = $value;
+            /* Special cases when setting the PBDB ID */
+            if ( $this->pbdb )
+                if ( $key == 'pbdbid' || $key == 'pbdb_id' )
+                    $this->pbdb->pbdbid = $value;
+                elseif ( $key == 'parent_pbdb_id' || $key == 'parent_pbdbid' )
+                    $this->pbdb->parent_no = $value;
 
-        /* Set local properties of Object */
-        if ( property_exists( $this, $key ) ) {
-            $this->{$key} = $value;
-        } else {
-            $this->_meta->{$key} = $value;
-        }
+                /* Set local properties of Object */
+                if ( property_exists( $this, $key ) ) {
+                    $this->{$key} = $value;
+                } else {
+                $this->_meta->{$key} = $value;
+            }
     }
 
     /**
@@ -192,7 +196,8 @@ class Base
      *
      * @since   0.0.1
      * @access  public
-     * @param   bool    $recursive       (optional) Recurse saving of children objects as well, default false.
+     * @param unknown $post_type
+     * @param bool    $recursive (optional) Recurse saving of children objects as well, default false.
      * @return  bool                                True upon success, false upon failure.
      */
     protected function _save( $post_type, $recursive=false )
@@ -204,10 +209,10 @@ class Base
             $this->wp_post->ID = wp_insert_post( $this->wp_post );
         } else {
             $post_title = property_exists( $this->_meta, 'name' ) ? $this->_meta->name : null;
-            $post_args = array( 
-                    'post_type' => $post_type,
-                    'post_title' => $post_title
-                );
+            $post_args = array(
+                'post_type' => $post_type,
+                'post_title' => $post_title
+            );
             $post_id = wp_insert_post( $post_args );
             $this->wp_post = get_post( $post_id );
         }
@@ -224,18 +229,31 @@ class Base
         /* Update or create new meta data */
         foreach ( $this->_meta_keys as $meta_key )
             if ( property_exists( $this->_meta, $meta_key )
-                    && ! empty( $this->_meta->{$meta_key} ) )
-                update_post_meta( $this->wp_post->ID, $meta_key, $this->_meta->{$meta_key} );
+                && ! empty( $this->_meta->{$meta_key} ) )
+            update_post_meta( $this->wp_post->ID, $meta_key, $this->_meta->{$meta_key} );
 
         return $this->bp_activity_maybe_update( $post_type, $current_id );
     }
 
-    public static function bp() {
+    /**
+     *
+     *
+     * @return unknown
+     */
+    public static function bp()
+    {
         return function_exists( '\bp_is_active' );
     }
 
-    // {{{ BuddyPress integrations
-    public function bp_activity_maybe_update( $post_type, $current_id=0 ) {
+    /**
+     * {{{ BuddyPress integrations
+     *
+     * @param unknown $post_type
+     * @param unknown $current_id (optional)
+     * @return unknown
+     */
+    public function bp_activity_maybe_update( $post_type, $current_id=0 )
+    {
         /*
          * Continue only if:
          *   - BuddyPress is enabled
@@ -252,24 +270,28 @@ class Base
                 $bp_activity_type = $post_type . '_created';
 
             $args = array(
-                    'item_id' => $this->id,
-                    'user_id' => \bp_loggedin_user_id(),
-                    'content' => json_encode( $this->_history ),
-                    'secondary_item_id' => $this->wp_post->post_author,
-                    'component' => 'myfossil',
-                    'type' => $bp_activity_type
-                );
+                'item_id' => $this->id,
+                'user_id' => \bp_loggedin_user_id(),
+                'content' => json_encode( $this->_history ),
+                'secondary_item_id' => $this->wp_post->post_author,
+                'component' => 'myfossil',
+                'type' => $bp_activity_type
+            );
 
             bp_activity_add( $args );
         }
-        
+
         return $this->id;
     }
 
     /**
      * BuddyPress registrations
+     *
+     * @param unknown $post_type
+     * @return unknown
      */
-    public static function register_buddypress_activities( $post_type ) {
+    public static function register_buddypress_activities( $post_type )
+    {
         // bail if buddypress doesn't exist or have activity enabled
         if ( ! self::bp() ) return false;
 
@@ -278,35 +300,43 @@ class Base
             $type = $post_type . '_' . $t;
             $description = sprintf( '%s %s', $post_type, $t );
             $format_callback = sprintf( "%s::bp_format_activity",
-                    \get_called_class() );
+                \get_called_class() );
 
             $label = $post_type;
             $context = array( 'activity' );
             \bp_activity_set_action( $component_id, $type, $description,
-                    $format_callback, $label, $context );
+                $format_callback, $label, $context );
         }
     }
 
-    public static function bp_format_activity( $action, $activity ) {
+    /**
+     *
+     *
+     * @param unknown $action
+     * @param unknown $activity
+     * @return unknown
+     */
+    public static function bp_format_activity( $action, $activity )
+    {
         $initiator_link = \bp_core_get_userlink( $activity->user_id );
         $verbs = explode( '_', $activity->type );
         $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs );
 
-        $owner_link = ( $activity->user_id == $activity->secondary_item_id ) 
+        $owner_link = ( $activity->user_id == $activity->secondary_item_id )
             ? 'their own' : sprintf( "%s's", \bp_core_get_userlink(
-                        $activity->secondary_item_id ) );
+                $activity->secondary_item_id ) );
 
         if ( $owner_link == 'their own' && $verb == 'created' )
             $owner_link = 'a';
 
         $action = sprintf( '%s %s %s fossil', $initiator_link, $verb,
-                $owner_link );
+            $owner_link );
 
         if ( property_exists( $activity, 'template' ) )
             $activity->content = $activity->template;
 
         return apply_filters( 'bp_myfossil_activity_' . $activity->type .
-                '_format', $action, $activity );
+            '_format', $action, $activity );
     }
 
     // }}}
@@ -317,6 +347,7 @@ class Base
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
      * @access  public
+     * @param unknown $post_id (optional)
      * @return  bool        True upon success, false upon failure.
      */
     public function load( $post_id=null )

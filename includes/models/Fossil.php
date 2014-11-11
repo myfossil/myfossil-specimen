@@ -1,4 +1,12 @@
 <?php
+/**
+ * ./models/Fossil.php
+ *
+ * @author Brandon Wood <bwood@atmoapps.com>
+ * @package myFOSSIL
+ */
+
+
 namespace myFOSSIL\Plugin\Specimen;
 
 /**
@@ -30,6 +38,8 @@ class Fossil extends Base
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
      * @access  public
+     * @param unknown $post_id (optional)
+     * @param unknown $args    (optional)
      */
     public function __construct( $post_id=null, $args=array() )
     {
@@ -38,16 +48,26 @@ class Fossil extends Base
         $this->pbdb = new PBDB\FossilOccurence;
 
         $this->_meta_keys = array( 'pbdb_id', 'taxon_id', 'location_id',
-                'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
-                'stratum_member_id', 'dimension_id', 'reference_id' );
+            'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
+            'stratum_member_id', 'dimension_id', 'reference_id' );
     }
 
-    public function save( $recursive=false ) {
+    /**
+     *
+     *
+     * @param unknown $recursive (optional)
+     * @return unknown
+     */
+    public function save( $recursive=false )
+    {
         return parent::_save( self::POST_TYPE, $recursive );
     }
 
-    // {{{ Custom Post Type
-    public static function register_cpt() {
+    /**
+     * {{{ Custom Post Type
+     */
+    public static function register_cpt()
+    {
         $labels = array(
             'name'                => __( 'Fossils', 'myfossil-specimen' ),
             'singular_name'       => __( 'Fossil', 'myfossil-specimen' ),
@@ -79,11 +99,11 @@ class Fossil extends Base
             'can_export'          => true,
             'has_archive'         => false,
             'rewrite'             => array(
-                    'slug' => 'fossils/%fossil_id%',
-                    'with_front' => false,
-                    'feed' => true,
-                    'pages' => true
-                ),
+                'slug' => 'fossils/%fossil_id%',
+                'with_front' => false,
+                'feed' => true,
+                'pages' => true
+            ),
             'exclude_from_search' => true,
             'publicly_queryable'  => true,
             'capability_type'     => 'post',
@@ -94,8 +114,15 @@ class Fossil extends Base
     }
     // }}}
 
-    public static function get_url( $fossil_id ) {
-        return sprintf( '/fossils/%d', $fossil_id ); 
+    /**
+     *
+     *
+     * @param unknown $fossil_id
+     * @return unknown
+     */
+    public static function get_url( $fossil_id )
+    {
+        return sprintf( '/fossils/%d', $fossil_id );
     }
 
     // {{{ __get
@@ -114,77 +141,77 @@ class Fossil extends Base
             return $this->_cache->{$key};
 
         switch ( $key ) {
-            case 'taxon':
-                if ( $this->taxon_id ) {
-                    $this->_cache->taxon = new Taxon( $this->taxon_id );
-                    return $this->_cache->taxon;
-                }
-                break;
+        case 'taxon':
+            if ( $this->taxon_id ) {
+                $this->_cache->taxon = new Taxon( $this->taxon_id );
+                return $this->_cache->taxon;
+            }
+            break;
 
-            case 'location':
-                if ( $this->location_id ) {
-                    $this->_cache->location = new FossilLocation( $this->location_id );
-                    return $this->_cache->location;
-                }
-                break;
+        case 'location':
+            if ( $this->location_id ) {
+                $this->_cache->location = new FossilLocation( $this->location_id );
+                return $this->_cache->location;
+            }
+            break;
 
-            case 'time':
-            case 'time_interval':
-            case 'geochronology':
-                if ( $this->time_interval_id ) {
-                    $this->_cache->time_interval = new TimeInterval( $this->time_interval_id );
-                    return $this->_cache->time_interval;
-                }
-                break;
+        case 'time':
+        case 'time_interval':
+        case 'geochronology':
+            if ( $this->time_interval_id ) {
+                $this->_cache->time_interval = new TimeInterval( $this->time_interval_id );
+                return $this->_cache->time_interval;
+            }
+            break;
 
-            case 'strata':
-                if ( ! property_exists( $this->_cache, 'strata' ) )
-                    $this->_cache->strata = new \stdClass;
+        case 'strata':
+            if ( ! property_exists( $this->_cache, 'strata' ) )
+                $this->_cache->strata = new \stdClass;
 
-                foreach ( Stratum::get_ranks() as $rank ) {
-                    $stratum_key = sprintf( 'stratum_%s_id', $rank );
+            foreach ( Stratum::get_ranks() as $rank ) {
+                $stratum_key = sprintf( 'stratum_%s_id', $rank );
 
-                    if ( ! $this->{ $stratum_key } ) 
-                        continue;
+                if ( ! $this->{ $stratum_key } )
+                    continue;
 
-                    if ( ! property_exists( $this->_cache->strata, $rank ) 
-                            || $this->_cache->strata->{ $rank }->id !== $this->{ $stratum_key } )
-                        $this->_cache->strata->{ $rank } = new Stratum( $this->{ $stratum_key } );
-                }
+                if ( ! property_exists( $this->_cache->strata, $rank )
+                    || $this->_cache->strata->{ $rank }->id !== $this->{ $stratum_key } )
+                    $this->_cache->strata->{ $rank } = new Stratum( $this->{ $stratum_key } );
+            }
 
-                return $this->_cache->strata;
-                    
-                break;
+            return $this->_cache->strata;
 
-            case 'dim':
-            case 'dimension':
-                if ( $this->dimension_id ) {
-                    $this->_cache->dimension = new FossilDimension( $this->dimension_id );
-                    return $this->_cache->dimension;
-                }
-                break;
+            break;
 
-            case 'reference':
-                if ( $this->reference_id ) {
-                    $this->_cache->reference = new Reference( $this->reference_id );
-                    return $this->_cache->reference;
-                }
-                break;
+        case 'dim':
+        case 'dimension':
+            if ( $this->dimension_id ) {
+                $this->_cache->dimension = new FossilDimension( $this->dimension_id );
+                return $this->_cache->dimension;
+            }
+            break;
 
-            case 'history':
-                return null;
-                break;
+        case 'reference':
+            if ( $this->reference_id ) {
+                $this->_cache->reference = new Reference( $this->reference_id );
+                return $this->_cache->reference;
+            }
+            break;
 
-            case 'image':
-                if ( ! $this->id ) return;
-                $_ = get_attached_media( 'image', $this->id );
-                $m = array_pop( $_ );
-                if ( $m && $m->guid )
-                    return $m->guid;
-                return null;
-            default:
-                return parent::__get( $key );
-                break;
+        case 'history':
+            return null;
+            break;
+
+        case 'image':
+            if ( ! $this->id ) return;
+            $_ = get_attached_media( 'image', $this->id );
+            $m = array_pop( $_ );
+            if ( $m && $m->guid )
+                return $m->guid;
+            return null;
+        default:
+            return parent::__get( $key );
+            break;
 
         }
 
@@ -192,58 +219,63 @@ class Fossil extends Base
     }
     // }}}
 
-    // {{{ load_defaults
-    public static function load_defaults() {
+    /**
+     * {{{ load_defaults
+     *
+     * @return unknown
+     */
+    public static function load_defaults()
+    {
         // {{{ Fossil data
         $data = array(
-                'taxons' => array(
-                        array( 'name' => 'Ostracoda', 'rank' => 'class' ),
-                        array( 'name' => 'Salicaceae', 'rank' => 'family' ),
-                        array( 'name' => 'Pecopteris', 'rank' => 'genus' ),
-                    ),
+            'taxons' => array(
+                array( 'name' => 'Ostracoda', 'rank' => 'class' ),
+                array( 'name' => 'Salicaceae', 'rank' => 'family' ),
+                array( 'name' => 'Pecopteris', 'rank' => 'genus' ),
+            ),
 
-                'locations' => array(
-                        array( 
-                            'latitude' => 38.8765,
-                            'longitude' => -113.4678,
-                            'state' => 'UT',
-                            'county' => 'Millard'
-                        ),
-                        array( 
-                            'state' => 'WY',
-                        ),
-                        array( 
-                            'latitude' => 41.305,
-                            'longitude' => -88.15,
-                            'state' => 'IL',
-                            'county' => 'Grundy'
-                        ),
-                    ),
+            'locations' => array(
+                array(
+                    'latitude' => 38.8765,
+                    'longitude' => -113.4678,
+                    'state' => 'UT',
+                    'county' => 'Millard'
+                ),
+                array(
+                    'state' => 'WY',
+                ),
+                array(
+                    'latitude' => 41.305,
+                    'longitude' => -88.15,
+                    'state' => 'IL',
+                    'county' => 'Grundy'
+                ),
+            ),
 
-                'strata' => array(
-                        array(
-                            'name' => 'Kanosh Shale',
-                            'level' => 'formation'
-                        ),
-                        null,
-                        array(
-                            'name' => 'Francis Creek Shale',
-                            'level' => 'formation'
-                        ),
-                    ),
+            'strata' => array(
+                array(
+                    'name' => 'Kanosh Shale',
+                    'level' => 'formation'
+                ),
+                null,
+                array(
+                    'name' => 'Francis Creek Shale',
+                    'level' => 'formation'
+                ),
+            ),
 
-                'time_intervals' => array(
-                        array( 'name' => 'Middle Ordovician', 'level' => 'age', 'color' => '#4DB47E' ),
-                        array( 'name' => 'Eocene', 'level' => 'age', 'color' => '#FDB46C' ),
-                        array( 'name' => 'Pennsylvanian', 'level' => 'age', 'color' => '#99C2B5' ),
-                    ),
+            'time_intervals' => array(
+                array( 'name' => 'Middle Ordovician', 'level' => 'age', 'color' => '#4DB47E' ),
+                array( 'name' => 'Eocene', 'level' => 'age', 'color' => '#FDB46C' ),
+                array( 'name' => 'Pennsylvanian', 'level' => 'age', 'color' => '#99C2B5' ),
+            ),
 
-                'media' => array(
-                        array( 'Ostracoda.jpg' ),
-                        array( 'Willow.jpg' ),
-                        array( 'Mazon Creek_1.jpg', 'Mazon Creek_2.jpg' )
-                    )
-            );
+            'media' => array(
+                array( 'Ostracoda.jpg' ),
+                array( 'Willow.jpg' ),
+                array( 'Mazon Creek_1.jpg', 'Mazon Creek_2.jpg' )
+            )
+        );
         // }}}
 
         $obj_ids = array();
@@ -253,58 +285,58 @@ class Fossil extends Base
         foreach ( $data as $obj_type => $obj_data ) {
             foreach ( $obj_data as $obj_datum ) {
                 switch ( $obj_type ) {
-                    case 'taxons':
-                        $obj = new Taxon( null, $obj_datum );
-                        wp_publish_post( $obj->id );
-                        array_push( $obj_ids['taxon'], $obj->id );
-                        break;
+                case 'taxons':
+                    $obj = new Taxon( null, $obj_datum );
+                    wp_publish_post( $obj->id );
+                    array_push( $obj_ids['taxon'], $obj->id );
+                    break;
 
-                    case 'locations':
-                        $obj = new FossilLocation( null, $obj_datum );
-                        wp_publish_post( $obj->id );
-                        array_push( $obj_ids['location'], $obj->id );
-                        break;
+                case 'locations':
+                    $obj = new FossilLocation( null, $obj_datum );
+                    wp_publish_post( $obj->id );
+                    array_push( $obj_ids['location'], $obj->id );
+                    break;
 
-                    case 'strata':
-                        $obj = new Stratum( null, $obj_datum );
-                        wp_publish_post( $obj->id );
-                        array_push( $obj_ids['stratum'], $obj->id );
-                        break;
+                case 'strata':
+                    $obj = new Stratum( null, $obj_datum );
+                    wp_publish_post( $obj->id );
+                    array_push( $obj_ids['stratum'], $obj->id );
+                    break;
 
-                    case 'time_intervals':
-                        $obj = new TimeInterval( null, $obj_datum );
-                        wp_publish_post( $obj->id );
-                        array_push( $obj_ids['time_interval'], $obj->id );
-                        break;
+                case 'time_intervals':
+                    $obj = new TimeInterval( null, $obj_datum );
+                    wp_publish_post( $obj->id );
+                    array_push( $obj_ids['time_interval'], $obj->id );
+                    break;
                 }
             }
         }
 
         for ( $i = 0; $i < 3; $i++ ) {
-            $fossil = new Fossil( null, 
-                    array(
-                        'taxon_id'         => $obj_ids['taxon'][$i],
-                        'location_id'      => $obj_ids['location'][$i],
-                        'stratum_formation_id'       => $obj_ids['stratum'][$i],
-                        'time_interval_id' => $obj_ids['time_interval'][$i]
-                    )
-                );
+            $fossil = new Fossil( null,
+                array(
+                    'taxon_id'         => $obj_ids['taxon'][$i],
+                    'location_id'      => $obj_ids['location'][$i],
+                    'stratum_formation_id'       => $obj_ids['stratum'][$i],
+                    'time_interval_id' => $obj_ids['time_interval'][$i]
+                )
+            );
 
             $fid = $fossil->save();
             wp_publish_post( $fid );
 
             /* Add media */
-            foreach( $data['media'][$i] as $filename ) {
+            foreach ( $data['media'][$i] as $filename ) {
                 $att = array(
-                        'guid' => plugins_url( 'myfossil-specimen/admin/data/media/' . $filename ),
-                        'post_mime_type' => wp_check_filetype( $filename, null )['type'],
-                        'post_title' => $filename,
-                        'post_content' => '',
-                        'post_status' => 'inherit'
-                    );
+                    'guid' => plugins_url( 'myfossil-specimen/admin/data/media/' . $filename ),
+                    'post_mime_type' => wp_check_filetype( $filename, null )['type'],
+                    'post_title' => $filename,
+                    'post_content' => '',
+                    'post_status' => 'inherit'
+                );
                 $att_id = wp_insert_attachment( $att, $filename, $fid );
 
-                require_once( ABSPATH . 'wp-admin/includes/image.php' );
+                require_once ABSPATH . 'wp-admin/includes/image.php';
                 $att_dat = wp_generate_attachment_metadata( $att_id, $filename );
                 wp_update_attachment_metadata( $att_id, $att_dat );
             }

@@ -1,4 +1,12 @@
 <?php
+/**
+ * ./class-myfossil-specimen-i18n.php
+ *
+ * @author Brandon Wood <bwood@atmoapps.com>
+ * @package myFOSSIL
+ */
+
+
 namespace myFOSSIL\Plugin\Specimen;
 
 /**
@@ -25,7 +33,8 @@ namespace myFOSSIL\Plugin\Specimen;
  * @subpackage myFOSSIL/includes
  * @author     Brandon Wood <bwood@atmoapps.com>
  */
-class myFOSSIL_Specimen_i18n {
+class myFOSSIL_Specimen_i18n
+{
 
     /**
      * The domain specified for this plugin.
@@ -41,7 +50,8 @@ class myFOSSIL_Specimen_i18n {
      *
      * @since    0.0.1
      */
-    public function load_plugin_textdomain() {
+    public function load_plugin_textdomain()
+    {
 
         load_plugin_textdomain(
             $this->domain,
@@ -55,9 +65,10 @@ class myFOSSIL_Specimen_i18n {
      * Set the domain equal to that of the specified domain.
      *
      * @since    0.0.1
-     * @param    string    $domain    The domain that represents the locale of this plugin.
+     * @param string  $domain The domain that represents the locale of this plugin.
      */
-    public function set_domain( $domain ) {
+    public function set_domain( $domain )
+    {
         $this->domain = $domain;
     }
 
