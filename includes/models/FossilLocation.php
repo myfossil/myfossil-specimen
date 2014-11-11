@@ -73,8 +73,9 @@ class FossilLocation extends Base
         return (string) null;
     }
 
+    // {{{ Custom Post Type
+
     /**
-     * {{{ Custom Post Type
      */
     public static function register_cpt()
     {

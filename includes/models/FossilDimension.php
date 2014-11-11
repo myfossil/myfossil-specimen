@@ -46,7 +46,7 @@ class FossilDimension extends Base
         parent::__construct( $post_id, $args );
 
         $this->_meta_keys = array( 'length_meters', 'width_meters',
-            'height_meters' );
+                'height_meters' );
     }
 
     /**
@@ -60,9 +60,8 @@ class FossilDimension extends Base
         return parent::_save( self::POST_TYPE, $recursive );
     }
 
-    /**
-     * {{{ Custom Post Type
-     */
+    // {{{ Custom Post Type
+
     public static function register_cpt()
     {
         $args = array(
@@ -115,7 +114,7 @@ class FossilDimension extends Base
     }
 
     /**
-     *
+     * 
      *
      * @param unknown $action
      * @param unknown $activity
@@ -152,18 +151,19 @@ class FossilDimension extends Base
      */
     public function __toString()
     {
-        if ( $this->length && $this->width )
-            if ( $this->height )
+        if ( $this->length && $this->width ) {
+            if ( $this->height ) {
                 return sprintf( '%12.1f &times; %12.1f &times; %12.1f cm',
                     $this->as_cm( 'length' ),
                     $this->as_cm( 'width' ),
                     $this->as_cm( 'height' ) );
-            else
+            } else {
                 return sprintf( '%12.1f &times; %12.1f cm',
                     $this->as_cm( 'length' ),
                     $this->as_cm( 'width' ) );
-            else
-                return 'undefined';
+            }
+        }
 
+        return 'undefined';
     }
 }

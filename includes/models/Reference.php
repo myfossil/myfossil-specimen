@@ -61,8 +61,8 @@ class Reference extends Base
         return parent::_save( self::POST_TYPE, $recursive );
     }
 
+    // {{{ Custom post type
     /**
-     * {{{ Custom Post Type
      */
     public static function register_cpt()
     {

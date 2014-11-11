@@ -62,8 +62,9 @@ class TimeInterval extends Base
         return parent::_save( self::POST_TYPE, $recursive );
     }
 
+    // {{{ Custom Post Type
+
     /**
-     * {{{ Custom Post Type
      */
     public static function register_cpt()
     {
