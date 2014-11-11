@@ -87,7 +87,7 @@ class Stratum extends Base
     // }}}
 
     public static function get_ranks() {
-        return array( 'member', 'formation', 'group' );
+        return array( 'group', 'formation', 'member' );
     }
 
     public function __get( $key ) {
