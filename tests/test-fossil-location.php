@@ -12,6 +12,11 @@ use myFOSSIL\Plugin\Specimen\FossilLocation;
  */
 class FossilLocationTest extends myFOSSIL_Specimen_Test {
 
+    /**
+     * @covers FossilLocation::save
+     * @covers FossilLocation::__set
+     * @covers FossilLocation::__get
+     */
     public function testSaveFossilLocation() {
         $loc = new FossilLocation;
         $loc->latitude = 10.0;
@@ -20,6 +25,11 @@ class FossilLocationTest extends myFOSSIL_Specimen_Test {
         $this->assertGreaterThan( 0, $loc->wp_post->ID );
     }
 
+    /**
+     * @covers FossilLocation::save
+     * @covers FossilLocation::__set
+     * @covers FossilLocation::__get
+     */
     public function testGetFossilLocation() {
         $loc = new FossilLocation;
         $loc->latitude = 10.0;
@@ -28,5 +38,12 @@ class FossilLocationTest extends myFOSSIL_Specimen_Test {
 
         $this->assertEquals( $loc->latitude, $new_loc->latitude );
         $this->assertEquals( $loc->longitude, $new_loc->longitude );
+    }
+
+    /**
+     * @covers FossilLocation::register_cpt
+     */
+    public function testDimensionRegisterCpt() {
+        $this->assertNotInstanceOf( 'WP_Error', FossilLocation::register_cpt() );
     }
 }

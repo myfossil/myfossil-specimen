@@ -27,8 +27,6 @@ class FossilLocation extends Base
 {
     const POST_TYPE = 'myfossil_fossil_loc';
 
-
-
     /**
      *
      *
