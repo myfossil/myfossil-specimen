@@ -4,13 +4,14 @@
  *
  * Fired during plugin activation
  *
- * @author Brandon Wood <bwood@atmoapps.com>
- * @package myFOSSIL
  * @subpackage  myFOSSIL/includes
  *
  * @link        https://github.com/myfossil
  * @since       0.0.1
+ * @author Brandon Wood <bwood@atmoapps.com>
+ * @package myFOSSIL
  */
+
 
 namespace myFOSSIL\Plugin\Specimen;
 
@@ -38,7 +39,7 @@ class myFOSSIL_Specimen_Activator
      * @static
      */
     public static function activate()
-    { 
+    {
         flush_rewrite_rules();
     }
 
@@ -48,7 +49,8 @@ class myFOSSIL_Specimen_Activator
      * @todo    Use the PBDB client rather than the raw HTTP client
      * @see     {@link http://bit.ly/1w7janY}
      */
-    public static function load_data() {
+    public static function load_data()
+    {
         $url = "http://paleobiodb.org/data1.1/occs/list.json" .
             "?base_name=Cetacea" . "&interval=Miocene" .
             "&show=loc,paleoloc,time" . "&vocab=pbdb";

@@ -4,13 +4,14 @@
  *
  * Fired during plugin deactivation
  *
- * @author      Brandon Wood <bwood@atmoapps.com>
- * @package     myFOSSIL
  * @subpackage  myFOSSIL/includes
  *
  * @link        https://github.com/myfossil
  * @since       0.0.1
+ * @author      Brandon Wood <bwood@atmoapps.com>
+ * @package     myFOSSIL
  */
+
 
 namespace myFOSSIL\Plugin\Specimen;
 

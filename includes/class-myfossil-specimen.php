@@ -5,13 +5,14 @@
  * A class definition that includes attributes and functions used across both
  * the public-facing side of the site and the dashboard.
  *
- * @author      Brandon Wood <bwood@atmoapps.com>
- * @package     myFOSSIL
  * @subpackage  myFOSSIL/includes
  *
  * @link        https://github.com/myfossil
  * @since       0.0.1
+ * @author      Brandon Wood <bwood@atmoapps.com>
+ * @package     myFOSSIL
  */
+
 
 namespace myFOSSIL\Plugin\Specimen;
 
@@ -156,7 +157,7 @@ class myFOSSIL_Specimen
         $plugin_i18n->set_domain( $this->get_plugin_name() );
 
         $this->loader->add_action( 'plugins_loaded', $plugin_i18n,
-                'load_plugin_textdomain' );
+            'load_plugin_textdomain' );
     }
 
     /**
@@ -168,23 +169,30 @@ class myFOSSIL_Specimen
      */
     private function define_admin_hooks()
     {
-        $plugin_admin = new myFOSSIL_Specimen_Admin( $this->get_plugin_name(), $this->get_version() );
+        $plugin_admin = new myFOSSIL_Specimen_Admin( $this->get_plugin_name(),
+                $this->get_version() );
 
-
+        /* Administration UI fixes */
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
-        $this->loader->add_action( 'init', $plugin_admin, 'register_custom_post_types' );
 
-        $this->loader->add_filter( 'bp_blogs_record_comment_post_types',
-                $plugin_admin, 'add_buddypress_comments' );
+        /* WordPress custom post types */
+        $this->loader->add_action( 'init', 
+            $plugin_admin, 'register_custom_post_types' );
 
-        /* Taxonomies */
-        $this->loader->add_action( 'init', $plugin_admin, 'register_taxonomies' );
+        /* WordPress custom taxonomies */
+        $this->loader->add_action( 'init', 
+            $plugin_admin, 'register_taxonomies' );
         $this->loader->add_action( 'wp_ajax_myfossil_load_terms',
-                $plugin_admin, 'ajax_handler' );
+            $plugin_admin, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_load_geochronology',
-                $plugin_admin, 'ajax_handler' );
+            $plugin_admin, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_load_default_fossils',
-                $plugin_admin, 'ajax_handler' );
+            $plugin_admin, 'ajax_handler' );
+
+        /* BuddyPress setup */
+        $this->loader->add_filter( 'bp_blogs_record_comment_post_types',
+            $plugin_admin, 'add_buddypress_comments' );
+
     }
 
     /**
@@ -198,35 +206,36 @@ class myFOSSIL_Specimen
     {
 
         $plugin_public = new myFOSSIL_Specimen_Public(
-                $this->get_plugin_name(), $this->get_version() );
+            $this->get_plugin_name(), $this->get_version() );
 
         $this->loader->add_action( 'init', $plugin_public,
-                'add_rewrite_tags' );
-        $this->loader->add_action( 'init', $plugin_public,
-                'fix_fossil_rewrites' );
+            'add_rewrite_tags' );
 
-        /* should not be able to update taxon of a specimen without logging in */
+        $this->loader->add_action( 'init', $plugin_public,
+            'fix_fossil_rewrites' );
+
+        /* Should not be able to update taxon of a specimen without logging in */
         $this->loader->add_action( 'wp_ajax_myfossil_save_taxon',
-                $plugin_public, 'ajax_handler' );
+            $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_save_dimensions',
-                $plugin_public, 'ajax_handler' );
+            $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_save_location',
-                $plugin_public, 'ajax_handler' );
+            $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_save_geochronology',
-                $plugin_public, 'ajax_handler' );
+            $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_save_lithostratigraphy',
-                $plugin_public, 'ajax_handler' );
+            $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_create_fossil',
-                $plugin_public, 'ajax_handler' );
+            $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_upload_fossil_image',
-                $plugin_public, 'ajax_handler' );
+            $plugin_public, 'ajax_handler' );
         $this->loader->add_action( 'wp_ajax_myfossil_save_status',
-                $plugin_public, 'ajax_handler' );
+            $plugin_public, 'ajax_handler' );
 
         $this->loader->add_action( 'bp_register_activity_actions',
-                $plugin_public, 'bp_register_activity_actions' );
+            $plugin_public, 'bp_register_activity_actions' );
         $this->loader->add_action( 'bp_setup_nav', $plugin_public,
-                'bp_add_member_fossil_nav_items', 100 );
+            'bp_add_member_fossil_nav_items', 100 );
 
     }
 

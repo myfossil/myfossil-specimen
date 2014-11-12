@@ -1,4 +1,12 @@
 <?php
+/**
+ * ./models/Reference.php
+ *
+ * @author Brandon Wood <bwood@atmoapps.com>
+ * @package myFOSSIL
+ */
+
+
 namespace myFOSSIL\Plugin\Specimen;
 
 /**
@@ -31,21 +39,33 @@ class Reference extends Base
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
      * @access  public
+     * @param unknown $post_id (optional)
+     * @param unknown $args    (optional)
      */
     public function __construct( $post_id=null, $args=array() )
     {
         parent::__construct( $post_id, $args );
 
         $this->_meta_keys = array( 'pbdb_id', 'authors', 'year', 'publication',
-                'volume', 'series_number', 'formatted', 'doi', 'editors' );
+            'volume', 'series_number', 'formatted', 'doi', 'editors' );
     }
 
-    public function save( $recursive=false ) {
+    /**
+     *
+     *
+     * @param unknown $recursive (optional)
+     * @return unknown
+     */
+    public function save( $recursive=false )
+    {
         return parent::_save( self::POST_TYPE, $recursive );
     }
 
-    // {{{ Custom Post Type
-    public static function register_cpt() {
+    // {{{ Custom post type
+    /**
+     */
+    public static function register_cpt()
+    {
         $args = array(
             'supports'            => array( 'author', 'custom-fields', 'comments' ),
             'public'              => true,

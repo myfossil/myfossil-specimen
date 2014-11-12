@@ -1,4 +1,12 @@
 <?php
+/**
+ * ./models/TimeInterval.php
+ *
+ * @author Brandon Wood <bwood@atmoapps.com>
+ * @package myFOSSIL
+ */
+
+
 namespace myFOSSIL\Plugin\Specimen;
 
 /**
@@ -20,7 +28,7 @@ use myFOSSIL\PBDB;
  * @subpackage myFOSSIL/includes
  * @author     Brandon Wood <bwood@atmoapps.com>
  */
-class TimeInterval extends Base 
+class TimeInterval extends Base
 {
     const POST_TYPE =  'myfossil_geochron';
 
@@ -30,6 +38,8 @@ class TimeInterval extends Base
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
      * @access  public
+     * @param unknown $post_id (optional)
+     * @param unknown $meta    (optional)
      */
     public function __construct( $post_id=null, $meta=null )
     {
@@ -38,15 +48,26 @@ class TimeInterval extends Base
         $this->pbdb = new PBDB\GeologicalTimeInterval;
 
         $this->_meta_keys = array( 'pbdb_id', 'parent_pbdb_id', 'level', 'color',
-                'late_age_ma', 'early_age_ma', 'reference_id' );
+            'late_age_ma', 'early_age_ma', 'reference_id' );
     }
 
-    public function save( $recursive=false ) {
+    /**
+     *
+     *
+     * @param unknown $recursive (optional)
+     * @return unknown
+     */
+    public function save( $recursive=false )
+    {
         return parent::_save( self::POST_TYPE, $recursive );
     }
 
     // {{{ Custom Post Type
-    public static function register_cpt() {
+
+    /**
+     */
+    public static function register_cpt()
+    {
         $labels = array(
             'name'                => __( 'Time Intervals', 'myfossil-specimen' ),
             'singular_name'       => __( 'Time Interval', 'myfossil-specimen' ),
@@ -87,7 +108,14 @@ class TimeInterval extends Base
     }
     // }}}
 
-    public function __get( $key ) {
+    /**
+     *
+     *
+     * @param unknown $key
+     * @return unknown
+     */
+    public function __get( $key )
+    {
         if ( $key == 'reference' ) {
             if ( $this->reference_id ) {
                 $this->_cache->reference = new Reference( $this->reference_id );
@@ -101,25 +129,39 @@ class TimeInterval extends Base
         return parent::__get( $key );
     }
 
-    public function __set( $key, $value ) {
+    /**
+     *
+     *
+     * @param unknown $key
+     * @param unknown $value
+     * @return unknown
+     */
+    public function __set( $key, $value )
+    {
         if ( in_array( $key, array( 'early_age', 'late_age' ) ) )
             $key = $key . '_ma';
         return parent::__set( $key, $value );
     }
 
-    public function __toString() {
+    /**
+     *
+     *
+     * @return unknown
+     */
+    public function __toString()
+    {
         if ( $this->level && $this->name )
             if ( $this->color )
-                return sprintf( 
+                return sprintf(
                     "<span class=\"label label-primary\">%s</span>"
                     . "<span class=\"label\" style=\"background-color: %s; margin: 3px;\">%s</span>",
                     $this->level, $this->color, $this->name );
             else
-                return sprintf( 
-                    "<span class=\"label label-primary\">%s</span> %s", 
+                return sprintf(
+                    "<span class=\"label label-primary\">%s</span> %s",
                     $this->level, $this->name );
-        else
-            return sprintf( "<span class=\"label
+            else
+                return sprintf( "<span class=\"label
                     label-default\">Unknown</span>" );
     }
 }

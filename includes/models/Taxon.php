@@ -4,13 +4,14 @@
  *
  * Taxon class.
  *
- * @author      Brandon Wood <bwood@atmoapps.com>
- * @package     myFOSSIL
  *
  * @link        https://github.com/myfossil
  * @since       0.0.1
  * @subpackage  myFOSSIL/includes
+ * @author      Brandon Wood <bwood@atmoapps.com>
+ * @package     myFOSSIL
  */
+
 
 namespace myFOSSIL\Plugin\Specimen;
 
@@ -33,7 +34,7 @@ use myFOSSIL\PBDB;
  * @subpackage myFOSSIL/includes
  * @author     Brandon Wood <bwood@atmoapps.com>
  */
-class Taxon extends Base 
+class Taxon extends Base
 {
     const POST_TYPE =  'myfossil_taxon';
 
@@ -43,26 +44,39 @@ class Taxon extends Base
      * @todo    Add WordPress hook(s)
      * @since   0.0.1
      * @access  public
+     * @param unknown $post_id (optional)
+     * @param unknown $meta    (optional)
      */
     public function __construct( $post_id=null, $meta=array() )
     {
         parent::__construct( $post_id, $meta );
 
         $this->_meta_keys = array( 'pbdb_id', 'parent_pbdb_id', 'common_name',
-                'rank', 'reference_id' );
+            'rank', 'reference_id' );
 
         $this->pbdb = new PBDB\Taxon;
     }
 
-    public function save( $recursive=false ) {
+    /**
+     *
+     *
+     * @param unknown $recursive (optional)
+     * @return unknown
+     */
+    public function save( $recursive=false )
+    {
         return parent::_save( self::POST_TYPE, $recursive );
     }
 
     // {{{ Custom Post Type
-    public static function register_cpt() {
+
+    /**
+     */
+    public static function register_cpt()
+    {
         $labels = array(
             'name'                => __( 'Taxa', 'myfossil-specimen' ),
-            'singular_name'       => __( 'Taxon', 'myfossil-specimen' ), 
+            'singular_name'       => __( 'Taxon', 'myfossil-specimen' ),
             'menu_name'           => __( 'Taxa', 'myfossil-specimen' ),
             'parent_item_colon'   => __( 'Parent Taxon:', 'myfossil-specimen' ),
             'all_items'           => __( 'Taxa', 'myfossil-specimen' ),
@@ -101,7 +115,14 @@ class Taxon extends Base
     }
     // }}}
 
-    public function __get( $key ) {
+    /**
+     *
+     *
+     * @param unknown $key
+     * @return unknown
+     */
+    public function __get( $key )
+    {
         if ( $key == 'reference' ) {
             if ( $this->reference_id ) {
                 $this->_cache->reference = new Reference( $this->reference_id );
@@ -112,7 +133,15 @@ class Taxon extends Base
         return parent::__get( $key );
     }
 
-    public static function bp_format_activity( $action, $activity ) {
+    /**
+     *
+     *
+     * @param unknown $action
+     * @param unknown $activity
+     * @return unknown
+     */
+    public static function bp_format_activity( $action, $activity )
+    {
         return parent::bp_format_activity( $action, $activity );
 
         if ( $activity->content ) {
@@ -126,7 +155,7 @@ class Taxon extends Base
             $activity->content = sprintf( 'Changed Taxon from <span
                     class="border">%s</span> to <span class="border">
                     %s</span>', $from,
-                    $to );
+                $to );
 
             unset( $from );
             unset( $to );
@@ -135,23 +164,29 @@ class Taxon extends Base
         return parent::bp_format_activity( $action, $activity );
     }
 
-    public function __toString() {
+    /**
+     *
+     *
+     * @return unknown
+     */
+    public function __toString()
+    {
         $colors = array(
-                "life"    => "#777fff",
-                "domain"  => "#77c3ff",
-                "kingdom" => "#58fff7",
-                "phylum"  => "#58ffa5",
-                "class"   => "#5dff58",
-                "order"   => "#b0ff58",
-                "family"  => "#fffd58",
-                "genus"   => "#ffaa58",
-                "species" => "#e28d54"
-            );
+            "life"    => "#777fff",
+            "domain"  => "#77c3ff",
+            "kingdom" => "#58fff7",
+            "phylum"  => "#58ffa5",
+            "class"   => "#5dff58",
+            "order"   => "#b0ff58",
+            "family"  => "#fffd58",
+            "genus"   => "#ffaa58",
+            "species" => "#e28d54"
+        );
 
         $bgcolor = array_key_exists( $this->rank, $colors ) ?
             $colors[$this->rank] : '#eee';
 
-        return sprintf( 
+        return sprintf(
             '<span class="label" style="background-color: %s; color: #333">%s</span> %s',
             $bgcolor, $this->rank, $this->name );
     }

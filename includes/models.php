@@ -2,13 +2,14 @@
 /**
  * ./includes/models.php
  *
- * @author      Brandon Wood <bwood@atmoapps.com>
- * @package     myFOSSIL
  * @subpackage  myFOSSIL/includes/models
  *
  * @link        https://github.com/myfossil
  * @since       0.0.1
+ * @author      Brandon Wood <bwood@atmoapps.com>
+ * @package     myFOSSIL
  */
+
 
 require_once 'models/Base.php';
 require_once 'models/Fossil.php';
