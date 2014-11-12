@@ -162,8 +162,6 @@ class Fossil extends Base
      *
      * @since   0.0.1
      * @access  public
-     * @param unknown $key
-     * @return unknown
      */
     public function __get( $key )
     {

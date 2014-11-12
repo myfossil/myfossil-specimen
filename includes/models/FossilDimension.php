@@ -50,10 +50,10 @@ class FossilDimension extends Base
     }
 
     /**
+     * Save the FossilDimension object.
      *
-     *
-     * @param unknown $recursive (optional)
-     * @return unknown
+     * @param   bool    $recursive (optional)   Save children objects as well, default false.
+     * @return  int     Object's WP_Post ID as saved in the database.
      */
     public function save( $recursive=false )
     {
@@ -61,7 +61,9 @@ class FossilDimension extends Base
     }
 
     // {{{ Custom Post Type
-
+    /**
+     * Register custom post type with WordPress.
+     */
     public static function register_cpt()
     {
         $args = array(
@@ -71,16 +73,10 @@ class FossilDimension extends Base
             'rewrite'             => false,
         );
 
-        register_post_type( self::POST_TYPE, $args );
+        return register_post_type( self::POST_TYPE, $args );
     }
     // }}}
 
-    /**
-     *
-     *
-     * @param unknown $key
-     * @return unknown
-     */
     public function __get( $key )
     {
         if ( in_array( $key, array( 'length', 'width', 'height' ) ) )
@@ -88,13 +84,6 @@ class FossilDimension extends Base
         return parent::__get( $key );
     }
 
-    /**
-     *
-     *
-     * @param unknown $key
-     * @param unknown $value
-     * @return unknown
-     */
     public function __set( $key, $value )
     {
         if ( in_array( $key, array( 'length', 'width', 'height' ) ) )
@@ -102,11 +91,29 @@ class FossilDimension extends Base
         return parent::__set( $key, $value );
     }
 
+    public function __toString()
+    {
+        if ( $this->length && $this->width ) {
+            if ( $this->height ) {
+                return sprintf( '%12.1f &times; %12.1f &times; %12.1f cm',
+                    $this->as_cm( 'length' ),
+                    $this->as_cm( 'width' ),
+                    $this->as_cm( 'height' ) );
+            } else {
+                return sprintf( '%12.1f &times; %12.1f cm',
+                    $this->as_cm( 'length' ),
+                    $this->as_cm( 'width' ) );
+            }
+        }
+
+        return 'undefined';
+    }
+
     /**
+     * Return dimension in units of centimeters.
      *
-     *
-     * @param unknown $key
-     * @return unknown
+     * @param  string   $key Dimension to return in centimeters.
+     * @return float    Dimension in centeriments.
      */
     public function as_cm( $key )
     {
@@ -114,11 +121,11 @@ class FossilDimension extends Base
     }
 
     /**
-     * 
+     * Callback to format BuddyPress activity for a Dimension update.
      *
-     * @param unknown $action
-     * @param unknown $activity
-     * @return unknown
+     * @param string    $action BuddyPress Activity action.
+     * @param object    $activity BuddyPress Activity object.
+     * @return string   BuddyPress Activity action
      */
     public static function bp_format_activity( $action, $activity )
     {
@@ -144,26 +151,4 @@ class FossilDimension extends Base
         return parent::bp_format_activity( $action, $activity );
     }
 
-    /**
-     *
-     *
-     * @return unknown
-     */
-    public function __toString()
-    {
-        if ( $this->length && $this->width ) {
-            if ( $this->height ) {
-                return sprintf( '%12.1f &times; %12.1f &times; %12.1f cm',
-                    $this->as_cm( 'length' ),
-                    $this->as_cm( 'width' ),
-                    $this->as_cm( 'height' ) );
-            } else {
-                return sprintf( '%12.1f &times; %12.1f cm',
-                    $this->as_cm( 'length' ),
-                    $this->as_cm( 'width' ) );
-            }
-        }
-
-        return 'undefined';
-    }
 }
