@@ -475,7 +475,7 @@ abstract class Base
              */
             $component_id = self::BP_COMPONENT_ID;
             $type         = sprintf( '%s_%s', $post_type, $action );
-            $description  = sprintf( '%s %s', $post_type, $aciton );
+            $description  = sprintf( '%s %s', $post_type, $action );
             $format_cb    = sprintf( "%s::bp_format_activity", \get_called_class() );
             $label        = $post_type;
             $context      = array( 'activity' );
