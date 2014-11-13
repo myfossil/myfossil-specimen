@@ -8,8 +8,9 @@ function fossil_view_images( $fossil ) {
     <h3 class="sr-only">Image</h3>
     <div class="activity-entry">
         <div class="activity-body">
-            <img id="fossil-featured-image" class="img-responsive"
-                    src="<?php echo $image_src ?>" style="padding: 10px;" />
+            <img id="fossil-featured-image" class="img-responsive fossil-image"
+                    src="<?php echo $image_src ?>" style="padding: 10px;" 
+                    data-attachment-id="<?=$featured_image->ID ?>" />
         </div>
     </div>
     <?php
