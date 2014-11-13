@@ -16,27 +16,32 @@ function myfossil_fossil_render_single_history( $fossil ) {
 
     <?php if ( bp_has_activities( bp_ajax_querystring( 'activity' ) .
                 '&primary_id=' . $item_query ) ) : ?>
-        <div class="timeline-centered">
+        <table class="table">
+
+            <tr>
+                <th>User</th>
+                <th>Date/Time</th>
+                <th>Action</th>
+            </tr>
 
         <?php foreach( $activities_template->activities as $activity ) : ?>
-            <article class="timeline-entry">
-                <div class="timeline-entry-inner">
-                    <div class="timeline-icon">
-                        <?=get_avatar( $activity->user_id, 30 ) ?>
-                    </div>
-                    <div class="timeline-label">
-                        <h2>
-                            <?=$activity->action ?>
-                            <i class="fa fa-fw fa-clock-o"></i>
-                            <?=bp_core_time_since( $activity->date_recorded ); ?>
-                        </h2>
-                        <?=$activity->content ?>
-                    </div>
-                </div>
-            </article>
+
+            <tr>
+                <td>
+                    <?=get_avatar( $activity->user_id, 30 ) ?>
+                </td>
+                <td>
+                    <i class="fa fa-fw fa-clock-o"></i>
+                    <?=$activity->date_recorded ?>
+                </td>
+                <td>
+                    <?=$activity->action ?>
+                </td>
+            </tr>
+
         <?php endforeach; ?>
 
-        </ul>
+        </table>
 
     <?php endif;
 }

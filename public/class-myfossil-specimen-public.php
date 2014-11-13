@@ -261,6 +261,16 @@ class myFOSSIL_Specimen_Public {
                 break;
             // }}}
 
+
+            case 'myfossil_delete_fossil_image':
+                if ( false === wp_delete_attachment( $_POST['image_id'] ) ) {
+                    echo json_encode( array( 'error' => 'Failed to delete image' ) );
+                } else {
+                    echo json_encode( 1 );
+                }
+                die;
+                break;
+
             case 'myfossil_upload_fossil_image':
                 if ( empty( $_FILES ) ) {
                     header( 'HTTP/1.0 400 Bad Request' );
@@ -278,7 +288,9 @@ class myFOSSIL_Specimen_Public {
                     $fh[$k] = $v[0];
                 }
 
-                echo json_encode( self::upload_user_file( $fh, $_POST['post_id'] ) );
+                $attachment_id = self::upload_user_file( $fh, $_POST['post_id'] );
+                echo json_encode( array( 'post_id' => $attachment_id, 'src' =>
+                            wp_get_attachment_url( $attachment_id ) ) );
                 die;
                 break;
         }
