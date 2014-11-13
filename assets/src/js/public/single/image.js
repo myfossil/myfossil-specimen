@@ -7,7 +7,7 @@
 
         console.log( '__status_loading__' );
         img.hide();
-        _parent.append( '<span class="loading"><i class="fa fa-spinner fa-spin"></i> Uploading... </span>');
+        _parent.append( '<span class="loading"><h1><i class="fa fa-circle-o-notch fa-spin fa-6"></i></h1></span>');
     }
 
     function status_done() {
