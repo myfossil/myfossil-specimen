@@ -12,6 +12,9 @@ function fossil_view_geochronology( $fossil=null ) {
         <i style="display: none" class="fa fa-fw fa-warning"
                 id="fossil-geochronology-error"></i>
     </h3>
+
+    <?php save_alert( 'geochronology' ); ?>
+
     <input type="hidden" 
             id="fossil-geochronology-name" 
             value="<?=$fossil->time_interval->name ?>" />

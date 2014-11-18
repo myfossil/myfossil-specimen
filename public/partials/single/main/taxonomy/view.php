@@ -15,7 +15,11 @@ function fossil_view_taxonomy( $fossil=null ) {
                 id="fossil-taxon-success"></i>
         <i style="display: none" class="fa fa-fw fa-warning"
                 id="fossil-taxon-error"></i>
+
     </h3>
+
+    <?php save_alert( 'taxon' ); ?>
+
     <table id="fossil-taxon" class="table">
         <tr class="sr-only">
             <th>Taxonomy Level</th>
