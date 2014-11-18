@@ -66,6 +66,7 @@
         load_taxa();
     }
     // }}}
+
     // {{{ reset_taxa
     function reset_taxa() {
         var ranks = ['phylum', 'class', 'order', 'family', 'genus', 'species'];
@@ -103,6 +104,7 @@
             dataType: 'json',
             success: function( data ) {
                     $( '#fossil-taxon-success' ).show().fadeOut();
+                    $( '#edit-fossil-taxon-save-alert' ).fadeOut();
                 },
             complete: function( data ) {
                     $( '#fossil-taxon-loading' ).hide();
@@ -182,8 +184,15 @@
     }
     // }}}
 
+    function save_prompt() {
+        $( '#edit-fossil-taxon-save-alert' ).show();
+    }
+
     $( function() {
         load_taxa();
+
+        $( '#edit-fossil-taxon-save' ).click( save_taxon );
+
 
         $( '#edit-fossil-taxon-name' ).keyup( autocomplete_taxon );
 
@@ -193,10 +202,7 @@
                     opacity: 1,
                     background: false,
                     transition: 'all 0.2s',
-                    closetransitionend: save_taxon,
-                    onclose: function() {
-                        $( '#fossil-taxon-loading' ).show();
-                    }
+                    closetransitionend: save_prompt,
                 }
             );
     } );
