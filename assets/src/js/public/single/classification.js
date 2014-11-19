@@ -84,11 +84,14 @@
         var post_id = parseInt( $( '#post_id' ).val() );
         var taxon_name = $( '#fossil-taxon-name' ).val(),
             taxon_rank = $( '#fossil-taxon-rank' ).val(),
-            taxon_pbdb = $( '#fossil-taxon-pbdb' ).val();
+            taxon_pbdb = $( '#fossil-taxon-pbdb' ).val(),
+            taxon_comment = $( '#edit-fossil-taxon-comment' ).val();
+
         var taxon = {
                 name: taxon_name,
                 rank: taxon_rank,
                 pbdb: taxon_pbdb,
+                comment: taxon_comment,
             };
 
         $.ajax({
@@ -105,6 +108,7 @@
             success: function( data ) {
                     $( '#fossil-taxon-success' ).show().fadeOut();
                     $( '#edit-fossil-taxon-save-alert' ).fadeOut();
+                    console.info( data );
                 },
             complete: function( data ) {
                     $( '#fossil-taxon-loading' ).hide();

@@ -149,6 +149,7 @@ class myFOSSIL_Specimen_Public {
                 $taxon->pbdb_id = $_POST['taxon']['pbdb'];
                 $taxon->name    = $_POST['taxon']['name'];
                 $taxon->rank    = $_POST['taxon']['rank'];
+                $taxon->comment = $_POST['taxon']['comment'];
 
                 $fossil->taxon_id = $taxon->save(); 
 
