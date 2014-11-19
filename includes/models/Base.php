@@ -550,6 +550,8 @@ abstract class Base
 
         if ( property_exists( $activity, 'template' ) )
             $activity->content = $activity->template;
+        else
+            $activity->content = null;
 
         return apply_filters( 'bp_myfossil_activity_' . $activity->type .
             '_format', $action, $activity );
