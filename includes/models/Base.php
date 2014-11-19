@@ -550,7 +550,7 @@ abstract class Base
 
         if ( property_exists( $activity, 'template' ) )
             $activity->content = $activity->template;
-        else
+        elseif ( $verb !== 'commented' )
             $activity->content = null;
 
         return apply_filters( 'bp_myfossil_activity_' . $activity->type .
