@@ -20,6 +20,10 @@
         img.show();
     }
 
+    function status_error( data ) {
+        alert( 'Please upload images of type JPEG or PNG' );
+    }
+
     $( function() {
         var post_id = $( '#post_id' ).val();
         var nonce = $( '#myfossil_specimen_nonce' ).val();
@@ -38,6 +42,8 @@
             success: function( data ) {
                 if ( data && data.src ) 
                     $( 'img.fossil-image' ).attr( 'src', data.src );
+                else
+                    status_error( data );
             },
             done: function( e, data ) {
                 console.info( e );

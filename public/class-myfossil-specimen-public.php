@@ -102,6 +102,9 @@ class myFOSSIL_Specimen_Public {
                 'guid' => $file_return['url']
             );
 
+            if ( ! in_array( $file_return['type'], array( 'image/jpeg', 'image/png' ) ) )
+                return false;
+
             $attachment_id = wp_insert_attachment( $attachment, $file_return['url'], $post_id );
 
             require_once( ABSPATH . 'wp-admin/includes/image.php' );
@@ -318,8 +321,16 @@ class myFOSSIL_Specimen_Public {
                 }
 
                 $attachment_id = self::upload_user_file( $fh, $_POST['post_id'] );
-                echo json_encode( array( 'post_id' => $attachment_id, 'src' =>
-                            wp_get_attachment_url( $attachment_id ) ) );
+
+                if ( ! $attachment_id )
+                    echo json_encode( array( 'error' => 'Invalid file type' ) );
+                else
+                    echo json_encode( 
+                            array( 
+                                'post_id' => $attachment_id, 
+                                'src' => wp_get_attachment_url( $attachment_id ) 
+                            ) 
+                        );
                 die;
                 break;
         }
