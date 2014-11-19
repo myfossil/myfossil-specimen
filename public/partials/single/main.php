@@ -1,6 +1,6 @@
 <?php
 
-require_once( 'main/save-alert.php' );
+require_once( 'main/edit-utils.php' );
 
 function myfossil_fossil_render_single_main( $fossil ) {
     ?>
