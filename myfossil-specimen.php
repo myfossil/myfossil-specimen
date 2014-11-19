@@ -95,14 +95,18 @@ function myfossil_admin_enqueue_scripts() {
     wp_enqueue_script( 'myfossil_specimen_admin', plugin_dir_url( __FILE__ ) .
             'static/js/admin.min.js', array( 'jquery' ) );
 }
-add_action( 'admin_enqueue_scripts', __namespace__ . '\myfossil_admin_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', __namespace__ .
+        '\myfossil_admin_enqueue_scripts' );
 
+/*
 function myfossil_bp_blogs_record_post_post_types( $post_types ) {
     if ( ! in_array( Fossil::POST_TYPE, $post_types ) )
         array_push( $post_types, Fossil::POST_TYPE );
     return $post_types;
 }
-add_filter( 'bp_blogs_record_post_post_types', __namespace__ . '\myfossil_bp_blogs_record_post_post_types' );
+add_filter( 'bp_blogs_record_post_post_types', __namespace__ .
+        '\myfossil_bp_blogs_record_post_post_types', 10, 1 );
+*/
 
 /**
  * Begins execution of the plugin.

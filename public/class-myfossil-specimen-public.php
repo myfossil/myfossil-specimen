@@ -267,6 +267,29 @@ class myFOSSIL_Specimen_Public {
                 break;
             // }}}
 
+            case 'myfossil_fossil_comment':
+                $post_id = $_POST['post_id'];
+                $fossil = new Fossil( $post_id );
+                $comment = $_POST['comment'];
+
+                if ( empty( $comment ) ) die;
+
+                echo json_encode( 
+                    \bp_activity_add(
+                        array(
+                            'component' => Fossil::BP_COMPONENT_ID,
+                            'item_id' => $post_id,
+                            'user_id' => \bp_loggedin_user_id(),
+                            'content' => $comment,
+                            'secondary_item_id' => $fossil->wp_post->post_author,
+                            'type' => Fossil::POST_TYPE . '_comment'
+                        )
+                    )
+                );
+
+                die;
+                break;
+
 
             case 'myfossil_delete_fossil_image':
                 if ( false === wp_delete_attachment( $_POST['image_id'] ) ) {
