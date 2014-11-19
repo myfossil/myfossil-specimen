@@ -31,6 +31,8 @@ function fossil_edit_dimensions( $fossil=null ) {
                             <span class="input-group-addon">cm</span>
                         </div>
                     </div>
+
+                    <?php edit_comment_box( 'dimension' ); ?>
                 </form>
             </div>
             <div class="edit-fossil-footer">

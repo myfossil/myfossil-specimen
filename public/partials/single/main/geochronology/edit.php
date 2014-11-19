@@ -20,6 +20,7 @@ function fossil_edit_geochronology( $fossil=null ) {
                         <select class="form-control" id="edit-fossil-geochronology">
                         </select>
                     </div>
+                    <?php edit_comment_box( 'geochronology' ); ?>
                 </form>
             </div>
             <div class="edit-fossil-footer">

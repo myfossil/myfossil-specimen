@@ -26,3 +26,26 @@ function save_alert( $id, $message=null ) {
 
     <?php
 }
+
+
+function edit_comment_box( $id ) {
+    ?>
+        <div id="edit-fossil-<?=$id ?>-comment-toggle">
+            <button type="button" class="btn btn-sm btn-block btn-default">
+                <i class="fa fa-fw fa-comment"></i>
+                Add comment
+            </button>
+        </div>
+        <div style="display: none" 
+                class="form-group" 
+                id="edit-fossil-<?=$id ?>-comment-form-group">
+            <label class="control-label" for="edit-fossil-<?=$id ?>-comment">
+                Comment
+            </label>
+            <textarea class="form-control" 
+                    id="edit-fossil-<?=$id ?>-comment" 
+                    name="edit-fossil-<?=$id ?>-comment"
+                    placeholder="Comment"></textarea>
+        </div>
+    <?php
+}

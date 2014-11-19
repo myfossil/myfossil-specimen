@@ -16,6 +16,7 @@ function fossil_edit_taxonomy( $fossil=null ) {
                                 id="edit-fossil-taxon-name"
                                 placeholder="Begin typing your Taxon" />
                     </div>
+                    <?php edit_comment_box( 'taxon' ); ?>
                 </form>
             </div>
             <div class="edit-fossil-footer">
