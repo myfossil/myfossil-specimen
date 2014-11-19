@@ -63,6 +63,7 @@
             dataType: 'json',
             success: function( data ) {
                     $( '#fossil-location-success' ).show().fadeOut();
+                    $( '#edit-fossil-location-save-alert' ).fadeOut();
                 },
             complete: function( data ) {
                     $( '#fossil-location-loading' ).hide();
@@ -76,10 +77,16 @@
     }
     // }}}
 
+    function save_prompt() {
+        $( '#edit-fossil-location-save-alert' ).show();
+    }
+
     $( function() {
         google.maps.event.addDomListener( window, 'load', init_map );
 
         init_location_edit();
+
+        $( '#edit-fossil-location-save' ).click( save_location );
 
         $( '#edit-fossil-location' ).popup(
                 {
@@ -87,10 +94,7 @@
                     opacity: 1,
                     background: false,
                     transition: 'all 0.2s',
-                    closetransitionend: save_location,
-                    onclose: function() {
-                        $( '#fossil-location-loading' ).show();
-                    }
+                    closetransitionend: save_prompt
                 }
             );
     } );

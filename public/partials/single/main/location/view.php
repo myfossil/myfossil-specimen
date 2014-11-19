@@ -13,6 +13,8 @@ function fossil_view_location( $fossil=null ) {
                 id="fossil-location-error"></i>
     </h3>
 
+    <?php save_alert( 'location' ); ?>
+
     <?php if ( $fossil->location && $fossil->location->latitude && $fossil->location->longitude ): ?>
         <div class="edit-fossil hidden-xs hidden-sm col-md-6 col-lg-6">
             <div class="edit-fossil-body">

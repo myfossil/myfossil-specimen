@@ -41,6 +41,7 @@
             success: function( data ) {
                     console.log( data );
                     $( '#fossil-dimensions-success' ).show().fadeOut();
+                    $( '#edit-fossil-dimension-save-alert' ).fadeOut();
                 },
             complete: function( data ) {
                     $( '#fossil-dimensions-loading' ).hide();
@@ -53,8 +54,14 @@
         });
     }
 
+    function save_prompt() {
+        $( '#edit-fossil-dimension-save-alert' ).show();
+    }
+
     $( function() {
         init_dimensions();
+
+        $( '#edit-fossil-dimension-save' ).click( save_dimensions );
 
         $( '#edit-fossil-dimensions' ).popup(
                 {
@@ -62,10 +69,7 @@
                     opacity: 1,
                     background: false,
                     transition: 'all 0.2s',
-                    closetransitionend: save_dimensions,
-                    onclose: function() {
-                        $( '#fossil-dimensions-loading' ).show();
-                    }
+                    closetransitionend: save_prompt
                 }
             );
 

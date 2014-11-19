@@ -15,6 +15,8 @@ function fossil_view_lithostratigraphy( $fossil=null ) {
                 id="fossil-lithostratigraphy-error"></i>
     </h3>
 
+    <?php save_alert( 'lithostratigraphy' ); ?>
+
     <table class="table">
         <?php foreach ( Stratum::get_ranks() as $n => $k ): ?>
             <tr>

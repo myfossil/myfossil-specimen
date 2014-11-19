@@ -34,6 +34,7 @@
             success: function( data ) {
                     console.info( data );
                     $( '#fossil-lithostratigraphy-success' ).show().fadeOut();
+                    $( '#edit-fossil-lithostratigraphy-save-alert' ).fadeOut();
                 },
             complete: function( data ) {
                     $( '#fossil-lithostratigraphy-loading' ).hide();
@@ -146,7 +147,12 @@
     }
     // }}}
 
+    function save_prompt() {
+        $( '#edit-fossil-lithostratigraphy-save-alert' ).show();
+    }
+
     $( function() {
+        $( '#edit-fossil-lithostratigraphy-save' ).click( save_lithostratigraphy );
 
         $.map( ['member', 'formation', 'group'], function( rank ) {
             $( 'input#edit-fossil-stratum-' + rank )
@@ -163,10 +169,7 @@
                     opacity: 1,
                     background: false,
                     transition: 'all 0.2s',
-                    closetransitionend: save_lithostratigraphy,
-                    onclose: function() {
-                        $( '#fossil-lithostratigraphy-loading' ).show();
-                    }
+                    closetransitionend: save_prompt,
                 }
             );
         }); // $.map

@@ -13,6 +13,8 @@ function fossil_view_dimensions( $fossil=null ) {
                 id="fossil-dimensions-error"></i>
     </h3>
 
+    <?php save_alert( 'dimension' ); ?>
+
     <table class="table">
         <tr class="sr-only">
             <th>Dimension</th>

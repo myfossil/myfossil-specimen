@@ -131,6 +131,7 @@
             success: function( data ) {
                     console.info( data );
                     $( '#fossil-geochronology-success' ).show().fadeOut();
+                    $( '#edit-fossil-geochronology-save-alert' ).fadeOut();
                 },
             complete: function( data ) {
                     $( '#fossil-geochronology-loading' ).hide();
@@ -144,9 +145,15 @@
     }
     // }}}
 
+    function save_prompt() {
+        $( '#edit-fossil-geochronology-save-alert' ).show();
+    }
+
     $( function() {
         load_geochronology();
         init_edit_geochronology();
+
+        $( '#edit-fossil-geochronology-save' ).click( save_geochronology );
 
         $( '#edit-fossil-geochronology' ).popup(
                 {
@@ -154,10 +161,7 @@
                     opacity: 1,
                     background: false,
                     transition: 'all 0.2s',
-                    closetransitionend: save_geochronology,
-                    onclose: function() {
-                        $( '#fossil-geochronology-loading' ).show();
-                    }
+                    closetransitionend: save_prompt
                 }
             );
     } );

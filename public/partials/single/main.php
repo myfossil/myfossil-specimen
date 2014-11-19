@@ -1,5 +1,7 @@
 <?php
 
+require_once( 'main/save-alert.php' );
+
 function myfossil_fossil_render_single_main( $fossil ) {
     ?>
         <div class="row clearfix">
