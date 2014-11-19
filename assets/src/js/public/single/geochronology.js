@@ -125,7 +125,8 @@
                     'action': 'myfossil_save_geochronology',
                     'nonce': nonce,
                     'post_id': post_id,
-                    'geochronology': geochronology
+                    'geochronology': geochronology,
+                    'comment' : $( '#edit-fossil-geochronology-comment' ).val()
                 },
             dataType: 'json',
             success: function( data ) {
@@ -149,11 +150,18 @@
         $( '#edit-fossil-geochronology-save-alert' ).show();
     }
 
+    function toggle_comment() {
+        $( '#edit-fossil-geochronology-comment-form-group' ).toggle();
+        $( this ).fadeOut( 400 );
+        // $( '#edit-fossil-geochronology-comment-toggle > button' ).click( toggle_comment );
+    }
+
     $( function() {
         load_geochronology();
         init_edit_geochronology();
 
         $( '#edit-fossil-geochronology-save' ).click( save_geochronology );
+        $( '#edit-fossil-geochronology-comment-toggle > button' ).click( toggle_comment );
 
         $( '#edit-fossil-geochronology' ).popup(
                 {

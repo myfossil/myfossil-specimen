@@ -29,6 +29,7 @@
                     'nonce': nonce,
                     'post_id': post_id,
                     'strata': strata,
+                    'comment': $( '#edit-fossil-lithostratigraphy-comment' ).val()
                 },
             dataType: 'json',
             success: function( data ) {
@@ -151,8 +152,15 @@
         $( '#edit-fossil-lithostratigraphy-save-alert' ).show();
     }
 
+    function toggle_comment() {
+        $( '#edit-fossil-lithostratigraphy-comment-form-group' ).toggle();
+        $( this ).fadeOut( 400 );
+        // $( '#edit-fossil-lithostratigraphy-comment-toggle > button' ).click( toggle_comment );
+    }
+
     $( function() {
         $( '#edit-fossil-lithostratigraphy-save' ).click( save_lithostratigraphy );
+        $( '#edit-fossil-lithostratigraphy-comment-toggle > button' ).click( toggle_comment );
 
         $.map( ['member', 'formation', 'group'], function( rank ) {
             $( 'input#edit-fossil-stratum-' + rank )

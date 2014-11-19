@@ -149,6 +149,7 @@ class myFOSSIL_Specimen_Public {
                 $taxon->pbdb_id = $_POST['taxon']['pbdb'];
                 $taxon->name    = $_POST['taxon']['name'];
                 $taxon->rank    = $_POST['taxon']['rank'];
+                $taxon->comment = $_POST['taxon']['comment'];
 
                 $fossil->taxon_id = $taxon->save(); 
 
@@ -168,6 +169,7 @@ class myFOSSIL_Specimen_Public {
                 $ti->color   = $_POST['geochronology']['color'];
                 $ti->level   = $_POST['geochronology']['level'];
                 $ti->name    = $_POST['geochronology']['name'];
+                $ti->comment = $_POST['comment'];
 
                 $fossil->time_interval_id = $ti->save();
 
@@ -190,6 +192,7 @@ class myFOSSIL_Specimen_Public {
                         $stratum = new Stratum;
 
                     $stratum->name = $_POST['strata'][$rank];
+                    $stratum->comment = $_POST['comment'];
 
                     $fossil->{ $stratum_id_key } = $stratum->save();
                 }
@@ -214,6 +217,7 @@ class myFOSSIL_Specimen_Public {
                 $dim->length = $length / 100; // convert to meters
                 $dim->width  = $width  / 100; // convert to meters
                 $dim->height = $height / 100; // convert to meters
+                $dim->comment = $_POST['comment'];
 
                 $fossil->dimension_id = $dim->save();
 
@@ -233,6 +237,8 @@ class myFOSSIL_Specimen_Public {
                             'county', 'city' ) as $k ) {
                     $location->{ $k } = $_POST['location'][$k];
                 }
+
+                $location->comment = $_POST['comment'];
 
                 $fossil->location_id = $location->save();
 
@@ -260,6 +266,29 @@ class myFOSSIL_Specimen_Public {
                 die;
                 break;
             // }}}
+
+            case 'myfossil_fossil_comment':
+                $post_id = $_POST['post_id'];
+                $fossil = new Fossil( $post_id );
+                $comment = $_POST['comment'];
+
+                if ( empty( $comment ) ) die;
+
+                echo json_encode( 
+                    \bp_activity_add(
+                        array(
+                            'component' => Fossil::BP_COMPONENT_ID,
+                            'item_id' => $post_id,
+                            'user_id' => \bp_loggedin_user_id(),
+                            'content' => $comment,
+                            'secondary_item_id' => $fossil->wp_post->post_author,
+                            'type' => Fossil::POST_TYPE . '_comment'
+                        )
+                    )
+                );
+
+                die;
+                break;
 
 
             case 'myfossil_delete_fossil_image':

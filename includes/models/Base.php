@@ -108,6 +108,14 @@ abstract class Base
      */
     protected $_history;
 
+    /**
+     * Holds comment string about the update.
+     *
+     * @access  public 
+     * @var     string  $comment
+     */
+    public $comment;
+
     // }}}
 
     /**
@@ -218,35 +226,46 @@ abstract class Base
      */
     public function __set( $key, $value )
     {
-        if ( $this->{ $key } && (string) $this->{ $key } !== (string) $value )
+        if ( $key == 'comment' ) {
+            $this->comment = $value;
+            return;
+        }
+
+        if ( $this->{ $key } && (string) $this->{ $key } !== (string) $value ) {
             $this->_history[] = array(
-                'key' => $key,
-                'from' => $this->{ $key },
-            'to' => $value
-        );
+                    'key' => $key,
+                    'from' => $this->{ $key },
+                    'to' => $value
+                );
+        }
 
-        if ( $key == 'id' && $this->wp_post )
+        if ( $key == 'id' && $this->wp_post ) {
             $this->wp_post->ID = $value;
+        }
 
-        if ( $key == 'name' )
-            if ( $this->wp_post )
+        if ( $key == 'name' ) {
+            if ( $this->wp_post ) {
                 $this->wp_post->post_title = $value;
-            else
+            } else {
                 $this->_meta->name = $value;
-
-            /* Special cases when setting the PBDB ID */
-            if ( $this->pbdb )
-                if ( $key == 'pbdbid' || $key == 'pbdb_id' )
-                    $this->pbdb->pbdbid = $value;
-                elseif ( $key == 'parent_pbdb_id' || $key == 'parent_pbdbid' )
-                    $this->pbdb->parent_no = $value;
-
-                /* Set local properties of Object */
-                if ( property_exists( $this, $key ) ) {
-                    $this->{$key} = $value;
-                } else {
-                $this->_meta->{$key} = $value;
             }
+        }
+
+        /* Special cases when setting the PBDB ID */
+        if ( $this->pbdb ) {
+            if ( $key == 'pbdbid' || $key == 'pbdb_id' ) {
+                $this->pbdb->pbdbid = $value;
+            } elseif ( $key == 'parent_pbdb_id' || $key == 'parent_pbdbid' ) {
+                $this->pbdb->parent_no = $value;
+            }
+        }
+
+        /* Set local properties of Object */
+        if ( property_exists( $this, $key ) ) {
+            $this->{$key} = $value;
+        } else {
+            $this->_meta->{$key} = $value;
+        }
     }
     // }}}
 
@@ -413,6 +432,7 @@ abstract class Base
      */
     public function bp_activity_maybe_update( $post_type, $updating=false )
     {
+        $activity_id = (int) 0;
         $updated = (bool) ( $updating && $this->_history );
         $created = (bool) ( ! $updating );
 
@@ -434,9 +454,22 @@ abstract class Base
                 'type' => $bp_activity_type
             );
 
-            return \bp_activity_add( $args );
-        }
+            $activity_id = \bp_activity_add( $args );
+
+            if ( $activity_id > 0 ) {
+                if ( ! empty( $this->comment ) ) {
+                    $comment_id = \bp_activity_new_comment( 
+                            array( 
+                                'activity_id' => $activity_id,
+                                'content' => $this->comment
+                            )
+                        );
+                }
+            }
     
+            return $activity_id;
+        }
+
         return false;
     }
 
@@ -517,6 +550,8 @@ abstract class Base
 
         if ( property_exists( $activity, 'template' ) )
             $activity->content = $activity->template;
+        else
+            $activity->content = null;
 
         return apply_filters( 'bp_myfossil_activity_' . $activity->type .
             '_format', $action, $activity );

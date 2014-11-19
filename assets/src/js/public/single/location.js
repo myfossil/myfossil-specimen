@@ -58,7 +58,8 @@
                     'action': 'myfossil_save_location',
                     'nonce': nonce,
                     'post_id': post_id,
-                    'location': loc
+                    'location': loc,
+                    'comment': $( '#edit-fossil-location-comment' ).val()
                 },
             dataType: 'json',
             success: function( data ) {
@@ -81,12 +82,18 @@
         $( '#edit-fossil-location-save-alert' ).show();
     }
 
+    function toggle_comment() {
+        $( '#edit-fossil-location-comment-form-group' ).toggle();
+        $( this ).fadeOut( 400 );
+    }
+
     $( function() {
         google.maps.event.addDomListener( window, 'load', init_map );
 
         init_location_edit();
 
         $( '#edit-fossil-location-save' ).click( save_location );
+        $( '#edit-fossil-location-comment-toggle > button' ).click( toggle_comment );
 
         $( '#edit-fossil-location' ).popup(
                 {

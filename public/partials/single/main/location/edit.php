@@ -22,6 +22,7 @@ function fossil_edit_location( $fossil=null ) {
                                     id="edit-fossil-location-<?=$k ?>" />
                         </div>
                     <?php endforeach; ?>
+                    <?php edit_comment_box( 'location' ); ?>
                 </form>
             </div>
             <div class="edit-fossil-footer">

@@ -30,6 +30,7 @@ function fossil_edit_lithostratigraphy( $fossil=null ) {
                             <option value="colls">Number of Collections</option>
                         </select>
                     </div>
+                    <?php edit_comment_box( 'lithostratigraphy' ); ?>
                 </form>
             </div>
             <div class="edit-fossil-footer">
