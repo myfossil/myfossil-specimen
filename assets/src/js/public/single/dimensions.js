@@ -58,10 +58,17 @@
         $( '#edit-fossil-dimension-save-alert' ).show();
     }
 
+    function toggle_comment() {
+        $( '#edit-fossil-dimension-comment-form-group' ).toggle();
+        $( this ).fadeOut( 400 );
+        // $( '#edit-fossil-dimension-comment-toggle > button' ).click( toggle_comment );
+    }
+
     $( function() {
         init_dimensions();
 
         $( '#edit-fossil-dimension-save' ).click( save_dimensions );
+        $( '#edit-fossil-dimension-comment-toggle > button' ).click( toggle_comment );
 
         $( '#edit-fossil-dimensions' ).popup(
                 {

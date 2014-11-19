@@ -188,11 +188,17 @@
         $( '#edit-fossil-taxon-save-alert' ).show();
     }
 
+    function toggle_comment() {
+        $( '#edit-fossil-taxon-comment-form-group' ).toggle();
+        $( this ).fadeOut( 400 );
+        // $( '#edit-fossil-taxon-comment-toggle > button' ).click( toggle_comment );
+    }
+
     $( function() {
         load_taxa();
 
         $( '#edit-fossil-taxon-save' ).click( save_taxon );
-
+        $( '#edit-fossil-taxon-comment-toggle > button' ).click( toggle_comment );
 
         $( '#edit-fossil-taxon-name' ).keyup( autocomplete_taxon );
 
