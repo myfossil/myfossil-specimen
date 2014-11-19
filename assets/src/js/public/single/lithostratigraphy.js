@@ -29,6 +29,7 @@
                     'nonce': nonce,
                     'post_id': post_id,
                     'strata': strata,
+                    'comment': $( '#edit-fossil-lithostratigraphy-comment' ).val()
                 },
             dataType: 'json',
             success: function( data ) {

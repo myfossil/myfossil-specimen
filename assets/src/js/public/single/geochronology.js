@@ -125,7 +125,8 @@
                     'action': 'myfossil_save_geochronology',
                     'nonce': nonce,
                     'post_id': post_id,
-                    'geochronology': geochronology
+                    'geochronology': geochronology,
+                    'comment' : $( '#edit-fossil-geochronology-comment' ).val()
                 },
             dataType: 'json',
             success: function( data ) {

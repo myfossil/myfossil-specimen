@@ -23,7 +23,8 @@
             nonce   = $( '#myfossil_specimen_nonce'      ).val(),
             length  = $( '#edit-fossil-dimension-length' ).val(),
             width   = $( '#edit-fossil-dimension-width'  ).val(),
-            height  = $( '#edit-fossil-dimension-height' ).val();
+            height  = $( '#edit-fossil-dimension-height' ).val(),
+            comment = $( '#edit-fossil-dimension-comment' ).val();
 
         $.ajax({
             async: false,
@@ -36,7 +37,8 @@
                     'post_id': post_id,
                     'length' : length,
                     'width'  : width,
-                    'height' : height
+                    'height' : height,
+                    'comment': comment
                 },
             success: function( data ) {
                     console.log( data );

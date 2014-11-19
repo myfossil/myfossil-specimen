@@ -169,6 +169,7 @@ class myFOSSIL_Specimen_Public {
                 $ti->color   = $_POST['geochronology']['color'];
                 $ti->level   = $_POST['geochronology']['level'];
                 $ti->name    = $_POST['geochronology']['name'];
+                $ti->comment = $_POST['comment'];
 
                 $fossil->time_interval_id = $ti->save();
 
@@ -191,6 +192,7 @@ class myFOSSIL_Specimen_Public {
                         $stratum = new Stratum;
 
                     $stratum->name = $_POST['strata'][$rank];
+                    $stratum->comment = $_POST['comment'];
 
                     $fossil->{ $stratum_id_key } = $stratum->save();
                 }
@@ -215,6 +217,7 @@ class myFOSSIL_Specimen_Public {
                 $dim->length = $length / 100; // convert to meters
                 $dim->width  = $width  / 100; // convert to meters
                 $dim->height = $height / 100; // convert to meters
+                $dim->comment = $_POST['comment'];
 
                 $fossil->dimension_id = $dim->save();
 
@@ -234,6 +237,8 @@ class myFOSSIL_Specimen_Public {
                             'county', 'city' ) as $k ) {
                     $location->{ $k } = $_POST['location'][$k];
                 }
+
+                $location->comment = $_POST['comment'];
 
                 $fossil->location_id = $location->save();
 

@@ -58,7 +58,8 @@
                     'action': 'myfossil_save_location',
                     'nonce': nonce,
                     'post_id': post_id,
-                    'location': loc
+                    'location': loc,
+                    'comment': $( '#edit-fossil-location-comment' ).val()
                 },
             dataType: 'json',
             success: function( data ) {
