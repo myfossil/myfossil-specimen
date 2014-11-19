@@ -32,3 +32,8 @@ require_once( 'single/history.php' );
 
 /* discussion view */
 require_once( 'single/discussion.php' );
+
+
+/* list view */
+require_once( 'list/create-button.php' );
+require_once( 'list/table.php' );
