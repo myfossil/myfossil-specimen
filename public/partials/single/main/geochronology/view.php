@@ -26,9 +26,11 @@ function fossil_view_geochronology( $fossil=null ) {
                     <span class="unknown">Unknown</span>
                 </td>
                 <td class="fossil-property-options">
+                    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
                     <a class="edit-fossil-geochronology_open" data-popup-ordinal="1">
                         <i class="ion-compose"></i>
                     </a>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>

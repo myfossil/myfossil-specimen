@@ -1,6 +1,7 @@
 <?php
 function fossil_edit_images( $fossil ) {
     ?>
+    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
     <div class="text-center">
         <span class="btn btn-default btn-file">
             Select Image 
@@ -11,6 +12,7 @@ function fossil_edit_images( $fossil ) {
         </a>
     </div>
     <?php
+    endif;
 }
 
 

@@ -43,9 +43,11 @@ function fossil_view_location( $fossil=null ) {
                             <?php endif; ?>
                         </td>
                         <td class="fossil-property-options">
+                            <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
                             <a class="edit-fossil-location_open" data-popup-ordinal="1">
                                 <i class="ion-compose"></i>
                             </a>
+                            <?php endif; ?>
                         </td>
                     </tr>
             <?php endforeach; ?>

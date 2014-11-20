@@ -33,9 +33,11 @@ function fossil_view_dimensions( $fossil=null ) {
                     </td>
                 <?php endif; ?>
                 <td class="fossil-property-options">
+                    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
                     <a class="edit-fossil-dimensions_open" data-popup-ordinal="1">
                         <i class="ion-compose"></i>
                     </a>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php } ?>
