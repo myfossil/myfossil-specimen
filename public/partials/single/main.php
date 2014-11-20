@@ -9,16 +9,12 @@ function myfossil_fossil_render_single_main( $fossil ) {
             <!-- Classification -->
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
                 <?php fossil_taxonomy( $fossil ); ?>
+                <?php fossil_dimensions( $fossil ); ?>
             </div>
 
             <!-- Image(s) -->
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
                 <?php fossil_images( $fossil ); ?>
-            </div>
-
-            <!-- Dimensions -->
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
-                <?php fossil_dimensions( $fossil ); ?>
             </div>
 
         </div>
