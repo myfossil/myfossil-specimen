@@ -293,6 +293,17 @@ class myFOSSIL_Specimen_Public {
                 die;
                 break;
 
+            case 'myfossil_fossil_delete':
+                $post_id = $_POST['post_id'];
+                if ( \current_user_can( 'delete_post', $post_id ) ) {
+                    wp_trash_post( $post_id );
+                    echo json_encode( $post_id );
+                } else {
+                    echo json_encode( array( 'error' => 'You do not have
+                                permission to delete this fossil' ) );
+                }
+                die;
+                break;
 
             case 'myfossil_delete_fossil_image':
                 if ( false === wp_delete_attachment( $_POST['image_id'] ) ) {

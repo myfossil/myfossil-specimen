@@ -43,7 +43,7 @@ function myfossil_list_fossils_table( $fossils ) {
                     </td>
                     <td>
                         <?php foreach ( array( 'group', 'formation', 'member' ) as $lith ): ?>
-                            <span class="fossil-property col-xs-4"><?=ucfirst( $lith ) ?></span>
+                            <span class="fossil-property"><?=ucfirst( $lith ) ?></span>
                             <?=( $fossil->strata && property_exists( $fossil->strata, $lith ) && $fossil->strata->{ $lith } ) ? $fossil->strata->{ $lith } : $unk ?>
                             <br />
                         <?php endforeach; ?>
