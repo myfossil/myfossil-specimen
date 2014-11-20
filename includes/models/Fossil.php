@@ -169,6 +169,10 @@ class Fossil extends Base
             return $this->_cache->{$key};
 
         switch ( $key ) {
+        case 'name':
+            return sprintf( 'Fossil %06d', $this->id );
+            break;
+
         case 'taxon':
             if ( $this->taxon_id ) {
                 $this->_cache->taxon = new Taxon( $this->taxon_id );

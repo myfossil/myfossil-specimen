@@ -171,23 +171,7 @@ class Taxon extends Base
      */
     public function __toString()
     {
-        $colors = array(
-            "life"    => "#777fff",
-            "domain"  => "#77c3ff",
-            "kingdom" => "#58fff7",
-            "phylum"  => "#58ffa5",
-            "class"   => "#5dff58",
-            "order"   => "#b0ff58",
-            "family"  => "#fffd58",
-            "genus"   => "#ffaa58",
-            "species" => "#e28d54"
-        );
-
-        $bgcolor = array_key_exists( $this->rank, $colors ) ?
-            $colors[$this->rank] : '#eee';
-
-        return sprintf(
-            '<span class="label" style="background-color: %s; color: #333">%s</span> %s',
-            $bgcolor, $this->rank, $this->name );
+        return sprintf( '<p class="fossil-property">%s</p> %s', $this->rank,
+                $this->name );
     }
 }

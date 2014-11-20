@@ -3,14 +3,14 @@
 use myFOSSIL\Plugin\Specimen\Fossil;
 
 function myfossil_list_fossils_table( $fossils ) {
+    $unk = '<span class="unknown">Unknown</span>';
     ?>
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Author</th>
-                    <th>Thumbnail</th>
-                    <th>Location</th>
+                    <th>Name</th>
                     <th>Taxon</th>
+                    <th>Location</th>
                     <th>Geochronology</th>
                     <th>Lithostratigraphy</th>
                 </tr>
@@ -20,22 +20,33 @@ function myfossil_list_fossils_table( $fossils ) {
             <?php $fossil = new Fossil( get_the_id() ); ?>
                 <tr class="hover-hand" data-href="/fossils/<?=get_the_id() ?>">
                     <td>
-                        <?=get_avatar( get_the_author_meta( 'ID' ), 50 ); ?>
+                        <div class="pull-left">
+                            <img style="max-width: 75px" src="<?=$fossil->image ?>" class="img-responsive" />
+                        </div>
+                        <div class="pull-left" style="padding: 5px">
+                            <span class="fossil-name" style="font-weight: bold; font-size: 1.2em; color: #000">
+                                <?=$fossil->name ?>
+                            </span>
+                            <p class="author">
+                                by <?=bp_core_get_userlink( $fossil->author->ID ) ?>
+                            </p>
+                        </div>
                     </td>
                     <td>
-                        <img style="max-width: 75px" src="<?=$fossil->image ?>" class="img-responsive" />
+                        <?=$fossil->taxon ? $fossil->taxon : $unk ?>
                     </td>
                     <td>
-                        <?=$fossil->location ?>
+                        <?=$fossil->location ? $fossil->location : $unk ?>
                     </td>
                     <td>
-                        <?=$fossil->taxon ?>
+                        <?=$fossil->time_interval ? $fossil->time_interval : $unk ?>
                     </td>
                     <td>
-                        <?=$fossil->time_interval ?>
-                    </td>
-                    <td>
-                        <?=$fossil->stratum ?>
+                        <?php foreach ( array( 'group', 'formation', 'member' ) as $lith ): ?>
+                            <span class="fossil-property col-xs-4"><?=ucfirst( $lith ) ?></span>
+                            <?=( $fossil->strata && property_exists( $fossil->strata, $lith ) && $fossil->strata->{ $lith } ) ? $fossil->strata->{ $lith } : $unk ?>
+                            <br />
+                        <?php endforeach; ?>
                     </td>
                 </tr>
             <?php endwhile; ?>
