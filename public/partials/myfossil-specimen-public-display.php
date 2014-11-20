@@ -16,6 +16,7 @@ namespace myFOSSIL\Plugin\Specimen;
 require_once( 'single.php' );
 require_once( 'single/member.php' );
 require_once( 'single/header.php' );
+require_once( 'single/settings.php' );
 
 /* main view */
 require_once( 'single/main.php' );

@@ -344,7 +344,7 @@ class myFOSSIL_Specimen_Public {
 
     public function fix_fossil_rewrites() {
         add_rewrite_rule(
-                '^fossils/([^/]*)/(main|history|discussion)/?',
+                '^fossils/([^/]*)/(main|history|discussion|images|settings)/?',
                 'index.php?pagename=fossils' . '&fossil_id=$matches[1]' .
                     '&fossil_view=$matches[2]',
                 'top'
