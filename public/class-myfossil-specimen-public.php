@@ -138,6 +138,21 @@ class myFOSSIL_Specimen_Public {
             die;
         }
 
+        // Check permissions
+        /*
+        myfossil_create_fossil => array( 'publish_posts', null ),
+        myfossil_delete_fossil_image => array( 'delete_post', $post_id )
+        myfossil_fossil_comment => array( '
+        myfossil_fossil_delete
+        myfossil_save_dimensions
+        myfossil_save_geochronology
+        myfossil_save_lithostratigraphy
+        myfossil_save_location
+        myfossil_save_status
+        myfossil_save_taxon
+        myfossil_upload_fossil_image
+        */
+
 
         switch ( $_POST['action'] ) {
             // {{{ save
