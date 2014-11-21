@@ -25,28 +25,6 @@ function fossil_header( $fossil=null, $view='main' ) {
                         <?php if ( $fossil->location && $fossil->location->country ): ?>
                             <dt>Location</dt><dd><?=$fossil->location->country ?></dd>
                         <?php endif; ?>
-                        <dt>Status</dt>
-                        <dd>
-                            <?php $draft = ( get_post_status( $fossil->id ) == 'draft' ); ?>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default btn-sm <?=( $draft ) ? "btn-active active" : null ?>">
-                                    <input type="radio" name="status" 
-                                        id="draft" autcomplete="off" 
-                                        <?=( $draft ) ? "checked" : null ?>
-                                        class="post_status" value="draft" />
-                                    <i class="fa fa-fw fa-eye-slash"></i>
-                                    Draft
-                                </label>
-                                <label class="btn btn-default btn-sm <?=( $draft ) ? null : "btn-active active" ?>">
-                                    <input type="radio" name="status" 
-                                        id="published" autcomplete="off"
-                                        <?=( $draft ) ? null : "checked" ?>
-                                        class="post_status" value="publish" />
-                                    <i class="fa fa-fw fa-eye"></i>
-                                    Published 
-                                </label>
-                            </div>
-                        </dd>
                     </dl>
                 </div>
             </div>
@@ -63,6 +41,11 @@ function fossil_header( $fossil=null, $view='main' ) {
                 <li class="<?=( $view == 'discussion' ) ? "active" : null ?>">
                     <a href="/fossils/<?=$fossil->id ?>/discussion">Discussion</a>
                 </li>
+                <?php if ( current_user_can( 'edit_post', $fossil->ID ) ) : ?>
+                <li class="<?=( $view == 'settings' ) ? "active" : null ?>">
+                    <a href="/fossils/<?=$fossil->id ?>/settings">Settings</a>
+                </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

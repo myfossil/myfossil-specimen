@@ -1,6 +1,7 @@
 <?php
 
 function fossil_post_comment_form( $fossil=null ) {
+    if ( ! is_user_logged_in() ) return;
     ?>
     <form method="post" role="complementary" class="form">
         <div id="fossil-comment-box">

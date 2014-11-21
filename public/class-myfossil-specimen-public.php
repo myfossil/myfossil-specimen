@@ -138,6 +138,21 @@ class myFOSSIL_Specimen_Public {
             die;
         }
 
+        // Check permissions
+        /*
+        myfossil_create_fossil => array( 'publish_posts', null ),
+        myfossil_delete_fossil_image => array( 'delete_post', $post_id )
+        myfossil_fossil_comment => array( '
+        myfossil_fossil_delete
+        myfossil_save_dimensions
+        myfossil_save_geochronology
+        myfossil_save_lithostratigraphy
+        myfossil_save_location
+        myfossil_save_status
+        myfossil_save_taxon
+        myfossil_upload_fossil_image
+        */
+
 
         switch ( $_POST['action'] ) {
             // {{{ save
@@ -293,6 +308,17 @@ class myFOSSIL_Specimen_Public {
                 die;
                 break;
 
+            case 'myfossil_fossil_delete':
+                $post_id = $_POST['post_id'];
+                if ( \current_user_can( 'delete_post', $post_id ) ) {
+                    wp_trash_post( $post_id );
+                    echo json_encode( $post_id );
+                } else {
+                    echo json_encode( array( 'error' => 'You do not have
+                                permission to delete this fossil' ) );
+                }
+                die;
+                break;
 
             case 'myfossil_delete_fossil_image':
                 if ( false === wp_delete_attachment( $_POST['image_id'] ) ) {
@@ -344,7 +370,7 @@ class myFOSSIL_Specimen_Public {
 
     public function fix_fossil_rewrites() {
         add_rewrite_rule(
-                '^fossils/([^/]*)/(main|history|discussion)/?',
+                '^fossils/([^/]*)/(main|history|discussion|images|settings)/?',
                 'index.php?pagename=fossils' . '&fossil_id=$matches[1]' .
                     '&fossil_view=$matches[2]',
                 'top'

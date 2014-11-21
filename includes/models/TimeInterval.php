@@ -150,18 +150,18 @@ class TimeInterval extends Base
      */
     public function __toString()
     {
+        $text_color = ( hexdec( $this->color ) > 0xffffff / 2 ) ? '#000' : '#fff';
         if ( $this->level && $this->name )
             if ( $this->color )
                 return sprintf(
-                    "<span class=\"label label-primary\">%s</span>"
-                    . "<span class=\"label\" style=\"background-color: %s; margin: 3px;\">%s</span>",
-                    $this->level, $this->color, $this->name );
+                    '<p class="fossil-property">%s</p>'
+                    . '<span style="background-color: %s; color: %s; padding: 5px;">%s</span>',
+                    $this->level, $this->color, $text_color, $this->name );
             else
                 return sprintf(
                     "<span class=\"label label-primary\">%s</span> %s",
                     $this->level, $this->name );
             else
-                return sprintf( "<span class=\"label
-                    label-default\">Unknown</span>" );
+                return sprintf( '<span class="unknown">Unknown</span>' );
     }
 }

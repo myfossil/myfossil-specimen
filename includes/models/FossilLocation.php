@@ -67,7 +67,7 @@ class FossilLocation extends Base
             return sprintf( "%s, %s\n", $this->state, $this->country );
         foreach ( array( 'country', 'state', 'county', 'city' ) as $k )
             if ( $this->{$k} )
-            return (string) $this->{$k};
+                return (string) $this->{$k};
         return (string) null;
     }
 

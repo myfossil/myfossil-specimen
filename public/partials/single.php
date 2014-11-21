@@ -20,6 +20,12 @@ function myfossil_fossil_render_single( $fossil_id, $view ) {
         case 'discussion':
             myfossil_fossil_render_single_discussion( $fossil );
             break;
+        case 'images':
+            myfossil_fossil_render_single_images( $fossil );
+            break;
+        case 'settings':
+            myfossil_fossil_render_single_settings( $fossil );
+            break;
     }
     ?>
 

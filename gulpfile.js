@@ -7,8 +7,8 @@ var gulp      = require('gulp')
   , plugins   = require('gulp-load-plugins')({ camelize: true })
   , lr        = require('tiny-lr')
   , server    = lr()
-  , build     = './static/'
-;
+  , sass      = require('gulp-sass')
+  , build     = './static/';
 
 /**
  * Paths to scripts that will ultimately become gulp tasks.
@@ -57,6 +57,16 @@ gulp.task('clean', function() {
             .pipe(plugins.clean());
 });
 
+gulp.task('styles', function() {
+  return gulp.src(['assets/src/scss/style.scss'])
+      .pipe(sass())
+      .pipe(plugins.autoprefixer('last 2 versions', 'ie 9', 'ios 6', 'android 4'))
+      .pipe(gulp.dest('assets/staging'))
+      .pipe(plugins.minifyCss({ keepSpecialComments: 1 }))
+      .pipe(gulp.dest(build + 'css/'))
+      .pipe(plugins.livereload(server));
+});
+
 gulp.task('watch', function() {
     server.listen(35729, function (err) { // Listen on port 35729
 
@@ -70,5 +80,5 @@ gulp.task('watch', function() {
 
 });
 
-gulp.task('build', ['scripts', 'clean']);
+gulp.task('build', ['scripts', 'styles', 'clean']);
 gulp.task('default', ['build', 'watch']);
