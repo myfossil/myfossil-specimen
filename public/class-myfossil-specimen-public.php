@@ -302,8 +302,7 @@ class myFOSSIL_Specimen_Public {
 
                 if ( empty( $comment ) ) die;
 
-                echo json_encode( 
-                    \bp_activity_add(
+                $activity_id = \bp_activity_add(
                         array(
                             'component' => Fossil::BP_COMPONENT_ID,
                             'item_id' => $post_id,
@@ -312,8 +311,7 @@ class myFOSSIL_Specimen_Public {
                             'secondary_item_id' => $fossil->wp_post->post_author,
                             'type' => Fossil::POST_TYPE . '_comment'
                         )
-                    )
-                );
+                    );
 
                 die;
                 break;
