@@ -21,21 +21,17 @@ function fossil_view_lithostratigraphy( $fossil=null ) {
         <?php foreach ( Stratum::get_ranks() as $n => $k ): ?>
             <tr>
                 <td class="fossil-property"><?=ucwords( $k ) ?></td>
-                <td class="fossil-property-value"
+                <td class="fossil-property-value<?=( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-stratum-{$k}_open editable" : null ?>"
                         id="fossil-stratum-<?=$k ?>"
+                        data-value="<?=( $fossil->dimension ) ? $fossil->dimension->{ $k } : null ?>"
+                        data-edit="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>"
+                        data-popup-ordinal="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>"
                         data-name="<?=( property_exists( $fossil->strata, $k ) ) ? $fossil->strata->{ $k }->name : null ?>">
-                    <?php if ( property_exists( $fossil->strata, $k ) ): ?>
+                    <?php if ( property_exists( $fossil->strata, $k ) && $fossil->strata->{ $k }->name ): ?>
                         <?=$fossil->strata->{ $k }->name ?>
                     <?php else: ?>
                         <span class="unknown">Unknown</span>
                     <?php endif; ?> 
-                </td>
-                <td class="fossil-property-options">
-                    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
-                    <a class="edit-fossil-stratum-<?=$k ?>_open" data-popup-ordinal="1">
-                        <i class="ion-compose"></i>
-                    </a>
-                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>
