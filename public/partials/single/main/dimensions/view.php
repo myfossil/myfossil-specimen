@@ -23,20 +23,15 @@ function fossil_view_dimensions( $fossil=null ) {
         <?php foreach ( array( 'length', 'width', 'height' ) as $k ) { ?>
             <tr>
                 <td class="fossil-property"><?=ucwords( $k ) ?></td>
-                <?php if ( $fossil->dimension && $v = $fossil->dimension->{ $k } * 100 ): ?>
-                    <td class="fossil-property-value" id="fossil-dimension-<?=$k ?>" value="<?=$v ?>">
+                <td class="fossil-property-value<?=( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-dimensions_open editable" : null ?>"
+                        id="fossil-dimension-<?=$k ?>"
+                        data-value="<?=( $fossil->dimension ) ? $fossil->dimension->{ $k } : null ?>"
+                        data-edit="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>"
+                        data-popup-ordinal="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>">
+                    <?php if ( $fossil->dimension && $v = $fossil->dimension->{ $k } * 100 ): ?>
                         <?=$v ?> cm
-                    </td>
-                <?php else: ?>
-                    <td class="fossil-property-value" id="fossil-dimension-<?=$k ?>">
+                    <?php else: ?>
                         <span class="unknown">Unknown</span>
-                    </td>
-                <?php endif; ?>
-                <td class="fossil-property-options">
-                    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
-                    <a class="edit-fossil-dimensions_open" data-popup-ordinal="1">
-                        <i class="ion-compose"></i>
-                    </a>
                     <?php endif; ?>
                 </td>
             </tr>
