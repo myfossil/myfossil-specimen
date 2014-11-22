@@ -21,7 +21,10 @@
     }
 
     function status_error( data ) {
-        alert( 'Please upload images of type JPEG or PNG' );
+        if ( data.post_id && data.post_id[0] )
+            alert( data.post_id[0].error );
+        else
+            alert( 'Please upload images of type JPEG or PNG' );
     }
 
     $( function() {
