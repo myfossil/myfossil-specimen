@@ -184,6 +184,9 @@ class Fossil extends Base
             if ( $this->location_id ) {
                 $this->_cache->location = new FossilLocation( $this->location_id );
                 return $this->_cache->location;
+            } else {
+                $this->_cache->location = new FossilLocation;
+                return $this->_cache->location;
             }
             break;
 
