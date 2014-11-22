@@ -35,19 +35,15 @@ function fossil_view_location( $fossil=null ) {
                 <?php if ( ! in_array( $k, $hide_fields ) ) : ?>
                     <tr>
                         <td class="fossil-property"><?=ucwords( $k ) ?></td>
-                        <td class="fossil-property-value" id="fossil-location-<?=$k ?>"
-                                data-value="<?=( $fossil->location ) ? $fossil->location->{ $k } : null ?>">
+                        <td class="fossil-property-value<?=( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-location_open editable" : null ?>"
+                                id="fossil-location-<?=$k ?>"
+                                data-value="<?=( $fossil->location ) ? $fossil->location->{ $k } : null ?>"
+                                data-edit="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>"
+                                data-popup-ordinal="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>">
                             <?php if ( $fossil->location && $v = $fossil->location->{ $k } ): ?>
                                 <?=$v ?>
                             <?php else: ?>
                                 <span class="unknown">Unknown</span>
-                            <?php endif; ?>
-                        </td>
-                        <td class="fossil-property-options">
-                            <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
-                            <a class="edit-fossil-location_open" data-popup-ordinal="1">
-                                <i class="ion-compose"></i>
-                            </a>
                             <?php endif; ?>
                         </td>
                     </tr>
