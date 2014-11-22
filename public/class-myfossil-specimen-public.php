@@ -124,10 +124,36 @@ class myFOSSIL_Specimen_Public {
      * AJAX call handler
      */
     public function ajax_handler() {
+        $action = $_POST['action'];
+        $post_id = $_POST['post_id'];
+
+        // Check permissions
+        $permissions = array(
+            'myfossil_create_fossil'          => current_user_can( 'publish_posts' ),
+            'myfossil_delete_fossil_image'    => current_user_can( 'delete_post', $post_id ),
+            'myfossil_fossil_comment'         => is_user_logged_in(),
+            'myfossil_fossil_delete'          => current_user_can( 'delete_post', $post_id ),
+            'myfossil_save_dimensions'        => current_user_can( 'edit_post', $post_id ), 
+            'myfossil_save_geochronology'     => current_user_can( 'edit_post', $post_id ), 
+            'myfossil_save_lithostratigraphy' => current_user_can( 'edit_post', $post_id ), 
+            'myfossil_save_location'          => current_user_can( 'edit_post', $post_id ), 
+            'myfossil_save_status'            => current_user_can( 'edit_post', $post_id ), 
+            'myfossil_save_taxon'             => current_user_can( 'edit_post', $post_id ), 
+            'myfossil_upload_fossil_image'    => current_user_can( 'edit_post', $post_id ), 
+        );
+
+        $permitted = true;
+        if ( array_key_exists( $action, $permissions ) ) {
+            if ( ! $permissions[$action] ) {
+                // User not permitted to do this, trigger error below
+                $permitted = false;
+            }
+        }
+
         header('Content-Type: application/json');
 
         // Check nonce
-        if ( !check_ajax_referer( 'myfossil_specimen', 'nonce', false ) ) {
+        if ( ! check_ajax_referer( 'myfossil_specimen', 'nonce', false ) || ! $permitted ) {
             header( 'HTTP/1.0 403 Forbidden' );
             $return_args = array(
                 "result" => "Error",
@@ -137,22 +163,6 @@ class myFOSSIL_Specimen_Public {
             echo json_encode( $return_args );
             die;
         }
-
-        // Check permissions
-        /*
-        myfossil_create_fossil => array( 'publish_posts', null ),
-        myfossil_delete_fossil_image => array( 'delete_post', $post_id )
-        myfossil_fossil_comment => array( '
-        myfossil_fossil_delete
-        myfossil_save_dimensions
-        myfossil_save_geochronology
-        myfossil_save_lithostratigraphy
-        myfossil_save_location
-        myfossil_save_status
-        myfossil_save_taxon
-        myfossil_upload_fossil_image
-        */
-
 
         switch ( $_POST['action'] ) {
             // {{{ save
