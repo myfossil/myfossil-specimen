@@ -14,6 +14,9 @@
                     function( taxon ) {
                         taxon = normalize_taxon( taxon );
                         $( '#fossil-taxon-' + taxon.rank ).text( taxon.taxon_name );
+                        $( '#fossil-taxon-name' ).val( taxon.taxon_name );
+                        $( '#fossil-taxon-rank' ).val( taxon.taxon_rank );
+                        $( '#fossil-taxon-pbdb' ).val( taxon.taxon_no );
                     }
                 );
                 $( '#fossil-taxon-success' ).show().fadeOut();

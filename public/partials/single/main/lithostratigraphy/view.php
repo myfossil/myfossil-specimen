@@ -23,7 +23,6 @@ function fossil_view_lithostratigraphy( $fossil=null ) {
                 <td class="fossil-property"><?=ucwords( $k ) ?></td>
                 <td class="fossil-property-value<?=( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-stratum-{$k}_open editable" : null ?>"
                         id="fossil-stratum-<?=$k ?>"
-                        data-value="<?=( $fossil->dimension ) ? $fossil->dimension->{ $k } : null ?>"
                         data-edit="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>"
                         data-popup-ordinal="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>"
                         data-name="<?=( property_exists( $fossil->strata, $k ) ) ? $fossil->strata->{ $k }->name : null ?>">
