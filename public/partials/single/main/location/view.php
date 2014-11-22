@@ -1,6 +1,7 @@
 <?php
 
 function fossil_view_location( $fossil=null ) {
+    $hide_fields = array( 'zip', 'address', 'map_url' );
     ?>
 
     <h3 style="margin: 20px 0">
@@ -30,8 +31,8 @@ function fossil_view_location( $fossil=null ) {
     <?php endif; ?>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <table class="table">
-            <?php foreach ( array( 'country', 'state', 'county', 'latitude',
-                        'longitude', 'notes' ) as $k ): ?>
+            <?php foreach ( $fossil->location->get_meta_keys() as $k ) : ?>
+                <?php if ( ! in_array( $k, $hide_fields ) ) : ?>
                     <tr>
                         <td class="fossil-property"><?=ucwords( $k ) ?></td>
                         <td class="fossil-property-value" id="fossil-location-<?=$k ?>"
@@ -50,6 +51,7 @@ function fossil_view_location( $fossil=null ) {
                             <?php endif; ?>
                         </td>
                     </tr>
+                <?php endif; ?>
             <?php endforeach; ?>
         </table>
     </div>
