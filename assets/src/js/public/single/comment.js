@@ -16,9 +16,12 @@
                 'post_id': post_id,
                 'comment': comment
             },
-            dataType: 'json',
+            dataType: 'html',
             success: function( data ) {
-                location.reload();
+                if ( typeof myFOSSILBpAtivityRefresh_automaticRefresh == 'function' ) {
+                    // Refresh if we can
+                    myFOSSILBpAtivityRefresh_automaticRefresh();
+                }
             },
             complete: function( data ) {
             },

@@ -545,8 +545,11 @@ abstract class Base
         if ( $owner_link == 'their own' && $verb == 'created' )
             $owner_link = 'a';
 
-        $action = sprintf( '%s %s %s fossil', $initiator_link, $verb,
-            $owner_link );
+        $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
+                $activity->item_id, $activity->item_id );
+
+        $action = sprintf( '%s %s %s %s', $initiator_link, $verb,
+            $owner_link, $fossil_link );
 
         if ( property_exists( $activity, 'template' ) )
             $activity->content = $activity->template;
