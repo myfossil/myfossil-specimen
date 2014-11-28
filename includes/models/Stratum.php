@@ -135,6 +135,20 @@ class Stratum extends Base
         return parent::__get( $key );
     }
 
+    public static function bp_format_activity_json( $json, $tpl ) {
+        $t0 = new Stratum;
+        $t1 = new Stratum;
+
+        $changes = $json->changeset;
+        foreach ( $changes as $item ) {
+            $t0->{ $item->key } = $item->from;
+            $t1->{ $item->key } = $item->to;
+        }
+
+        $tpl_path = 'activities/lithostratigraphy.htm';
+        return $tpl->render( $tpl_path, array( 'from' => $t0, 'to' => $t1 ) );
+    }
+
     /**
      *
      *

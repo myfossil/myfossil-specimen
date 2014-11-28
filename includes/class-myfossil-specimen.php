@@ -243,6 +243,17 @@ class myFOSSIL_Specimen
         $this->loader->add_action( 'bp_setup_nav', $plugin_public,
             'bp_add_member_fossil_nav_items', 100 );
 
+        /* BuddyPress Activity JSON filtering */
+        $this->loader->add_filter( 'bp_get_activity_content_body',
+                $plugin_public, 'bp_get_activity_content_body', 10 );
+
+        remove_filter( 'bp_get_activity_action',                'convert_chars', 0 );
+        remove_filter( 'bp_get_activity_content_body',          'convert_chars', 0 );
+        remove_filter( 'bp_get_activity_content',               'convert_chars', 0 );
+        remove_filter( 'bp_get_activity_parent_content',        'convert_chars', 0 );
+        remove_filter( 'bp_get_activity_latest_update',         'convert_chars', 0 );
+        remove_filter( 'bp_get_activity_latest_update_excerpt', 'convert_chars', 0 );
+
     }
 
     /**

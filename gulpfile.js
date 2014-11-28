@@ -76,6 +76,10 @@ gulp.task('watch', function() {
             plugins.livereload(server).changed(file.path); 
         });
 
+        gulp.watch('**/*.htm').on('change', function(file) { 
+            plugins.livereload(server).changed(file.path); 
+        });
+
     });
 
 });

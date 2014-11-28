@@ -43,6 +43,9 @@ class myFOSSIL_Specimen_Public {
 	 */
 	private $version;
 
+    private $twig_loader;
+    private $twig;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -58,12 +61,66 @@ class myFOSSIL_Specimen_Public {
 	}
 
     public function bp_register_activity_actions() {
+        // Register BuddyPress Activity actions for each model.
         Fossil::register_buddypress_activities( Fossil::POST_TYPE );
         FossilDimension::register_buddypress_activities( FossilDimension::POST_TYPE );
         FossilLocation::register_buddypress_activities( FossilLocation::POST_TYPE );
         Stratum::register_buddypress_activities( Stratum::POST_TYPE );
         Taxon::register_buddypress_activities( Taxon::POST_TYPE );
         TimeInterval::register_buddypress_activities( TimeInterval::POST_TYPE );
+    }
+
+    /**
+     * Returns `Twig_Environment` object.
+     */
+    public function get_twig() {
+        if ( ! $this->twig ) {
+            if ( ! $this->twig_loader ) {
+                $template_dir = plugin_dir_path( __FILE__ ) . '/templates';
+                $this->twig_loader = new \Twig_Loader_Filesystem( $template_dir );
+            }
+            $this->twig = new \Twig_Environment( $this->twig_loader,
+                   array( 'auto_reload' => true, 'autoescape' => false ) );
+            $this->twig->addExtension(new \Twig_Extension_Debug());
+        }
+
+        return $this->twig;
+    }
+
+    public function bp_get_activity_content_body( $content ) {
+        $json = @json_decode( $content );
+
+        // Bail if it's not even JSON
+        // Bail if we don't have a post type defined
+        if ( ! $json 
+                || ! property_exists( $json, 'post_type' ) 
+                || ! property_exists( $json, 'changeset' ) )
+            return $content;
+
+        $tpl = $this->get_twig();
+        switch ( $json->post_type ) {
+            case Fossil::POST_TYPE:
+                return Fossil::bp_format_activity_json( $json, $tpl );
+                break;
+            case FossilDimension::POST_TYPE:
+                return FossilDimension::bp_format_activity_json( $json, $tpl );
+                break;
+            case FossilLocation::POST_TYPE:
+                return FossilLocation::bp_format_activity_json( $json, $tpl );
+                break;
+            case Stratum::POST_TYPE:
+                return Stratum::bp_format_activity_json( $json, $tpl );
+                break;
+            case Taxon::POST_TYPE:
+                return Taxon::bp_format_activity_json( $json, $tpl );
+                break;
+            case TimeInterval::POST_TYPE:
+                return TimeInterval::bp_format_activity_json( $json, $tpl );
+                break;
+            default:
+                return $content;
+                break;
+        }
     }
 
     public function bp_add_member_fossil_nav_items() {
@@ -178,6 +235,7 @@ class myFOSSIL_Specimen_Public {
                 $taxon->name    = $_POST['taxon']['name'];
                 $taxon->rank    = $_POST['taxon']['rank'];
                 $taxon->comment = $_POST['taxon']['comment'];
+                $taxon->parent_id = $post_id;
 
                 $fossil->taxon_id = $taxon->save(); 
 
@@ -198,6 +256,7 @@ class myFOSSIL_Specimen_Public {
                 $ti->level   = $_POST['geochronology']['level'];
                 $ti->name    = $_POST['geochronology']['name'];
                 $ti->comment = $_POST['comment'];
+                $ti->parent_id = $post_id;
 
                 $fossil->time_interval_id = $ti->save();
 
@@ -221,6 +280,7 @@ class myFOSSIL_Specimen_Public {
 
                     $stratum->name = $_POST['strata'][$rank];
                     $stratum->comment = $_POST['comment'];
+                    $stratum->parent_id = $post_id;
 
                     $fossil->{ $stratum_id_key } = $stratum->save();
                 }
@@ -246,6 +306,7 @@ class myFOSSIL_Specimen_Public {
                 $dim->width  = $width  / 100; // convert to meters
                 $dim->height = $height / 100; // convert to meters
                 $dim->comment = $_POST['comment'];
+                $dim->parent_id = $post_id;
 
                 $fossil->dimension_id = $dim->save();
 
@@ -267,6 +328,7 @@ class myFOSSIL_Specimen_Public {
                 }
 
                 $location->comment = $_POST['comment'];
+                $location->parent_id = $post_id;
 
                 $fossil->location_id = $location->save();
 

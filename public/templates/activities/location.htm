@@ -1,0 +1,19 @@
+<div class="fossil-change">
+    <div class="from">
+        <h5>From</h5>
+        {% for k in from.get_meta_keys() %}
+            {% if attribute( from, k ) %}
+                <span class="fossil-property">{{ k }}</span> {{ attribute( from, k ) }}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="to">
+        <h5>To</h5>
+        {% for k in to.get_meta_keys() %}
+            {% if attribute( to, k ) %}
+                <span class="fossil-property">{{ k }}</span> {{ attribute( to, k ) }}
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

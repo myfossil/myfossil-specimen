@@ -215,6 +215,10 @@ abstract class Base
     }
     // }}}
 
+    public function __isset( $key ) {
+        return $this->{ $key } !== null;
+    }
+
     // {{{ __set
     /**
      * Custom setter for properties that span multiple data sources.
@@ -334,6 +338,8 @@ abstract class Base
          */
         if ( $this->_cache && $recursive ) {
             foreach ( $this->_cache as $cache_key => $cached_object ) {
+                $cached_object->parent_id = $this->id;
+
                 if ( method_exists( $cached_object, 'save' ) ) {
                     /*
                      * The Object has a save method that will return its
@@ -437,6 +443,20 @@ abstract class Base
         $created = (bool) ( ! $updating );
 
         /*
+         * Only say that something was created if it's a Fossil, otherwise say
+         * it was updated. 
+         *
+         * Because Fossil objects hold all other objects, it makes more sense
+         * to say that a Fossil was updated when a child is created on that
+         * Fossil, rather than saying that something new altogether was
+         * created.
+         */
+        if ( $created && $post_type !== Fossil::POST_TYPE ) {
+            $created = false;
+            $updated = true;
+        }
+
+        /*
          * Continue only if:
          *   - BuddyPress is enabled
          *   - We're updating something and it has changed OR we're creating 
@@ -445,12 +465,18 @@ abstract class Base
         if ( self::buddypress_active() && ( $updated || $created ) ) {
             $bp_activity_type = $post_type . ( $updated ? '_updated' : '_created' );
 
+            /*
+             * Configure and add Activity.
+             *
+             * @see {@link http://goo.gl/COJIR0}
+             */
             $args = array(
                 'component' => self::BP_COMPONENT_ID,
                 'item_id' => $this->id,
                 'user_id' => \bp_loggedin_user_id(),
-                'content' => json_encode( $this->_history ),
-                'secondary_item_id' => $this->wp_post->post_author,
+                'content' => json_encode( array( 'post_type' => $post_type,
+                        'changeset' => $this->_history ), JSON_UNESCAPED_UNICODE ),
+                'secondary_item_id' => $this->parent_id ? $this->parent_id : $this->wp_post->post_author,
                 'type' => $bp_activity_type
             );
 
@@ -470,6 +496,7 @@ abstract class Base
             return $activity_id;
         }
 
+        // If we made it this far, we didn't update.
         return false;
     }
 
@@ -535,6 +562,12 @@ abstract class Base
     public static function bp_format_activity( $action, $activity )
     {
         $initiator_link = \bp_core_get_userlink( $activity->user_id );
+
+        /* 
+         * $activity->type is basically ${post_type}_${action}, so we can
+         * explode the $activity->type string into the post type and the action
+         * performed on the underscore character.
+         */
         $verbs = explode( '_', $activity->type );
         $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs );
 
@@ -545,19 +578,35 @@ abstract class Base
         if ( $owner_link == 'their own' && $verb == 'created' )
             $owner_link = 'a';
 
-        $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
-                $activity->item_id, $activity->item_id );
+        /* 
+         * For Fossil objects, the item_id is the fossil id, however for all
+         * other objects, the item_id is the object's id and the
+         * secondary_item_id is the fossil's id.
+         */
+        if ( strpos( $activity->type, Fossil::POST_TYPE ) === 0 ) {
+            $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
+                    $activity->item_id, $activity->item_id );
+        } else {
+            $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
+                    $activity->secondary_item_id, $activity->secondary_item_id );
+        }
 
         $action = sprintf( '%s %s %s %s', $initiator_link, $verb,
             $owner_link, $fossil_link );
 
+        /*
         if ( property_exists( $activity, 'template' ) )
             $activity->content = $activity->template;
         elseif ( $verb !== 'commented' )
             $activity->content = null;
+        */
 
         return apply_filters( 'bp_myfossil_activity_' . $activity->type .
             '_format', $action, $activity );
+    }
+
+    public static function bp_format_activity_json( $json, $tpl ) {
+        return json_encode( $json );
     }
 
     // }}}

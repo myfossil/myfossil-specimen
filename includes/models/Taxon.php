@@ -133,35 +133,18 @@ class Taxon extends Base
         return parent::__get( $key );
     }
 
-    /**
-     *
-     *
-     * @param unknown $action
-     * @param unknown $activity
-     * @return unknown
-     */
-    public static function bp_format_activity( $action, $activity )
-    {
-        return parent::bp_format_activity( $action, $activity );
+    public static function bp_format_activity_json( $json, $tpl ) {
+        $t0 = new Taxon;
+        $t1 = new Taxon;
 
-        if ( $activity->content ) {
-            $from = new Taxon;
-            $to = new Taxon;
-            foreach ( json_decode( $activity->content ) as $ch_set ) {
-                $from->{ $ch_set->key } = $ch_set->from;
-                $to->{ $ch_set->key } = $ch_set->to;
-            }
-
-            $activity->content = sprintf( 'Changed Taxon from <span
-                    class="border">%s</span> to <span class="border">
-                    %s</span>', $from,
-                $to );
-
-            unset( $from );
-            unset( $to );
+        $changes = $json->changeset;
+        foreach ( $changes as $item ) {
+            $t0->{ $item->key } = $item->from;
+            $t1->{ $item->key } = $item->to;
         }
 
-        return parent::bp_format_activity( $action, $activity );
+        $tpl_path = 'activities/taxon.htm';
+        return $tpl->render( $tpl_path, array( 'from' => $t0, 'to' => $t1 ) );
     }
 
     /**
