@@ -58,12 +58,46 @@ class myFOSSIL_Specimen_Public {
 	}
 
     public function bp_register_activity_actions() {
+        // Register BuddyPress Activity actions for each model.
         Fossil::register_buddypress_activities( Fossil::POST_TYPE );
         FossilDimension::register_buddypress_activities( FossilDimension::POST_TYPE );
         FossilLocation::register_buddypress_activities( FossilLocation::POST_TYPE );
         Stratum::register_buddypress_activities( Stratum::POST_TYPE );
         Taxon::register_buddypress_activities( Taxon::POST_TYPE );
         TimeInterval::register_buddypress_activities( TimeInterval::POST_TYPE );
+    }
+
+    public function bp_get_activity_content_body( $content ) {
+        $json = @json_decode( $content );
+
+        // Bail if it's not even JSON
+        // Bail if we don't have a post type defined
+        if ( ! $json )
+            return $content;
+
+        switch ( $json->post_type ) {
+            case Fossil::POST_TYPE:
+                return Fossil::bp_format_activity_json( $json );
+                break;
+            case FossilDimension::POST_TYPE:
+                return FossilDimension::bp_format_activity_json( $json );
+                break;
+            case FossilLocation::POST_TYPE:
+                return FossilLocation::bp_format_activity_json( $json );
+                break;
+            case Stratum::POST_TYPE:
+                return Stratum::bp_format_activity_json( $json );
+                break;
+            case Taxon::POST_TYPE:
+                return Taxon::bp_format_activity_json( $json );
+                break;
+            case TimeInterval::POST_TYPE:
+                return TimeInterval::bp_format_activity_json( $json );
+                break;
+            default:
+                return $content;
+                break;
+        }
     }
 
     public function bp_add_member_fossil_nav_items() {

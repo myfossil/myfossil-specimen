@@ -152,13 +152,10 @@ class Taxon extends Base
                 $to->{ $ch_set->key } = $ch_set->to;
             }
 
-            $activity->content = sprintf( 'Changed Taxon from <span
+            $activity->template = sprintf( 'Changed Taxon from <span
                     class="border">%s</span> to <span class="border">
                     %s</span>', $from,
                 $to );
-
-            unset( $from );
-            unset( $to );
         }
 
         return parent::bp_format_activity( $action, $activity );

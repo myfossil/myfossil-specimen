@@ -243,6 +243,10 @@ class myFOSSIL_Specimen
         $this->loader->add_action( 'bp_setup_nav', $plugin_public,
             'bp_add_member_fossil_nav_items', 100 );
 
+        /* BuddyPress Activity JSON filtering */
+        $this->loader->add_filter( 'bp_get_activity_content_body',
+                $plugin_public, 'bp_get_activity_content_body' );
+
     }
 
     /**

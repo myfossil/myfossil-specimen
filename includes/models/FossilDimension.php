@@ -139,13 +139,10 @@ class FossilDimension extends Base
                 $to->{ $ch_set->key } = $ch_set->to;
             }
 
-            $activity->content = sprintf( 'Changed Dimensions from <span
+            $activity->template = sprintf( 'Changed Dimensions from <span
                     class="border">%s</span> to <span class="border">
                     %s</span>', $from,
                 $to );
-
-            unset( $from );
-            unset( $to );
         }
 
         return parent::bp_format_activity( $action, $activity );
