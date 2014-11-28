@@ -1,0 +1,35 @@
+<div class="fossil-change">
+    <h4>Dimensions</h4>
+
+    <div class="from">
+        <h5>From</h5>
+        <table class="table">
+            <tr>
+                {% if from.length %}<th>Length</th>{% endif %}
+                {% if from.width %}<th>Width</th>{% endif %}
+                {% if from.height %}<th>Height</th>{% endif %}
+            </tr>
+            <tr>
+                {% if from.length %}<td>{{ from.length }} m</td>{% endif %}
+                {% if from.width %}<td>{{ from.width }} m</td>{% endif %}
+                {% if from.height %}<td>{{ from.height }} m</td>{% endif %}
+            </tr>
+        </table>
+    </div>
+
+    <div class="to">
+        <h5>To</h5>
+        <table class="table">
+            <tr>
+                {% if to.length %}<th>Length</th>{% endif %}
+                {% if to.width %}<th>Width</th>{% endif %}
+                {% if to.height %}<th>Height</th>{% endif %}
+            </tr>
+            <tr>
+                {% if to.length %}<td>{{ to.length }} m</td>{% endif %}
+                {% if to.width %}<td>{{ to.width }} m</td>{% endif %}
+                {% if to.height %}<td>{{ to.height }} m</td>{% endif %}
+            </tr>
+        </table>
+    </div>
+</div>

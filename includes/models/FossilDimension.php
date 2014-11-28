@@ -120,4 +120,17 @@ class FossilDimension extends Base
         return $this->$key * 100.;
     }
 
+    public static function bp_format_activity_json( $json, $tpl ) {
+        $dim0 = new FossilDimension;
+        $dim1 = new FossilDimension;
+
+        $changes = $json->changeset;
+        foreach ( $changes as $item ) {
+            $dim0->{ $item->key } = $item->from;
+            $dim1->{ $item->key } = $item->to;
+        }
+
+        $tpl_path = 'activities/dimension.htm';
+        return $tpl->render( $tpl_path, array( 'from' => $dim0, 'to' => $dim1 ) );
+    }
 }
