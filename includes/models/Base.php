@@ -473,7 +473,7 @@ abstract class Base
                 'item_id' => $this->id,
                 'user_id' => \bp_loggedin_user_id(),
                 'content' => json_encode( array( 'post_type' => $post_type,
-                        'changeset' => $this->_history ) ),
+                        'changeset' => $this->_history ), JSON_UNESCAPED_UNICODE ),
                 'secondary_item_id' => $this->wp_post->post_author,
                 'type' => $bp_activity_type
             );
