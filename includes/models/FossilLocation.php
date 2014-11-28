@@ -87,4 +87,18 @@ class FossilLocation extends Base
         register_post_type( self::POST_TYPE, $args );
     }
     // }}}
+
+    public static function bp_format_activity_json( $json, $tpl ) {
+        $t0 = new FossilLocation;
+        $t1 = new FossilLocation;
+
+        $changes = $json->changeset;
+        foreach ( $changes as $item ) {
+            $t0->{ $item->key } = $item->from;
+            $t1->{ $item->key } = $item->to;
+        }
+
+        $tpl_path = 'activities/location.htm';
+        return $tpl->render( $tpl_path, array( 'from' => $t0, 'to' => $t1 ) );
+    }
 }
