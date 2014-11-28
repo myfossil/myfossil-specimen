@@ -120,32 +120,4 @@ class FossilDimension extends Base
         return $this->$key * 100.;
     }
 
-    /**
-     * Callback to format BuddyPress activity for a Dimension update.
-     *
-     * @param string    $action BuddyPress Activity action.
-     * @param object    $activity BuddyPress Activity object.
-     * @return string   BuddyPress Activity action
-     */
-    public static function bp_format_activity( $action, $activity )
-    {
-        return parent::bp_format_activity( $action, $activity );
-
-        if ( $activity->content ) {
-            $from = new FossilDimension;
-            $to = new FossilDimension;
-            foreach ( json_decode( $activity->content ) as $ch_set ) {
-                $from->{ $ch_set->key } = $ch_set->from;
-                $to->{ $ch_set->key } = $ch_set->to;
-            }
-
-            $activity->template = sprintf( 'Changed Dimensions from <span
-                    class="border">%s</span> to <span class="border">
-                    %s</span>', $from,
-                $to );
-        }
-
-        return parent::bp_format_activity( $action, $activity );
-    }
-
 }

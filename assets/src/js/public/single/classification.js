@@ -31,7 +31,9 @@
         });
 
     }
+    // }}}
 
+    // {{{ get_taxon_img
     function get_taxon_img( taxon_no ) {
         if ( taxon_no <= 0 ) return;
 

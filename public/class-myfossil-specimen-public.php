@@ -72,7 +72,9 @@ class myFOSSIL_Specimen_Public {
 
         // Bail if it's not even JSON
         // Bail if we don't have a post type defined
-        if ( ! $json )
+        if ( ! $json 
+                || ! property_exists( $json, 'post_type' ) 
+                || ! property_exists( $json, 'changeset' ) )
             return $content;
 
         switch ( $json->post_type ) {

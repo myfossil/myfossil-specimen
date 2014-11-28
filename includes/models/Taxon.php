@@ -133,32 +133,47 @@ class Taxon extends Base
         return parent::__get( $key );
     }
 
-    /**
-     *
-     *
-     * @param unknown $action
-     * @param unknown $activity
-     * @return unknown
-     */
-    public static function bp_format_activity( $action, $activity )
-    {
-        return parent::bp_format_activity( $action, $activity );
+    public static function bp_format_activity_json( $json ) {
+        $t0 = new Taxon;
+        $t1 = new Taxon;
 
-        if ( $activity->content ) {
-            $from = new Taxon;
-            $to = new Taxon;
-            foreach ( json_decode( $activity->content ) as $ch_set ) {
-                $from->{ $ch_set->key } = $ch_set->from;
-                $to->{ $ch_set->key } = $ch_set->to;
-            }
-
-            $activity->template = sprintf( 'Changed Taxon from <span
-                    class="border">%s</span> to <span class="border">
-                    %s</span>', $from,
-                $to );
+        $changes = $json->changeset;
+        foreach ( $changes as $item ) {
+            $t0->{ $item->key } = $item->from;
+            $t1->{ $item->key } = $item->to;
         }
 
-        return parent::bp_format_activity( $action, $activity );
+
+        $tpl = '<div class="fossil-change">';
+
+        $tpl .= '  <div class="from">';
+        $tpl .= '    <h5>From</h5>';
+        $tpl .= '    <p class="fossil-property">';
+        $tpl .=        $t0->rank;
+        $tpl .= '    </p>';
+        if ( $t0->pbdb->image_no ) {
+            $tpl .= sprintf( '<img ' .
+                    'src="http://paleobiodb.org/data1.1/taxa/thumb.png?id=%d" ' .
+                    'class="phylopic" />', $t0->pbdb->image_no );
+        }
+        $tpl .=      $t0->name;
+        $tpl .= '  </div>'; // .from
+
+        $tpl .= '  <div class="to">';
+        $tpl .= '    <h5>To</h5>';
+        $tpl .= '    <p class="fossil-property">';
+        $tpl .=        $t1->rank;
+        $tpl .= '    </p>';
+        if ( $t1->pbdb->image_no ) {
+            $tpl .= sprintf( '<img ' .
+                    'src="http://paleobiodb.org/data1.1/taxa/thumb.png?id=%d" ' .
+                    'class="phylopic" />', $t1->pbdb->image_no );
+        }
+        $tpl .=      $t1->name;
+        $tpl .= '  </div>'; // .to
+
+        $tpl .= '</div>'; // .fossil-change
+        return $tpl;
     }
 
     /**
