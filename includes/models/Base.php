@@ -215,6 +215,10 @@ abstract class Base
     }
     // }}}
 
+    public function __isset( $key ) {
+        return $this->{ $key } !== null;
+    }
+
     // {{{ __set
     /**
      * Custom setter for properties that span multiple data sources.
@@ -589,7 +593,7 @@ abstract class Base
             '_format', $action, $activity );
     }
 
-    public static function bp_format_activity_json( $json ) {
+    public static function bp_format_activity_json( $json, $tpl ) {
         return json_encode( $json );
     }
 

@@ -43,6 +43,9 @@ class myFOSSIL_Specimen_Public {
 	 */
 	private $version;
 
+    private $twig_loader;
+    private $twig;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -67,6 +70,23 @@ class myFOSSIL_Specimen_Public {
         TimeInterval::register_buddypress_activities( TimeInterval::POST_TYPE );
     }
 
+    /**
+     * Returns `Twig_Environment` object.
+     */
+    public function get_twig() {
+        if ( ! $this->twig ) {
+            if ( ! $this->twig_loader ) {
+                $template_dir = plugin_dir_path( __FILE__ ) . '/templates';
+                $this->twig_loader = new \Twig_Loader_Filesystem( $template_dir );
+            }
+            $this->twig = new \Twig_Environment( $this->twig_loader,
+                   array( 'debug' => true ) );
+            $this->twig->addExtension(new \Twig_Extension_Debug());
+        }
+
+        return $this->twig;
+    }
+
     public function bp_get_activity_content_body( $content ) {
         $json = @json_decode( $content );
 
@@ -77,24 +97,25 @@ class myFOSSIL_Specimen_Public {
                 || ! property_exists( $json, 'changeset' ) )
             return $content;
 
+        $tpl = $this->get_twig();
         switch ( $json->post_type ) {
             case Fossil::POST_TYPE:
-                return Fossil::bp_format_activity_json( $json );
+                return Fossil::bp_format_activity_json( $json, $tpl );
                 break;
             case FossilDimension::POST_TYPE:
-                return FossilDimension::bp_format_activity_json( $json );
+                return FossilDimension::bp_format_activity_json( $json, $tpl );
                 break;
             case FossilLocation::POST_TYPE:
-                return FossilLocation::bp_format_activity_json( $json );
+                return FossilLocation::bp_format_activity_json( $json, $tpl );
                 break;
             case Stratum::POST_TYPE:
-                return Stratum::bp_format_activity_json( $json );
+                return Stratum::bp_format_activity_json( $json, $tpl );
                 break;
             case Taxon::POST_TYPE:
-                return Taxon::bp_format_activity_json( $json );
+                return Taxon::bp_format_activity_json( $json, $tpl );
                 break;
             case TimeInterval::POST_TYPE:
-                return TimeInterval::bp_format_activity_json( $json );
+                return TimeInterval::bp_format_activity_json( $json, $tpl );
                 break;
             default:
                 return $content;

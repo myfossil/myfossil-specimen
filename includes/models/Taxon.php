@@ -133,7 +133,7 @@ class Taxon extends Base
         return parent::__get( $key );
     }
 
-    public static function bp_format_activity_json( $json ) {
+    public static function bp_format_activity_json( $json, $tpl ) {
         $t0 = new Taxon;
         $t1 = new Taxon;
 
@@ -143,37 +143,8 @@ class Taxon extends Base
             $t1->{ $item->key } = $item->to;
         }
 
-
-        $tpl = '<div class="fossil-change">';
-
-        $tpl .= '  <div class="from">';
-        $tpl .= '    <h5>From</h5>';
-        $tpl .= '    <p class="fossil-property">';
-        $tpl .=        $t0->rank;
-        $tpl .= '    </p>';
-        if ( $t0->pbdb->image_no ) {
-            $tpl .= sprintf( '<img ' .
-                    'src="http://paleobiodb.org/data1.1/taxa/thumb.png?id=%d" ' .
-                    'class="phylopic" />', $t0->pbdb->image_no );
-        }
-        $tpl .=      $t0->name;
-        $tpl .= '  </div>'; // .from
-
-        $tpl .= '  <div class="to">';
-        $tpl .= '    <h5>To</h5>';
-        $tpl .= '    <p class="fossil-property">';
-        $tpl .=        $t1->rank;
-        $tpl .= '    </p>';
-        if ( $t1->pbdb->image_no ) {
-            $tpl .= sprintf( '<img ' .
-                    'src="http://paleobiodb.org/data1.1/taxa/thumb.png?id=%d" ' .
-                    'class="phylopic" />', $t1->pbdb->image_no );
-        }
-        $tpl .=      $t1->name;
-        $tpl .= '  </div>'; // .to
-
-        $tpl .= '</div>'; // .fossil-change
-        return $tpl;
+        $tpl_path = 'activities/taxon.htm';
+        return $tpl->render( $tpl_path, array( 'from' => $t0, 'to' => $t1 ) );
     }
 
     /**
