@@ -143,6 +143,21 @@ class TimeInterval extends Base
         return parent::__set( $key, $value );
     }
 
+
+    public static function bp_format_activity_json( $json, $tpl ) {
+        $geo0 = new TimeInterval;
+        $geo1 = new TimeInterval;
+
+        $changes = $json->changeset;
+        foreach ( $changes as $item ) {
+            $geo0->{ $item->key } = $item->from;
+            $geo1->{ $item->key } = $item->to;
+        }
+
+        $tpl_path = 'activities/geochronology.htm';
+        return $tpl->render( $tpl_path, array( 'from' => $geo0, 'to' => $geo1) );
+    }
+
     /**
      *
      *
