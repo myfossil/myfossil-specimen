@@ -1,28 +1,23 @@
-
 <div class="fossil-change">
     <div class="from">
         <h5>From</h5>
         <p class="fossil-property">
-            {{ from.rank }}
+            {{- from.rank -}}
         </p>
-        {% if from.pbdb.image_no %}
-            <img src="http://paleobiodb.org/data1.1/taxa/thumb.png?id={{ from.pbdb.image_no }}"
-                    alt="phylopic rendering of {{ from.name }}"
-                    class="phylopic" />
-        {% endif %}
-        {{ from.name }}
+        {%- if from.pbdb.image_no is defined -%}
+            <img src="//paleobiodb.org/data1.1/taxa/thumb.png?id={{ from.pbdb.image_no }}" alt="phylopic rendering of {{ from.name }}" class="phylopic" />
+        {%- endif -%}
+        {{- from.name -}}
     </div>
 
     <div class="to">
-        <h5>to</h5>
+        <h5>To</h5>
         <p class="fossil-property">
-            {{ to.rank }}
+            {{- to.rank -}}
         </p>
-        {% if to.pbdb.image_no %}
-            <img src="http://paleobiodb.org/data1.1/taxa/thumb.png?id={{ to.pbdb.image_no }}"
-                    alt="phylopic rendering of {{ to.name }}"
-                    class="phylopic" />
-        {% endif %}
-        {{ to.name }}
+        {%- if to.pbdb.image_no is defined -%}
+            <img src="//paleobiodb.org/data1.1/taxa/thumb.png?id={{ to.pbdb.image_no }}" alt="phylopic rendering of {{ to.name }}" class="phylopic" />
+        {%- endif -%}
+        {{- to.name -}}
     </div>
 </div>

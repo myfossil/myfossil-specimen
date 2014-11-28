@@ -80,7 +80,7 @@ class myFOSSIL_Specimen_Public {
                 $this->twig_loader = new \Twig_Loader_Filesystem( $template_dir );
             }
             $this->twig = new \Twig_Environment( $this->twig_loader,
-                   array( 'debug' => true ) );
+                   array( 'auto_reload' => true, 'autoescape' => false ) );
             $this->twig->addExtension(new \Twig_Extension_Debug());
         }
 
