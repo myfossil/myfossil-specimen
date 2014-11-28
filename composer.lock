@@ -669,13 +669,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/myfossil/pbdb-php.git",
-                "reference": "617b2cac39411530a4c18ffe8af15032bc595c6c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myfossil/pbdb-php/zipball/617b2cac39411530a4c18ffe8af15032bc595c6c",
-                "reference": "617b2cac39411530a4c18ffe8af15032bc595c6c",
-                "shasum": ""
+                "reference": "ba7e7531dad3b9585b63deaa6c3f213cf67f0852"
             },
             "require": {
                 "guzzlehttp/guzzle": "~4",
@@ -708,7 +702,7 @@
                 "pbdbhttpapiphp",
                 "taxonomy"
             ],
-            "time": "2014-10-19 18:00:51"
+            "time": "2014-11-28 20:38:23"
         },
         {
             "name": "patchwork/utf8",
