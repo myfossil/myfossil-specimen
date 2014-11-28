@@ -235,6 +235,7 @@ class myFOSSIL_Specimen_Public {
                 $taxon->name    = $_POST['taxon']['name'];
                 $taxon->rank    = $_POST['taxon']['rank'];
                 $taxon->comment = $_POST['taxon']['comment'];
+                $taxon->parent_id = $post_id;
 
                 $fossil->taxon_id = $taxon->save(); 
 
@@ -255,6 +256,7 @@ class myFOSSIL_Specimen_Public {
                 $ti->level   = $_POST['geochronology']['level'];
                 $ti->name    = $_POST['geochronology']['name'];
                 $ti->comment = $_POST['comment'];
+                $ti->parent_id = $post_id;
 
                 $fossil->time_interval_id = $ti->save();
 
@@ -278,6 +280,7 @@ class myFOSSIL_Specimen_Public {
 
                     $stratum->name = $_POST['strata'][$rank];
                     $stratum->comment = $_POST['comment'];
+                    $stratum->parent_id = $post_id;
 
                     $fossil->{ $stratum_id_key } = $stratum->save();
                 }
@@ -303,6 +306,7 @@ class myFOSSIL_Specimen_Public {
                 $dim->width  = $width  / 100; // convert to meters
                 $dim->height = $height / 100; // convert to meters
                 $dim->comment = $_POST['comment'];
+                $dim->parent_id = $post_id;
 
                 $fossil->dimension_id = $dim->save();
 
@@ -324,6 +328,7 @@ class myFOSSIL_Specimen_Public {
                 }
 
                 $location->comment = $_POST['comment'];
+                $location->parent_id = $post_id;
 
                 $fossil->location_id = $location->save();
 

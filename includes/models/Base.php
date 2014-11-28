@@ -338,6 +338,8 @@ abstract class Base
          */
         if ( $this->_cache && $recursive ) {
             foreach ( $this->_cache as $cache_key => $cached_object ) {
+                $cached_object->parent_id = $this->id;
+
                 if ( method_exists( $cached_object, 'save' ) ) {
                     /*
                      * The Object has a save method that will return its
@@ -474,7 +476,7 @@ abstract class Base
                 'user_id' => \bp_loggedin_user_id(),
                 'content' => json_encode( array( 'post_type' => $post_type,
                         'changeset' => $this->_history ), JSON_UNESCAPED_UNICODE ),
-                'secondary_item_id' => $this->wp_post->post_author,
+                'secondary_item_id' => $this->parent_id ? $this->parent_id : $this->wp_post->post_author,
                 'type' => $bp_activity_type
             );
 
@@ -576,8 +578,18 @@ abstract class Base
         if ( $owner_link == 'their own' && $verb == 'created' )
             $owner_link = 'a';
 
-        $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
-                $activity->item_id, $activity->item_id );
+        /* 
+         * For Fossil objects, the item_id is the fossil id, however for all
+         * other objects, the item_id is the object's id and the
+         * secondary_item_id is the fossil's id.
+         */
+        if ( strpos( $activity->type, Fossil::POST_TYPE ) === 0 ) {
+            $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
+                    $activity->item_id, $activity->item_id );
+        } else {
+            $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
+                    $activity->secondary_item_id, $activity->secondary_item_id );
+        }
 
         $action = sprintf( '%s %s %s %s', $initiator_link, $verb,
             $owner_link, $fossil_link );
