@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-DB_NAME={$1-wp_myfossil_test}
-DB_USER={$2-wp_myfossil}
-DB_PASS={$3-wp_myfossil}
-DB_HOST={$4-0.0.0.0:13306}
+DB_NAME=${1-wp_myfossil_test}
+DB_USER=${2-wp_myfossil}
+DB_PASS=${3-wp_myfossil}
+DB_HOST=${4-0.0.0.0:13306}
 WP_VERSION=latest
 WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
 WP_CORE_DIR=/tmp/wordpress/
