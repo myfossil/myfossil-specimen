@@ -125,12 +125,20 @@ class FossilDimension extends Base
         $dim1 = new FossilDimension;
 
         $changes = $json->changeset;
+        $null_keys = array();
         foreach ( $changes as $item ) {
             $dim0->{ $item->key } = $item->from;
             $dim1->{ $item->key } = $item->to;
+
+            if ( $item->from == null )
+                $null_keys[] = $item->key;
         }
 
+        if ( count( $changes ) == count( $null_keys ) )
+            $dim0 = null;
+
+        $content = array( 'from' => $dim0, 'to' => $dim1 );
         $tpl_path = 'activities/dimension.htm';
-        return $tpl->render( $tpl_path, array( 'from' => $dim0, 'to' => $dim1 ) );
+        return $tpl->render( $tpl_path, $content );
     }
 }

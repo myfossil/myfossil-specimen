@@ -140,10 +140,17 @@ class Stratum extends Base
         $t1 = new Stratum;
 
         $changes = $json->changeset;
+        $null_keys = array();
         foreach ( $changes as $item ) {
             $t0->{ $item->key } = $item->from;
             $t1->{ $item->key } = $item->to;
+
+            if ( $item->from == null )
+                $null_keys[] = $item->key;
         }
+
+        if ( count( $changes ) == count( $null_keys ) )
+            $t0 = null;
 
         $tpl_path = 'activities/lithostratigraphy.htm';
         return $tpl->render( $tpl_path, array( 'from' => $t0, 'to' => $t1 ) );

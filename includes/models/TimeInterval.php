@@ -149,10 +149,17 @@ class TimeInterval extends Base
         $geo1 = new TimeInterval;
 
         $changes = $json->changeset;
+        $null_keys = array();
         foreach ( $changes as $item ) {
             $geo0->{ $item->key } = $item->from;
             $geo1->{ $item->key } = $item->to;
+
+            if ( $item->from == null )
+                $null_keys[] = $item->key;
         }
+
+        if ( count( $changes ) == count( $null_keys ) )
+            $geo0 = null;
 
         $tpl_path = 'activities/geochronology.htm';
         return $tpl->render( $tpl_path, array( 'from' => $geo0, 'to' => $geo1) );

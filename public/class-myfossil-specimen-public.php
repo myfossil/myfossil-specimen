@@ -287,7 +287,9 @@ class myFOSSIL_Specimen_Public {
                     $stratum->comment = $_POST['comment'];
                     $stratum->parent_id = $post_id;
 
-                    $fossil->{ $stratum_id_key } = $stratum->save();
+                    if ( ! empty( $stratum->name ) && ! is_null( $stratum->name ) ) {
+                        $fossil->{ $stratum_id_key } = $stratum->save();
+                    }
                 }
 
                 echo json_encode( $fossil->save() );
