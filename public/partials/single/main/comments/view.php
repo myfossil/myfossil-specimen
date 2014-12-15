@@ -21,6 +21,8 @@ function fossil_view_comments( $fossil=null ) {
             array_push( $item_ids, $fossil->{ $key } );
 
     $item_query = implode( ',', $item_ids );
+
+    global $activities_template;
     ?>
 
     <?php if ( bp_has_activities( bp_ajax_querystring( 'activity' ) .
@@ -29,7 +31,9 @@ function fossil_view_comments( $fossil=null ) {
 
         <?php while (bp_activities()): ?>
             <?php bp_the_activity(); ?>
-            <?php bp_get_template_part('activity/entry'); ?>
+            <?php if ( bp_get_activity_content_body() && strpos( bp_get_activity_content_body(), 'post_type' ) === false ) : ?>
+                <?php bp_get_template_part('activity/entry'); ?>
+            <?php endif; ?>
         <?php endwhile; ?>
 
         <?php if (bp_activity_has_more_items()): ?>

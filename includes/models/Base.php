@@ -241,6 +241,12 @@ abstract class Base
                     'from' => $this->{ $key },
                     'to' => $value
                 );
+        } elseif( ! $this->{ $key } ) {
+            $this->_history[] = array(
+                    'key' => $key,
+                    'from' => null,
+                    'to' => $value
+                );
         }
 
         if ( $key == 'id' && $this->wp_post ) {
@@ -538,7 +544,7 @@ abstract class Base
             $description  = sprintf( '%s %s', $post_type, $action );
             $format_cb    = sprintf( "%s::bp_format_activity", \get_called_class() );
             $label        = $post_type;
-            $context      = array( 'activity' );
+            $context      = array( 'myfossil' );
 
             \bp_activity_set_action( $component_id, $type, $description,
                 $format_cb, $label, $context );
@@ -571,13 +577,6 @@ abstract class Base
         $verbs = explode( '_', $activity->type );
         $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs );
 
-        $owner_link = ( $activity->user_id == $activity->secondary_item_id )
-            ? 'their own' : sprintf( "%s's", \bp_core_get_userlink(
-                $activity->secondary_item_id ) );
-
-        if ( $owner_link == 'their own' && $verb == 'created' )
-            $owner_link = 'a';
-
         /* 
          * For Fossil objects, the item_id is the fossil id, however for all
          * other objects, the item_id is the object's id and the
@@ -586,20 +585,24 @@ abstract class Base
         if ( strpos( $activity->type, Fossil::POST_TYPE ) === 0 ) {
             $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
                     $activity->item_id, $activity->item_id );
+            $owner_link = ( $activity->user_id == $activity->secondary_item_id )
+                ? 'their own' : sprintf( "%s's", \bp_core_get_userlink(
+                    $activity->secondary_item_id ) );
+            if ( $owner_link == 'their own' && $verb == 'created' )
+                $owner_link = 'a';
         } else {
             $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
                     $activity->secondary_item_id, $activity->secondary_item_id );
+            $fossil = new Fossil( $activity->secondary_item_id );
+            $owner_link = ( $activity->user_id == $fossil->post_author )
+                ? 'their own' : sprintf( "%s's", \bp_core_get_userlink(
+                    $activity->secondary_item_id ) );
+            if ( $owner_link == 'their own' && $verb == 'created' )
+                $owner_link = 'a';
         }
 
         $action = sprintf( '%s %s %s %s', $initiator_link, $verb,
             $owner_link, $fossil_link );
-
-        /*
-        if ( property_exists( $activity, 'template' ) )
-            $activity->content = $activity->template;
-        elseif ( $verb !== 'commented' )
-            $activity->content = null;
-        */
 
         return apply_filters( 'bp_myfossil_activity_' . $activity->type .
             '_format', $action, $activity );

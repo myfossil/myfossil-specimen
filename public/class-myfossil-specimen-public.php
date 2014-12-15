@@ -182,24 +182,29 @@ class myFOSSIL_Specimen_Public {
      */
     public function ajax_handler() {
         $action = $_POST['action'];
-        $post_id = $_POST['post_id'];
-
-        // Check permissions
-        $permissions = array(
-            'myfossil_create_fossil'          => current_user_can( 'publish_posts' ),
-            'myfossil_delete_fossil_image'    => current_user_can( 'delete_post', $post_id ),
-            'myfossil_fossil_comment'         => is_user_logged_in(),
-            'myfossil_fossil_delete'          => current_user_can( 'delete_post', $post_id ),
-            'myfossil_save_dimensions'        => current_user_can( 'edit_post', $post_id ), 
-            'myfossil_save_geochronology'     => current_user_can( 'edit_post', $post_id ), 
-            'myfossil_save_lithostratigraphy' => current_user_can( 'edit_post', $post_id ), 
-            'myfossil_save_location'          => current_user_can( 'edit_post', $post_id ), 
-            'myfossil_save_status'            => current_user_can( 'edit_post', $post_id ), 
-            'myfossil_save_taxon'             => current_user_can( 'edit_post', $post_id ), 
-            'myfossil_upload_fossil_image'    => current_user_can( 'edit_post', $post_id ), 
-        );
 
         $permitted = true;
+        $permissions = array();
+
+        if ( array_key_exists( 'post_id', $_POST ) ) {
+            $post_id = $_POST['post_id'];
+
+            // Check permissions
+            $permissions = array(
+                'myfossil_create_fossil'          => current_user_can( 'publish_posts' ),
+                'myfossil_delete_fossil_image'    => current_user_can( 'delete_post', $post_id ),
+                'myfossil_fossil_comment'         => is_user_logged_in(),
+                'myfossil_fossil_delete'          => current_user_can( 'delete_post', $post_id ),
+                'myfossil_save_dimensions'        => current_user_can( 'edit_post', $post_id ), 
+                'myfossil_save_geochronology'     => current_user_can( 'edit_post', $post_id ), 
+                'myfossil_save_lithostratigraphy' => current_user_can( 'edit_post', $post_id ), 
+                'myfossil_save_location'          => current_user_can( 'edit_post', $post_id ), 
+                'myfossil_save_status'            => current_user_can( 'edit_post', $post_id ), 
+                'myfossil_save_taxon'             => current_user_can( 'edit_post', $post_id ), 
+                'myfossil_upload_fossil_image'    => current_user_can( 'edit_post', $post_id ), 
+            );
+        }
+
         if ( array_key_exists( $action, $permissions ) ) {
             if ( ! $permissions[$action] ) {
                 // User not permitted to do this, trigger error below
@@ -282,7 +287,9 @@ class myFOSSIL_Specimen_Public {
                     $stratum->comment = $_POST['comment'];
                     $stratum->parent_id = $post_id;
 
-                    $fossil->{ $stratum_id_key } = $stratum->save();
+                    if ( ! empty( $stratum->name ) && ! is_null( $stratum->name ) ) {
+                        $fossil->{ $stratum_id_key } = $stratum->save();
+                    }
                 }
 
                 echo json_encode( $fossil->save() );
