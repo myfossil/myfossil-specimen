@@ -16,14 +16,14 @@ namespace myFOSSIL\Plugin\Specimen;
  * the plugin, registers the activation and deactivation functions, and defines
  * a function that starts the plugin.
  *
- * @link              https://github.com/myfossil/wp-plugin-specimen
+ * @link              https://github.com/myfossil/myfossil-specimen
  * @package           myFOSSIL_Specimen
  *
  * @wordpress-plugin
  * Plugin Name:       myFOSSIL Specimen
- * Plugin URI:        https://github.com/myfossil/wp-plugin-specimen
+ * Plugin URI:        https://github.com/myfossil/myfossil-specimen
  * Description:       Adds fossil management to WordPress + BuddyPress.
- * Version:           0.3.0
+ * Version:           0.3.1
  * Author:            myFOSSIL
  * Author URI:        https://github.com/myfossil
  * License:           BSD
@@ -39,59 +39,59 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Dependencies.
  */
-require_once( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
+require_once( plugin_dir_path( realpath( __FILE__ ) ) . 'vendor/autoload.php' );
 
 /**
  * The code that defines the custom objects to be used.
  */
-require_once( plugin_dir_path( __FILE__ ) . 'includes/models.php' );
+require_once( plugin_dir_path( realpath( __FILE__ ) ) . 'includes/models.php' );
 
 /**
  * The code that runs during plugin activation.
  */
-require_once( plugin_dir_path( __FILE__ ) .
+require_once( plugin_dir_path( realpath( __FILE__ ) ) .
         'includes/class-myfossil-specimen-activator.php' );
 
 /**
  * The code that runs during plugin deactivation.
  */
-require_once( plugin_dir_path( __FILE__ ) .
+require_once( plugin_dir_path( realpath( __FILE__ ) ) .
         'includes/class-myfossil-specimen-deactivator.php' );
 
 /**
  * This action is documented in:
  *  - includes/class-myfossil-specimen-activator.php
  */
-register_activation_hook( __FILE__, array( __NAMESPACE__ .
+register_activation_hook( realpath( __FILE__ ), array( __NAMESPACE__ .
             '\myFOSSIL_Specimen_Activator', 'activate' ) );
 
 /**
  * This action is documented in:
  *  - includes/class-myfossil-specimen-deactivator.php
  */
-register_deactivation_hook( __FILE__, array( __NAMESPACE__ .
+register_deactivation_hook( realpath( __FILE__ ), array( __NAMESPACE__ .
             '\myFOSSIL_Specimen_Deactivator', 'deactivate' ) );
 
 /**
  * The core plugin class that is used to define internationalization,
  * dashboard-specific hooks, and public-facing site hooks.
  */
-require_once( plugin_dir_path( __FILE__ ) .
+require_once( plugin_dir_path( realpath( __FILE__ ) ) .
         'includes/class-myfossil-specimen.php' );
 
 
 function myfossil_enqueue_scripts() {
-    wp_enqueue_script( 'myfossil-specimen-public-single', plugin_dir_url( __FILE__ ) .
+    wp_enqueue_script( 'myfossil-specimen-public-single', plugin_dir_url( realpath( __FILE__ ) ) .
             'static/js/public-single.min.js', array( 'jquery' ) );
-    wp_enqueue_script( 'myfossil-specimen-public-list', plugin_dir_url( __FILE__ ) .
+    wp_enqueue_script( 'myfossil-specimen-public-list', plugin_dir_url( realpath( __FILE__ ) ) .
             'static/js/public-list.min.js', array( 'jquery' ) );
-    wp_enqueue_script( 'myfossil-specimen-public-plugins', plugin_dir_url( __FILE__ ) .
+    wp_enqueue_script( 'myfossil-specimen-public-plugins', plugin_dir_url( realpath( __FILE__ ) ) .
             'static/js/public-plugins.min.js', array( 'jquery' ) );
 }
 add_action( 'wp_enqueue_scripts', __namespace__ . '\myfossil_enqueue_scripts' );
 
 function myfossil_admin_enqueue_scripts() {
-    wp_enqueue_script( 'myfossil_specimen_admin', plugin_dir_url( __FILE__ ) .
+    wp_enqueue_script( 'myfossil_specimen_admin', plugin_dir_url( realpath( __FILE__ ) ) .
             'static/js/admin.min.js', array( 'jquery' ) );
 }
 add_action( 'admin_enqueue_scripts', __namespace__ .

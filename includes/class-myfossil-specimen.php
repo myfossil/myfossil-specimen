@@ -107,35 +107,35 @@ class myFOSSIL_Specimen
          *
          * @see composer.json
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) .
+        require_once plugin_dir_path( dirname( realpath( __FILE__ ) ) ) .
             'vendor/autoload.php';
 
         /**
          * The class responsible for orchestrating the actions and filters of
          * the core plugin.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) .
+        require_once plugin_dir_path( dirname( realpath( __FILE__ ) ) ) .
             'includes/class-myfossil-specimen-loader.php';
 
         /**
          * The class responsible for defining internationalization
          * functionality of the plugin.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) .
+        require_once plugin_dir_path( dirname( realpath( __FILE__ ) ) ) .
             'includes/class-myfossil-specimen-i18n.php';
 
         /**
          * The class responsible for defining all actions that occur in the
          * Dashboard.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) .
+        require_once plugin_dir_path( dirname( realpath( __FILE__ ) ) ) .
             'admin/class-myfossil-specimen-admin.php';
 
         /**
          * The class responsible for defining all actions that occur in the
          * public-facing side of the site.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) .
+        require_once plugin_dir_path( dirname( realpath( __FILE__ ) ) ) .
             'public/class-myfossil-specimen-public.php';
 
         $this->loader = new myFOSSIL_Specimen_Loader();

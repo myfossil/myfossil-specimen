@@ -56,7 +56,7 @@ class myFOSSIL_Specimen_i18n
         load_plugin_textdomain(
             $this->domain,
             false,
-            dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+            dirname( dirname( plugin_basename( realpath( __FILE__ ) ) ) ) . '/languages/'
         );
 
     }

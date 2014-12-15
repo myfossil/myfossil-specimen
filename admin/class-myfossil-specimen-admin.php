@@ -286,7 +286,7 @@ class myFOSSIL_Specimen_Admin
             );
 
         // Set default filename
-            $filename = plugin_dir_path( dirname( __FILE__ ) ) .
+            $filename = plugin_dir_path( dirname( realpath( __FILE__ ) ) ) .
                 'admin/data/intervals.csv';
 
         // Exit if the file doesn't exist.
