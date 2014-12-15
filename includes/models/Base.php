@@ -544,7 +544,7 @@ abstract class Base
             $description  = sprintf( '%s %s', $post_type, $action );
             $format_cb    = sprintf( "%s::bp_format_activity", \get_called_class() );
             $label        = $post_type;
-            $context      = array( 'activity' );
+            $context      = array( 'myfossil' );
 
             \bp_activity_set_action( $component_id, $type, $description,
                 $format_cb, $label, $context );
