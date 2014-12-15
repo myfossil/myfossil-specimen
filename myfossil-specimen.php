@@ -17,14 +17,13 @@ namespace myFOSSIL\Plugin\Specimen;
  * a function that starts the plugin.
  *
  * @link              https://github.com/myfossil/wp-plugin-specimen
- * @since             0.0.1
  * @package           myFOSSIL_Specimen
  *
  * @wordpress-plugin
  * Plugin Name:       myFOSSIL Specimen
  * Plugin URI:        https://github.com/myfossil/wp-plugin-specimen
  * Description:       Adds fossil management to WordPress + BuddyPress.
- * Version:           0.0.1
+ * Version:           0.3.0
  * Author:            myFOSSIL
  * Author URI:        https://github.com/myfossil
  * License:           BSD
