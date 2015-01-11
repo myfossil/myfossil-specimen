@@ -206,6 +206,7 @@ class myFOSSIL_Specimen_Public
             $permissions = array(
                 'myfossil_create_fossil'          => current_user_can( 'publish_posts' ),
                 'myfossil_delete_fossil_image'    => current_user_can( 'delete_post', $post_id ),
+                'myfossil_feature_fossil_image'   => current_user_can( 'edit_post', $post_id ),
                 'myfossil_fossil_comment'         => is_user_logged_in(),
                 'myfossil_fossil_delete'          => current_user_can( 'delete_post', $post_id ),
                 'myfossil_save_dimensions'        => current_user_can( 'edit_post', $post_id ),
@@ -415,6 +416,22 @@ class myFOSSIL_Specimen_Public
                 echo json_encode( array( 'error' => 'Failed to delete image' ) );
             } else {
                 echo json_encode( 1 );
+            }
+            die;
+            break;
+
+        case 'myfossil_feature_fossil_image':
+            $post_id = $_POST['post_id'];
+            $fossil = new Fossil( $post_id );
+            $image_id = $_POST['image_id'];
+
+            if ( $post_id && $fossil && $image_id ) {
+                $fossil->image_id = $image_id;
+                if ( $fossil->save() ) {
+                    echo json_encode( 1 );
+                } else {
+                    echo json_encode( array( 'error' => "Error saving Fossil" ) );
+                }
             }
             die;
             break;

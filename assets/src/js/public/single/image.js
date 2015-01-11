@@ -65,24 +65,52 @@
         });
 
         $( '.fossil-delete-image' ).click( function() {
+            var post_id = $( '#post_id' ).val();
             
             $.ajax({
                 type: 'post',
                 url: ajaxurl,
                 dataType: 'json',
                 data: { 
-                        'action' : 'myfossil_delete_fossil_image',
-                        'nonce'  : nonce,
-                        'image_id': $( this ).data( 'attachment-id' )
-                    },
+                    'action' : 'myfossil_delete_fossil_image',
+                    'nonce'  : nonce,
+                    'post_id': post_id,
+                    'image_id': $( this ).data( 'attachment-id' )
+                },
                 success: function( data ) {
-                        if ( data == '1' ) {
-                            location.reload();
-                        }
-                    },
-                error: function ( err ) {
-                        console.error( err );
+                    if ( data == '1' ) {
+                        location.reload();
                     }
+                },
+                error: function ( err ) {
+                    console.error( err );
+                }
+            });
+        });
+
+        $( '.fossil-feature-image' ).click( function() {
+            var post_id = $( '#post_id' ).val();
+            
+            $.ajax({
+                type: 'post',
+                url: ajaxurl,
+                dataType: 'json',
+                data: { 
+                    'action'  : 'myfossil_feature_fossil_image',
+                    'nonce'   : nonce,
+                    'post_id' : post_id,
+                    'image_id': $( this ).data( 'attachment-id' )
+                },
+                success: function( data ) {
+                    if ( data == '1' ) {
+                        location.reload();
+                    } else {
+                        console.error( data );
+                    }
+                },
+                error: function ( err ) {
+                    console.error( err );
+                }
             });
         });
 

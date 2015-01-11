@@ -59,7 +59,7 @@ class Fossil extends Base
 
         $this->_meta_keys = array( 'pbdb_id', 'taxon_id', 'location_id',
             'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
-            'stratum_member_id', 'dimension_id', 'reference_id' );
+            'stratum_member_id', 'dimension_id', 'reference_id', 'image_id' );
     }
 
     // {{{ _save
@@ -240,7 +240,16 @@ class Fossil extends Base
         case 'image':
             if ( ! $this->id ) return;
             $_ = get_attached_media( 'image', $this->id );
-            $m = array_pop( $_ );
+            if ( $this->image_id ) {
+                foreach ( $_ as $image ) {
+                    if ( $image->ID == $this->image_id ) {
+                        $m = $image;
+                    }
+                }
+            }
+            if ( !isset( $m ) || empty( $m ) ) {
+                $m = array_pop( $_ );
+            }
             if ( $m && $m->guid )
                 return $m->guid;
             break;

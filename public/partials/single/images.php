@@ -7,6 +7,11 @@ function myfossil_fossil_render_single_images_edit( $fossil, $image )
 ?>
     <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
         <div class="text-center">
+            <?php if ( (int) $fossil->image_id !== (int) $image->ID ) : ?>
+            <a class="btn btn-default fossil-feature-image" data-attachment-id="<?=$image->ID ?>">
+                Feature Image
+            </a>
+            <?php endif; ?>
             <a class="btn btn-default fossil-delete-image" data-attachment-id="<?=$image->ID ?>">
                 Delete Image
             </a>
