@@ -6,6 +6,7 @@ require_once( '_header.php' );
 require_once( 'information.php' );
 require_once( 'history.php' );
 require_once( 'discussion.php' );
+require_once( 'images.php' );
 require_once( 'settings.php' );
 
 function myfossil_fossil_render_single( $fossil_id, $view ) {
