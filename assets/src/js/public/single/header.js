@@ -1,10 +1,10 @@
-( function( $ ) {
+(function($) {
     'use strict';
 
     function toggle_post_status() {
-        var post_id = $( '#post_id' ).val(),
-            nonce = $( '#myfossil_specimen_nonce' ).val(),
-            post_status = $( 'input.post_status:checked' ).val();
+        var post_id = $('#post_id').val(),
+            nonce = $('#myfossil_specimen_nonce').val(),
+            post_status = $('input.post_status:checked').val();
 
         $.ajax({
             type: 'post',
@@ -16,18 +16,18 @@
                 post_id: post_id,
                 post_status: post_status
             },
-            success: function( data ) { 
-                console.info( data ); 
+            success: function(data) {
+                console.info(data);
             },
-            error: function( err ) {
-                console.error( err );
+            error: function(err) {
+                console.error(err);
             }
         });
     }
 
-    $( function() {
-        $( '#draft' ).change( toggle_post_status ); 
-        $( '#published' ).change( toggle_post_status ); 
-    } );
+    $(function() {
+        $('#draft').change(toggle_post_status);
+        $('#published').change(toggle_post_status);
+    });
 
-}( jQuery ) );
+}(jQuery));

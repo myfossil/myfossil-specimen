@@ -1,38 +1,38 @@
-( function( $ ) {
+(function($) {
     'use strict';
 
     function status_loading() {
-        var img = $( 'img.fossil-image' );
+        var img = $('img.fossil-image');
         var _parent = img.parent();
 
-        console.log( '__status_loading__' );
+        console.log('__status_loading__');
         img.hide();
-        _parent.append( '<span class="loading"><h1><i class="fa fa-circle-o-notch fa-spin fa-6"></i></h1></span>');
+        _parent.append('<span class="loading"><h1><i class="fa fa-circle-o-notch fa-spin fa-6"></i></h1></span>');
     }
 
     function status_done() {
-        var img = $( 'img.fossil-image' );
+        var img = $('img.fossil-image');
         var _parent = img.parent();
-        
-        console.log( '__status_done__' );
 
-        $( 'span.loading' ).hide();
+        console.log('__status_done__');
+
+        $('span.loading').hide();
         img.show();
     }
 
-    function status_error( data ) {
-        if ( data.post_id && data.post_id[0] ) {
-            alert( data.post_id[0].error );
+    function status_error(data) {
+        if (data.post_id && data.post_id[0]) {
+            alert(data.post_id[0].error);
         } else {
-            alert( 'Please upload images of type JPEG or PNG' );
+            alert('Please upload images of type JPEG or PNG');
         }
     }
 
-    $( function() {
-        var post_id = $( '#post_id' ).val();
-        var nonce = $( '#myfossil_specimen_nonce' ).val();
+    $(function() {
+        var post_id = $('#post_id').val();
+        var nonce = $('#myfossil_specimen_nonce').val();
 
-        $( '#fossil-upload-image' ).fileupload({
+        $('#fossil-upload-image').fileupload({
             sequentialUpload: true,
             dataType: 'json',
             formData: {
@@ -44,76 +44,76 @@
             start: function() {
                 status_loading();
             },
-            success: function( data ) {
-                if ( data && data.src ) {
-                    $( 'img.fossil-image' ).attr( 'src', data.src );
+            success: function(data) {
+                if (data && data.src) {
+                    $('img.fossil-image').attr('src', data.src);
                 } else {
-                    status_error( data );
+                    status_error(data);
                 }
             },
-            done: function( e, data ) {
+            done: function(e, data) {
                 status_done();
             },
-            progressall: function( e, data) {
-                if ( data.loaded >= data.total ) {
+            progressall: function(e, data) {
+                if (data.loaded >= data.total) {
                     location.reload();
                 }
             },
-            error: function( err ) {
-                console.error( err );
+            error: function(err) {
+                console.error(err);
             }
         });
 
-        $( '.fossil-delete-image' ).click( function() {
-            var post_id = $( '#post_id' ).val();
-            
+        $('.fossil-delete-image').click(function() {
+            var post_id = $('#post_id').val();
+
             $.ajax({
                 type: 'post',
                 url: ajaxurl,
                 dataType: 'json',
-                data: { 
-                    'action' : 'myfossil_delete_fossil_image',
-                    'nonce'  : nonce,
+                data: {
+                    'action': 'myfossil_delete_fossil_image',
+                    'nonce': nonce,
                     'post_id': post_id,
-                    'image_id': $( this ).data( 'attachment-id' )
+                    'image_id': $(this).data('attachment-id')
                 },
-                success: function( data ) {
-                    if ( data == '1' ) {
+                success: function(data) {
+                    if (data == '1') {
                         location.reload();
                     }
                 },
-                error: function ( err ) {
-                    console.error( err );
+                error: function(err) {
+                    console.error(err);
                 }
             });
         });
 
-        $( '.fossil-feature-image' ).click( function() {
-            var post_id = $( '#post_id' ).val();
-            
+        $('.fossil-feature-image').click(function() {
+            var post_id = $('#post_id').val();
+
             $.ajax({
                 type: 'post',
                 url: ajaxurl,
                 dataType: 'json',
-                data: { 
-                    'action'  : 'myfossil_feature_fossil_image',
-                    'nonce'   : nonce,
-                    'post_id' : post_id,
-                    'image_id': $( this ).data( 'attachment-id' )
+                data: {
+                    'action': 'myfossil_feature_fossil_image',
+                    'nonce': nonce,
+                    'post_id': post_id,
+                    'image_id': $(this).data('attachment-id')
                 },
-                success: function( data ) {
-                    if ( data == '1' ) {
+                success: function(data) {
+                    if (data == '1') {
                         location.reload();
                     } else {
-                        console.error( data );
+                        console.error(data);
                     }
                 },
-                error: function ( err ) {
-                    console.error( err );
+                error: function(err) {
+                    console.error(err);
                 }
             });
         });
 
-    } );
+    });
 
-}( jQuery ) );
+}(jQuery));
