@@ -26,7 +26,7 @@ function myfossil_fossil_render_single_images( $fossil )
         <div class="row" style="margin-bottom: 20px;">
             <span class="btn btn-default btn-file">
                 Upload Images
-                <input class="form-control" type="file" id="fossil-upload-image" />
+                <input class="form-control" type="file" id="fossil-upload-image" multiple />
             </span>
         </div>
         <div class="row"> 
