@@ -1,6 +1,12 @@
 <?php
 use myFOSSIL\Plugin\Specimen\Fossil;
 
+require_once( 'single/header.php' );
+require_once( 'single/main.php' );
+require_once( 'single/history.php' );
+require_once( 'single/discussion.php' );
+require_once( 'single/settings.php' );
+
 function myfossil_fossil_render_single( $fossil_id, $view ) {
     $fossil = new Fossil( $fossil_id );
 

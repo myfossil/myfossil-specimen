@@ -13,20 +13,10 @@ namespace myFOSSIL\Plugin\Specimen;
  * @subpackage myFOSSIL/public/partials
  */
 
+/* single fossil view */
 require_once( 'single.php' );
-require_once( 'single/member.php' );
-require_once( 'single/header.php' );
-require_once( 'single/settings.php' );
-
-/* main view */
-require_once( 'single/main.php' );
-
-/* history view */
-require_once( 'single/history.php' );
-
-/* discussion view */
-require_once( 'single/discussion.php' );
 
 /* list view */
 require_once( 'list/create-button.php' );
 require_once( 'list/table.php' );
+require_once( 'list/member.php' );
