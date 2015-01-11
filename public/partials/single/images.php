@@ -2,13 +2,6 @@
 
 require_once 'information/images.php';
 
-/*
-<span class="btn btn-default btn-file">
-    Select Image
-    <input class="form-control" type="file" id="fossil-upload-image" />
-</span>
-*/
-
 function myfossil_fossil_render_single_images_edit( $fossil, $image )
 {
 ?>
@@ -30,6 +23,12 @@ function myfossil_fossil_render_single_images( $fossil )
     } 
 
     ?> 
+        <div class="row" style="margin-bottom: 20px;">
+            <span class="btn btn-default btn-file">
+                Upload Images
+                <input class="form-control" type="file" id="fossil-upload-image" />
+            </span>
+        </div>
         <div class="row"> 
     <?php
 
