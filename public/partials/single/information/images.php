@@ -6,20 +6,17 @@ function fossil_edit_images( $fossil )
 {
 ?>
     <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
-    <div class="text-center">
-        <span class="btn btn-default btn-file">
-            Select Image
-            <input class="form-control" type="file" id="fossil-upload-image" />
-        </span>
-        <a class="btn btn-default" id="fossil-delete-image">
-            Delete Image
-        </a>
-    </div>
-    <?php
-        endif;
+        <div class="text-center">
+            <span class="btn btn-default btn-file">
+                Select Image
+                <input class="form-control" type="file" id="fossil-upload-image" />
+            </span>
+            <a class="btn btn-default" id="fossil-delete-image">
+                Delete Image
+            </a>
+        </div>
+    <?php endif;
 }
-
-
 
 function fossil_view_images( $fossil )
 {
@@ -32,7 +29,7 @@ function fossil_view_images( $fossil )
         $image_id = 0;
         $image_src = null;
     }
-?>
+    ?>
     <h3 class="sr-only">Image</h3>
     <div class="activity-entry">
         <div class="activity-body">
@@ -42,16 +39,6 @@ function fossil_view_images( $fossil )
         </div>
     </div>
     <?php
-    /*
-    <?php if ( is_array( $images ) ): ?>
-        <div class="fossil-images-small">
-        <?php foreach ( $images as $image_post ): ?>
-            <img src="<?=wp_get_attachment_url( $image_post->ID ) ?>" class="col-lg-3 img-responsive" />
-        <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-    <?php
-    */
 }
 
 function fossil_images( $fossil=null )
