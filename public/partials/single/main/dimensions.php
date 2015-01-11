@@ -1,5 +1,7 @@
 <?php
 
+require_once( '_common.php' );
+
 function fossil_edit_dimensions( $fossil=null ) {
     ?>
     <div id="edit-fossil-dimensions" class="edit-fossil-popup">

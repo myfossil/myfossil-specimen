@@ -2,6 +2,8 @@
 
 use myFOSSIL\Plugin\Specimen\Stratum;
 
+require_once( '_common.php' );
+
 function fossil_view_lithostratigraphy( $fossil=null ) { 
     ?>
 

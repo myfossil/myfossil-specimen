@@ -1,5 +1,7 @@
 <?php
 
+require_once( '_common.php' );
+
 function fossil_edit_location( $fossil=null ) {
     ?>
 

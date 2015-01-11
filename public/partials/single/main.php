@@ -1,6 +1,12 @@
 <?php
 
-require_once( 'main/_common.php' );
+require_once( 'main/images.php' );
+require_once( 'main/comments.php' );
+require_once( 'main/dimensions.php' );
+require_once( 'main/geochronology.php' );
+require_once( 'main/lithostratigraphy.php' );
+require_once( 'main/location.php' );
+require_once( 'main/taxonomy.php' );
 
 function myfossil_fossil_render_single_main( $fossil ) {
     ?>

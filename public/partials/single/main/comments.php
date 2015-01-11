@@ -1,5 +1,7 @@
 <?php
 
+require_once( '_common.php' );
+
 function fossil_view_comments( $fossil=null ) {
     ?>
 

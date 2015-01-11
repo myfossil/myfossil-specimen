@@ -1,5 +1,7 @@
 <?php
 
+require_once( '_common.php' );
+
 function fossil_edit_images( $fossil ) {
     ?>
     <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>

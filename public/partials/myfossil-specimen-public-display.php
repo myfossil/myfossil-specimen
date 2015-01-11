@@ -20,20 +20,12 @@ require_once( 'single/settings.php' );
 
 /* main view */
 require_once( 'single/main.php' );
-require_once( 'single/main/images.php' );
-require_once( 'single/main/comments.php' );
-require_once( 'single/main/dimensions.php' );
-require_once( 'single/main/geochronology.php' );
-require_once( 'single/main/lithostratigraphy.php' );
-require_once( 'single/main/location.php' );
-require_once( 'single/main/taxonomy.php' );
 
 /* history view */
 require_once( 'single/history.php' );
 
 /* discussion view */
 require_once( 'single/discussion.php' );
-
 
 /* list view */
 require_once( 'list/create-button.php' );
