@@ -30,7 +30,7 @@ function myfossil_fossil_render_single_images( $fossil )
 ?>
     <div id="buddypress" class="container page-styling site-main" role="main">
         <div class="row" style="margin-bottom: 20px;">
-            <span class="btn btn-default btn-file">
+            <span class="btn btn-default btn-file" id="upload-button">
                 Upload Images
                 <input class="form-control" type="file" id="fossil-upload-image" multiple />
             </span>

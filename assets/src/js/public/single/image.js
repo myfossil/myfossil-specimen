@@ -2,22 +2,7 @@
     'use strict';
 
     function status_loading() {
-        var img = $('img.fossil-image');
-        var _parent = img.parent();
-
-        console.log('__status_loading__');
-        img.hide();
-        _parent.append('<span class="loading"><h1><i class="fa fa-circle-o-notch fa-spin fa-6"></i></h1></span>');
-    }
-
-    function status_done() {
-        var img = $('img.fossil-image');
-        var _parent = img.parent();
-
-        console.log('__status_done__');
-
-        $('span.loading').hide();
-        img.show();
+        // $('#upload-button').html('<span class="loading"><i class="fa fa-circle-o-notch fa-spin fa-6"></i></span> Uploading images...');
     }
 
     function status_error(data) {
@@ -31,9 +16,9 @@
     $(function() {
         var post_id = $('#post_id').val();
         var nonce = $('#myfossil_specimen_nonce').val();
+        var n_files = 0, n_uploaded = 0;
 
         $('#fossil-upload-image').fileupload({
-            sequentialUpload: true,
             dataType: 'json',
             formData: {
                 action: 'myfossil_upload_fossil_image',
@@ -41,26 +26,14 @@
                 post_id: post_id,
             },
             url: ajaxurl,
-            start: function() {
-                status_loading();
+            send: function(e, data) {
+                n_files++;
             },
-            success: function(data) {
-                if (data && data.src) {
-                    $('img.fossil-image').attr('src', data.src);
-                } else {
-                    status_error(data);
-                }
-            },
-            done: function(e, data) {
-                status_done();
-            },
-            progressall: function(e, data) {
-                if (data.loaded >= data.total) {
+            success: function() {
+                n_uploaded++;
+                if (n_uploaded >= n_files) {
                     location.reload();
                 }
-            },
-            error: function(err) {
-                console.error(err);
             }
         });
 
