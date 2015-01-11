@@ -49,6 +49,7 @@
 
         $('.fossil-delete-image').click(function() {
             var post_id = $('#post_id').val();
+            $(this).html('<span class="loading"><i class="fa fa-circle-o-notch fa-spin fa-6"></i></span> Deleting image...');
 
             $.ajax({
                 type: 'post',
