@@ -11,6 +11,7 @@ require_once 'information/taxonomy.php';
 function myfossil_fossil_render_single_information( $fossil )
 {
 ?>
+    <div id="buddypress" class="container page-styling site-main" role="main">
         <div class="row clearfix">
 
             <!-- Classification -->
@@ -50,8 +51,10 @@ function myfossil_fossil_render_single_information( $fossil )
             </div>
 
         </div>
+    </div>
 
 
+    <div class="container">
         <?php if ( comments_open() || '0' != get_comments_number() ): ?>
         <div class="row">
 
@@ -62,5 +65,6 @@ function myfossil_fossil_render_single_information( $fossil )
         </div>
         <?php endif; ?>
 
+    </div>
     <?php
 }
