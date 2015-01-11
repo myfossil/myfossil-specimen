@@ -35,6 +35,9 @@ function fossil_header( $fossil=null, $view='main' ) {
                 <li class="<?=( $view == 'main' ) ? "active" : null ?>">
                     <a href="/fossils/<?=$fossil->id ?>/">Information</a>
                 </li>
+                <li class="<?=( $view == 'images' ) ? "active" : null ?>">
+                    <a href="/fossils/<?=$fossil->id ?>/images">Images</a>
+                </li>
                 <li class="<?=( $view == 'history' ) ? "active" : null ?>">
                     <a href="/fossils/<?=$fossil->id ?>/history">History</a>
                 </li>

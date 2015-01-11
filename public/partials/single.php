@@ -6,7 +6,10 @@ function myfossil_fossil_render_single( $fossil_id, $view ) {
 
     ?>
     <div id="fossil" class="content-area">
-        <?php fossil_header( $fossil, $view ); ?>
+        <?php 
+        // from ./single/header.php
+        fossil_header( $fossil, $view ); 
+        ?>
         <div id="buddypress" class="container page-styling site-main" role="main">
 
     <?php 
