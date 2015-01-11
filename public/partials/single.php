@@ -2,7 +2,7 @@
 use myFOSSIL\Plugin\Specimen\Fossil;
 
 require_once( 'single/header.php' );
-require_once( 'single/main.php' );
+require_once( 'single/information.php' );
 require_once( 'single/history.php' );
 require_once( 'single/discussion.php' );
 require_once( 'single/settings.php' );
@@ -20,8 +20,8 @@ function myfossil_fossil_render_single( $fossil_id, $view ) {
 
     <?php 
     switch ( $view ) {
-        case 'main':
-            myfossil_fossil_render_single_main( $fossil );
+        case 'information':
+            myfossil_fossil_render_single_information( $fossil );
             break;
         case 'history':
             myfossil_fossil_render_single_history( $fossil );

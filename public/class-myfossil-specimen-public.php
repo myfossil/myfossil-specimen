@@ -442,12 +442,12 @@ class myFOSSIL_Specimen_Public {
 
     public function add_rewrite_tags() {
         add_rewrite_tag( '%fossil_id%', '([^&/]+)' );
-        add_rewrite_tag( '%fossil_view%', '(main|history|discussion)' );
+        add_rewrite_tag( '%fossil_view%', '(information|history|discussion)' );
     }
 
     public function fix_fossil_rewrites() {
         add_rewrite_rule(
-                '^fossils/([^/]*)/(main|history|discussion|images|settings)/?',
+                '^fossils/([^/]*)/(information|history|discussion|images|settings)/?',
                 'index.php?pagename=fossils' . '&fossil_id=$matches[1]' .
                     '&fossil_view=$matches[2]',
                 'top'
@@ -456,7 +456,7 @@ class myFOSSIL_Specimen_Public {
         add_rewrite_rule(
                 '^fossils/([^/]*)/?',
                 'index.php?pagename=fossils' . '&fossil_id=$matches[1]' .
-                    '&fossil_view=main',
+                    '&fossil_view=information',
                 'top'
         );
 

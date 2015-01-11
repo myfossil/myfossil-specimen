@@ -1,14 +1,14 @@
 <?php
 
-require_once( 'main/images.php' );
-require_once( 'main/comments.php' );
-require_once( 'main/dimensions.php' );
-require_once( 'main/geochronology.php' );
-require_once( 'main/lithostratigraphy.php' );
-require_once( 'main/location.php' );
-require_once( 'main/taxonomy.php' );
+require_once( 'information/images.php' );
+require_once( 'information/comments.php' );
+require_once( 'information/dimensions.php' );
+require_once( 'information/geochronology.php' );
+require_once( 'information/lithostratigraphy.php' );
+require_once( 'information/location.php' );
+require_once( 'information/taxonomy.php' );
 
-function myfossil_fossil_render_single_main( $fossil ) {
+function myfossil_fossil_render_single_information( $fossil ) {
     ?>
         <div class="row clearfix">
 

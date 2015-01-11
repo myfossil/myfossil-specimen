@@ -32,7 +32,7 @@ function fossil_header( $fossil=null, $view='main' ) {
 
         <div id="item-nav" class="container">
             <ul class="nav nav-tabs">
-                <li class="<?=( $view == 'main' ) ? "active" : null ?>">
+                <li class="<?=( $view == 'information' ) ? "active" : null ?>">
                     <a href="/fossils/<?=$fossil->id ?>/">Information</a>
                 </li>
                 <li class="<?=( $view == 'images' ) ? "active" : null ?>">
