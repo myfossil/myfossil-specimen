@@ -1,7 +1,8 @@
 <?php
 use myFOSSIL\Plugin\Specimen\Fossil;
 
-require_once( 'single/header.php' );
+require_once( 'single/_header.php' );
+
 require_once( 'single/information.php' );
 require_once( 'single/history.php' );
 require_once( 'single/discussion.php' );
