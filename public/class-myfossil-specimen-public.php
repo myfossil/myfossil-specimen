@@ -1,7 +1,13 @@
 <?php
 namespace myFOSSIL\Plugin\Specimen;
 
-require_once( 'partials/myfossil-specimen-public-display.php' );
+/* Single Fossil View */
+require_once( 'partials/single/index.php' );
+
+/* List View */
+require_once( 'partials/list/create-button.php' );
+require_once( 'partials/list/table.php' );
+require_once( 'partials/list/member.php' );
 
 /**
  * The public-facing functionality of the plugin.
