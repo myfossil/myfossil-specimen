@@ -1,7 +1,8 @@
 <?php
 
-function myfossil_fossil_render_single_settings( $fossil ) {
-    ?>
+function myfossil_fossil_render_single_settings( $fossil )
+{
+?>
     <h3>Settings</h3>
 
     <div class="col-xs-12 col-md-6">
@@ -9,18 +10,18 @@ function myfossil_fossil_render_single_settings( $fossil ) {
         <div>
             <?php $draft = ( get_post_status( $fossil->id ) == 'draft' ); ?>
             <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default btn-sm <?=( $draft ) ? "btn-active active" : null ?>">
-                    <input type="radio" name="status" 
-                        id="draft" autcomplete="off" 
-                        <?=( $draft ) ? "checked" : null ?>
+                <label class="btn btn-default btn-sm <?php echo ( $draft ) ? "btn-active active" : null ?>">
+                    <input type="radio" name="status"
+                        id="draft" autcomplete="off"
+                        <?php echo ( $draft ) ? "checked" : null ?>
                         class="post_status" value="draft" />
                     <i class="fa fa-fw fa-eye-slash"></i>
                     Draft
                 </label>
-                <label class="btn btn-default btn-sm <?=( $draft ) ? null : "btn-active active" ?>">
-                    <input type="radio" name="status" 
+                <label class="btn btn-default btn-sm <?php echo ( $draft ) ? null : "btn-active active" ?>">
+                    <input type="radio" name="status"
                         id="published" autcomplete="off"
-                        <?=( $draft ) ? null : "checked" ?>
+                        <?php echo ( $draft ) ? null : "checked" ?>
                         class="post_status" value="publish" />
                     <i class="fa fa-fw fa-eye"></i>
                     Published
@@ -34,7 +35,7 @@ function myfossil_fossil_render_single_settings( $fossil ) {
         <div class="alert alert-danger">
             <button type="button" class="btn btn-default btn-block" id="delete-fossil">
                 <i class="fa fa-fw fa-trash-o"></i>
-                Delete 
+                Delete
             </button>
 
             <p style="padding: 20px; text-align: center">

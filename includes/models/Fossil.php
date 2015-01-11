@@ -48,8 +48,8 @@ class Fossil extends Base
      *
      * @since   0.0.1
      * @access  public
-     * @param int   $post_id (optional) WordPress post ID for this object.
-     * @param array $meta    (optional) Metadata to associate with this object.
+     * @param int     $post_id (optional) WordPress post ID for this object.
+     * @param array   $meta    (optional) Metadata to associate with this object.
      */
     public function __construct( $post_id=null, $meta=array() )
     {
@@ -59,7 +59,7 @@ class Fossil extends Base
 
         $this->_meta_keys = array( 'pbdb_id', 'taxon_id', 'location_id',
             'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
-            'stratum_member_id', 'dimension_id', 'reference_id' );
+            'stratum_member_id', 'dimension_id', 'reference_id', 'image_id' );
     }
 
     // {{{ _save
@@ -75,8 +75,8 @@ class Fossil extends Base
      *
      * @since   0.0.1
      * @access  public
-     * @param   bool    $recursive (optional)   Recurse saving of children objects as well, default false.
-     * @param   bool    $publish (optional)     Whether to publish the post immediately, default false.
+     * @param bool    $recursive (optional)   Recurse saving of children objects as well, default false.
+     * @param bool    $publish   (optional)     Whether to publish the post immediately, default false.
      * @return  bool    True upon success, false upon failure to save.
      */
     public function save( $recursive=false, $publish=false )
@@ -146,7 +146,7 @@ class Fossil extends Base
      * @todo    refactor to use internal WordPress routing information, rather than this constant.
      *
      * @since   0.1.0
-     * @param   int      $fossil_id
+     * @param int     $fossil_id
      * @return  string   Base URL for the fossil, does not include domain (e.g. '/fossils/240')
      */
     public static function get_url( $fossil_id )
@@ -240,7 +240,16 @@ class Fossil extends Base
         case 'image':
             if ( ! $this->id ) return;
             $_ = get_attached_media( 'image', $this->id );
-            $m = array_pop( $_ );
+            if ( $this->image_id ) {
+                foreach ( $_ as $image ) {
+                    if ( $image->ID == $this->image_id ) {
+                        $m = $image;
+                    }
+                }
+            }
+            if ( !isset( $m ) || empty( $m ) ) {
+                $m = array_pop( $_ );
+            }
             if ( $m && $m->guid )
                 return $m->guid;
             break;

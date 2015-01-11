@@ -46,13 +46,13 @@ class FossilDimension extends Base
         parent::__construct( $post_id, $args );
 
         $this->_meta_keys = array( 'length_meters', 'width_meters',
-                'height_meters' );
+            'height_meters' );
     }
 
     /**
      * Save the FossilDimension object.
      *
-     * @param   bool    $recursive (optional)   Save children objects as well, default false.
+     * @param bool    $recursive (optional)   Save children objects as well, default false.
      * @return  int     Object's WP_Post ID as saved in the database.
      */
     public function save( $recursive=false )
@@ -112,7 +112,7 @@ class FossilDimension extends Base
     /**
      * Return dimension in units of centimeters.
      *
-     * @param  string   $key Dimension to return in centimeters.
+     * @param string  $key Dimension to return in centimeters.
      * @return float    Dimension in centeriments.
      */
     public function as_cm( $key )
@@ -120,7 +120,8 @@ class FossilDimension extends Base
         return $this->$key * 100.;
     }
 
-    public static function bp_format_activity_json( $json, $tpl ) {
+    public static function bp_format_activity_json( $json, $tpl )
+    {
         $dim0 = new FossilDimension;
         $dim1 = new FossilDimension;
 

@@ -14,31 +14,35 @@ class FossilDimensionTest extends myFOSSIL_Specimen_Test {
 
     public $fossil_dimension;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
         $this->fossil_dimension = new FossilDimension(
-                null,
-                array(
-                    'length_meters' => 0.100,
-                    'width_meters'  => 0.200,
-                    'height_meters' => 0.300,
-                )
-            );
+            null,
+            array(
+                'length_meters' => 0.100,
+                'width_meters'  => 0.200,
+                'height_meters' => 0.300,
+            )
+        );
         $this->fossil_dimension->save();
     }
 
     /**
+     *
+     *
      * @covers  FossilDimension::save
      */
-    public function testSaveDimension() {
+    public function testSaveDimension()
+    {
         $fossil_dimension = new FossilDimension(
-                null,
-                array(
-                    'length_meters' => 0.100,
-                    'width_meters'  => 0.200,
-                    'height_meters' => 0.300,
-                )
-            );
+            null,
+            array(
+                'length_meters' => 0.100,
+                'width_meters'  => 0.200,
+                'height_meters' => 0.300,
+            )
+        );
 
         $fossil_dimension->save();
         $this->assertGreaterThan( 0, $fossil_dimension->save() );
@@ -46,9 +50,12 @@ class FossilDimensionTest extends myFOSSIL_Specimen_Test {
     }
 
     /**
+     *
+     *
      * @covers  FossilDimension::__get
      */
-    public function testGetDimension() {
+    public function testGetDimension()
+    {
         $dimension = new FossilDimension( $this->fossil_dimension->wp_post->ID );
         $this->assertEquals( $dimension->length, $this->fossil_dimension->length );
         $this->assertEquals( $dimension->width, $this->fossil_dimension->width );
@@ -56,15 +63,18 @@ class FossilDimensionTest extends myFOSSIL_Specimen_Test {
     }
 
     /**
+     *
+     *
      * @covers FossilDimension::__set
      */
-    public function testSetDimension() {
+    public function testSetDimension()
+    {
         $dimension = new FossilDimension( $this->fossil_dimension->wp_post->ID );
 
         $length = $dimension->length;
         $width = $dimension->width;
         $height = $dimension->height;
-        
+
         $this->assertEquals( $length, $dimension->length );
         $this->assertEquals( $width, $dimension->width );
         $this->assertEquals( $height, $dimension->height );
@@ -79,22 +89,31 @@ class FossilDimensionTest extends myFOSSIL_Specimen_Test {
     }
 
     /**
+     *
+     *
      * @covers FossilDimension::bp_format_activity
      */
-    public function testDimBpFrmtActivity() {
+    public function testDimBpFrmtActivity()
+    {
     }
 
     /**
+     *
+     *
      * @covers FossilDimension::register_cpt
      */
-    public function testDimensionRegisterCpt() {
+    public function testDimensionRegisterCpt()
+    {
         $this->assertNotInstanceOf( 'WP_Error', FossilDimension::register_cpt() );
     }
 
     /**
+     *
+     *
      * @covers  FossilDimension::as_cm
      */
-    public function testGetDimensionAsCm() {
+    public function testGetDimensionAsCm()
+    {
         $dimension = new FossilDimension( $this->fossil_dimension->wp_post->ID );
         $this->assertEquals( $dimension->length * 100, $dimension->as_cm( 'length' ) );
         $this->assertEquals( $dimension->width * 100, $dimension->as_cm( 'width' ) );
@@ -102,9 +121,12 @@ class FossilDimensionTest extends myFOSSIL_Specimen_Test {
     }
 
     /**
+     *
+     *
      * @covers  FossilDimension::__toString
      */
-    public function testDimensionAsString() {
+    public function testDimensionAsString()
+    {
         $this->assertTrue( is_string( sprintf( '%s', $this->fossil_dimension ) ) );
     }
 }

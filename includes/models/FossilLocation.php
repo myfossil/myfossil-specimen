@@ -67,7 +67,7 @@ class FossilLocation extends Base
             return sprintf( "%s, %s\n", $this->state, $this->country );
         foreach ( array( 'country', 'state', 'county', 'city' ) as $k )
             if ( $this->{$k} )
-                return (string) $this->{$k};
+            return (string) $this->{$k};
         return (string) null;
     }
 
@@ -88,7 +88,8 @@ class FossilLocation extends Base
     }
     // }}}
 
-    public static function bp_format_activity_json( $json, $tpl ) {
+    public static function bp_format_activity_json( $json, $tpl )
+    {
         $t0 = new FossilLocation;
         $t1 = new FossilLocation;
 

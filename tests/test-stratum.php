@@ -12,14 +12,16 @@ use myFOSSIL\Plugin\Specimen\Stratum;
  */
 class StratumTest extends myFOSSIL_Specimen_Test {
 
-    public function testSaveStratum() {
+    public function testSaveStratum()
+    {
         $strat = new Stratum;
         $strat->color = "#c0c0c0";
         $this->assertGreaterThan( 0, $strat->save() );
         $this->assertGreaterThan( 0, $strat->wp_post->ID );
     }
 
-    public function testGetStratum() {
+    public function testGetStratum()
+    {
         $strat = new Stratum;
         $strat->color = "#c0c0c0";
         $new_strat = new Stratum( $strat->save() );

@@ -133,7 +133,8 @@ class Taxon extends Base
         return parent::__get( $key );
     }
 
-    public static function bp_format_activity_json( $json, $tpl ) {
+    public static function bp_format_activity_json( $json, $tpl )
+    {
         $t0 = new Taxon;
         $t1 = new Taxon;
 
@@ -163,6 +164,6 @@ class Taxon extends Base
     public function __toString()
     {
         return sprintf( '<p class="fossil-property">%s</p> %s', $this->rank,
-                $this->name );
+            $this->name );
     }
 }
