@@ -1,6 +1,6 @@
 <?php
 
-require_once( 'main/edit-utils.php' );
+require_once( 'main/_common.php' );
 
 function myfossil_fossil_render_single_main( $fossil ) {
     ?>
