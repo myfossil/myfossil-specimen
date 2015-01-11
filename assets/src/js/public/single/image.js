@@ -26,11 +26,21 @@
                 post_id: post_id,
             },
             url: ajaxurl,
+            start: function(e, data) {
+                $('#progress-bar').show();
+            },
+            progress: function(e, data) {
+            },
             send: function(e, data) {
                 n_files++;
             },
             success: function() {
                 n_uploaded++;
+
+                var p = parseInt(n_uploaded / n_files * 100, 10);
+                $('.progress-bar')
+                    .attr('aria-valuenow', p)
+                    .css('width', p + '%');
                 if (n_uploaded >= n_files) {
                     location.reload();
                 }
