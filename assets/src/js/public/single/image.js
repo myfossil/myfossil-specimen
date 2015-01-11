@@ -58,7 +58,7 @@
             }
         });
 
-        $( '#fossil-delete-image' ).click( function() {
+        $( '.fossil-delete-image' ).click( function() {
             
             $.ajax({
                 type: 'post',
@@ -67,7 +67,7 @@
                 data: { 
                         'action' : 'myfossil_delete_fossil_image',
                         'nonce'  : nonce,
-                        'image_id': $( '#fossil-featured-image' ).data( 'attachment-id' )
+                        'image_id': $( this ).data( 'attachment-id' )
                     },
                 success: function( data ) {
                         if ( data == '1' ) {
