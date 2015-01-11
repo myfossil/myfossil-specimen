@@ -29,7 +29,7 @@ function myfossil_fossil_render_single_images( $fossil )
                 <input class="form-control" type="file" id="fossil-upload-image" multiple />
             </span>
         </div>
-        <div class="row"> 
+        <div class="row" id="fossil-images"> 
     <?php
 
     foreach ( $images as $image ) {
@@ -38,7 +38,7 @@ function myfossil_fossil_render_single_images( $fossil )
         ?>
             <div class="activity-entry col-sm-12 col-md-4">
                 <div class="activity-body">
-                    <img class="img-responsive fossil-image"
+                    <img class="img-responsive"
                             src="<?=$image_src ?>" style="padding: 10px;"
                             data-attachment-id="<?=$image_id ?>" />
                 </div>
