@@ -12,34 +12,35 @@ use myFOSSIL\Plugin\Specimen;
  */
 class FossilTest extends myFOSSIL_Specimen_Test {
 
-    public function testSaveGetFossil() {
+    public function testSaveGetFossil()
+    {
         $taxon = new Specimen\Taxon( null, array( 'common_name' => 'whale' ) );
         $location = new Specimen\FossilLocation( null, array( 'latitude' =>
-                    10.2, 'longitude' => 20.3 ) );
+                10.2, 'longitude' => 20.3 ) );
         $dimension = new Specimen\FossilDimension( null, array( 'length' => 10,
-                    'width' => 20, 'height' => 30 ) );
+                'width' => 20, 'height' => 30 ) );
         $reference = new Specimen\Reference( null, array( 'year' => 2014 ) );
         $stratum = new Specimen\Stratum( null, array( 'color' => '#c0c0c0' ) );
         $time_interval = new Specimen\TimeInterval( null, array( 'early_age' =>
-                    20, 'late_age' => 30 ) );
+                20, 'late_age' => 30 ) );
 
         // Save all our new objects that will comprise our fossil
         foreach ( array( $taxon, $location, $dimension, $reference, $stratum,
-                    $time_interval ) as $obj )
+                $time_interval ) as $obj )
             $this->assertGreaterThan( 0, $obj->save() );
 
         // Create new fossil
         $fossil = new Specimen\Fossil(
-                null,
-                array(
-                    'taxon_id' => $taxon->id,
-                    'location_id' => $location->id,
-                    'dimension_id' => $dimension->id,
-                    'reference_id' => $reference->id,
-                    'stratum_formation_id' => $stratum->id,
-                    'time_interval_id' => $time_interval->id
-                )
-            );
+            null,
+            array(
+                'taxon_id' => $taxon->id,
+                'location_id' => $location->id,
+                'dimension_id' => $dimension->id,
+                'reference_id' => $reference->id,
+                'stratum_formation_id' => $stratum->id,
+                'time_interval_id' => $time_interval->id
+            )
+        );
 
         // Save fossil
         $this->assertGreaterThan( 0, $fossil->save() );

@@ -135,7 +135,8 @@ class Stratum extends Base
         return parent::__get( $key );
     }
 
-    public static function bp_format_activity_json( $json, $tpl ) {
+    public static function bp_format_activity_json( $json, $tpl )
+    {
         $t0 = new Stratum;
         $t1 = new Stratum;
 

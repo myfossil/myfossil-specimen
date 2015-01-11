@@ -15,8 +15,9 @@
 
 namespace myFOSSIL\Plugin\Specimen;
 
-function admin_tools_page() { 
-    ?>
+function admin_tools_page()
+{
+?>
 
     <div class="wrap">
         <h2>myFOSSIL Specimen</h2>
@@ -29,5 +30,5 @@ function admin_tools_page() {
         <a class="button" id="load-geochronology">Load Geochronology</a>
     </div>
 
-    <?php 
-} 
+    <?php
+}

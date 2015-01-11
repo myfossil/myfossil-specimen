@@ -11,15 +11,17 @@ use myFOSSIL\Plugin\Specimen\Taxon;
  * @subpackage  myFOSSIL/tests
  */
 class TaxonTest extends myFOSSIL_Specimen_Test {
-    
-    public function testSaveTaxon() {
+
+    public function testSaveTaxon()
+    {
         $taxon = new Taxon;
         $taxon->common_name = 'whale';
         $this->assertGreaterThan( 0, $taxon->save() );
         $this->assertGreaterThan( 0, $taxon->wp_post->ID );
     }
 
-    public function testGetTaxon() {
+    public function testGetTaxon()
+    {
         $taxon = new Taxon;
         $taxon->common_name = 'whale';
         $new_taxon = new Taxon( $taxon->save() );

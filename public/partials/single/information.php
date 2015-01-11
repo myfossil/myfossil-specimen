@@ -1,15 +1,16 @@
 <?php
 
-require_once( 'information/images.php' );
-require_once( 'information/comments.php' );
-require_once( 'information/dimensions.php' );
-require_once( 'information/geochronology.php' );
-require_once( 'information/lithostratigraphy.php' );
-require_once( 'information/location.php' );
-require_once( 'information/taxonomy.php' );
+require_once 'information/images.php';
+require_once 'information/comments.php';
+require_once 'information/dimensions.php';
+require_once 'information/geochronology.php';
+require_once 'information/lithostratigraphy.php';
+require_once 'information/location.php';
+require_once 'information/taxonomy.php';
 
-function myfossil_fossil_render_single_information( $fossil ) {
-    ?>
+function myfossil_fossil_render_single_information( $fossil )
+{
+?>
         <div class="row clearfix">
 
             <!-- Classification -->
@@ -27,7 +28,7 @@ function myfossil_fossil_render_single_information( $fossil ) {
 
 
         <div class="row">
-        
+
             <!-- Location -->
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <?php fossil_location( $fossil ); ?>
@@ -37,7 +38,7 @@ function myfossil_fossil_render_single_information( $fossil ) {
 
 
         <div class="row">
-        
+
             <!-- Geochronology -->
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <?php fossil_geochronology( $fossil ); ?>

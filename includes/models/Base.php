@@ -111,7 +111,7 @@ abstract class Base
     /**
      * Holds comment string about the update.
      *
-     * @access  public 
+     * @access  public
      * @var     string  $comment
      */
     public $comment;
@@ -121,8 +121,8 @@ abstract class Base
     /**
      * Create Base class.
      *
-     * @param int   $post_id (optional) WordPress post ID for this object.
-     * @param array $meta    (optional) Metadata to associate with this object.
+     * @param int     $post_id (optional) WordPress post ID for this object.
+     * @param array   $meta    (optional) Metadata to associate with this object.
      */
     public function __construct( $post_id=null, $meta=array() )
     {
@@ -130,12 +130,12 @@ abstract class Base
         $this->_cache = new \stdClass;
         $this->_history = array();
 
-        /* 
-         * Load the WordPress post, if defined 
+        /*
+         * Load the WordPress post, if defined
          */
         $this->wp_post = $post_id ? get_post( $post_id ) : null;
         if ( $this->wp_post && $this->wp_post->ID ) {
-            /* 
+            /*
              * We have a WP_Post, so pull metadata off the post custom fields.
              */
             foreach ( get_post_custom( $this->wp_post->ID ) as $k => $v ) {
@@ -149,7 +149,7 @@ abstract class Base
             }
         }
 
-        /* 
+        /*
          * Load in metadata provided to the constructor, overwriting without
          * prompt or warning.
          */
@@ -215,7 +215,8 @@ abstract class Base
     }
     // }}}
 
-    public function __isset( $key ) {
+    public function __isset( $key )
+    {
         return $this->{ $key } !== null;
     }
 
@@ -237,16 +238,16 @@ abstract class Base
 
         if ( $this->{ $key } && (string) $this->{ $key } !== (string) $value ) {
             $this->_history[] = array(
-                    'key' => $key,
-                    'from' => $this->{ $key },
-                    'to' => $value
-                );
-        } elseif( ! $this->{ $key } ) {
+                'key' => $key,
+                'from' => $this->{ $key },
+                'to' => $value
+            );
+        } elseif ( ! $this->{ $key } ) {
             $this->_history[] = array(
-                    'key' => $key,
-                    'from' => null,
-                    'to' => $value
-                );
+                'key' => $key,
+                'from' => null,
+                'to' => $value
+            );
         }
 
         if ( $key == 'id' && $this->wp_post ) {
@@ -292,14 +293,14 @@ abstract class Base
      *
      * @since   0.0.1
      * @access  public
-     * @param   string  $post_type              WordPress post_type of the object to save.
-     * @param   bool    $recursive (optional)   Recurse saving of children objects as well, default false.
-     * @param   bool    $publish (optional)     Whether to publish the post immediately, default false.
+     * @param string  $post_type WordPress post_type of the object to save.
+     * @param bool    $recursive (optional)   Recurse saving of children objects as well, default false.
+     * @param bool    $publish   (optional)     Whether to publish the post immediately, default false.
      * @return  bool    True upon success, false upon failure to save.
      */
     protected function _save( $post_type, $recursive=false, $publish=false )
     {
-        /* 
+        /*
          * Determine whether or not the database ID has been set yet.
          *
          * Because this function writes the WordPress post ID back to the
@@ -308,10 +309,10 @@ abstract class Base
          *
          * @todo refactor to another method
          */
-        $updating = (bool) $this->id; 
+        $updating = (bool) $this->id;
 
         if ( $this->wp_post && $this->wp_post->ID ) {
-            /* 
+            /*
              * Update the WordPress post.
              */
             $this->wp_post->ID = wp_insert_post( $this->wp_post );
@@ -336,7 +337,7 @@ abstract class Base
             $this->wp_post = get_post( $post_id );
         }
 
-        /* 
+        /*
          * Save children objects as well, iff we have been asked to and it's
          * possible.
          *
@@ -357,7 +358,7 @@ abstract class Base
             }
         }
 
-        /* 
+        /*
          * Update or create new meta data
          *
          * @todo refactor to another method
@@ -367,9 +368,9 @@ abstract class Base
                 && ! empty( $this->_meta->{$meta_key} ) )
             update_post_meta( $this->wp_post->ID, $meta_key, $this->_meta->{$meta_key} );
 
-        /* 
+        /*
          * Attempt to post a BuddyPress Activity update, if possible and
-         * warranted 
+         * warranted
          */
         $this->bp_activity_maybe_update( $post_type, $updating );
 
@@ -385,18 +386,19 @@ abstract class Base
      * @access  public
      * @return  array   Returns array of meta keys for this class.
      */
-    public function get_meta_keys() {
+    public function get_meta_keys()
+    {
         return $this->_meta_keys ? $this->_meta_keys : array();
     }
     // }}}
-    
+
     // {{{ load
     /**
      * Load WordPress post object from database.
      *
      * @since   0.0.1
      * @access  public
-     * @param   int     $post_id (optional) Post ID to load.
+     * @param int     $post_id (optional) Post ID to load.
      * @return  object  Returns current object instantiation.
      */
     public function load( $post_id=null )
@@ -436,10 +438,10 @@ abstract class Base
      * Add a BuddyPress Activity about the fossil save, if you can and should.
      *
      * If BuddyPress is not enabled or found, this function will return false.
-     * 
+     *
      * @since   0.1.0
-     * @param   string  $post_type              BuddyPress Activity type prefix (typically WordPress post_type)
-     * @param   bool    $updating (optional)    Whether the Object that the Activity is about is being updated (versus created, or commented, or deleted). Default false.
+     * @param string  $post_type BuddyPress Activity type prefix (typically WordPress post_type)
+     * @param bool    $updating  (optional)    Whether the Object that the Activity is about is being updated (versus created, or commented, or deleted). Default false.
      * @return  bool|int                        Returns Activity ID on success, false on failure.
      */
     public function bp_activity_maybe_update( $post_type, $updating=false )
@@ -450,7 +452,7 @@ abstract class Base
 
         /*
          * Only say that something was created if it's a Fossil, otherwise say
-         * it was updated. 
+         * it was updated.
          *
          * Because Fossil objects hold all other objects, it makes more sense
          * to say that a Fossil was updated when a child is created on that
@@ -465,7 +467,7 @@ abstract class Base
         /*
          * Continue only if:
          *   - BuddyPress is enabled
-         *   - We're updating something and it has changed OR we're creating 
+         *   - We're updating something and it has changed OR we're creating
          *     something new (i.e. a new object in the database)
          */
         if ( self::buddypress_active() && ( $updated || $created ) ) {
@@ -490,15 +492,15 @@ abstract class Base
 
             if ( $activity_id > 0 ) {
                 if ( ! empty( $this->comment ) ) {
-                    $comment_id = \bp_activity_new_comment( 
-                            array( 
-                                'activity_id' => $activity_id,
-                                'content' => $this->comment
-                            )
-                        );
+                    $comment_id = \bp_activity_new_comment(
+                        array(
+                            'activity_id' => $activity_id,
+                            'content' => $this->comment
+                        )
+                    );
                 }
             }
-    
+
             return $activity_id;
         }
 
@@ -512,13 +514,13 @@ abstract class Base
      * This is meant to be called from the children of this class.
      *
      * @since   0.1.0
-     * @param   string  $post_type  BuddyPress Activity type prefix (typically WordPres post_type)
+     * @param string  $post_type BuddyPress Activity type prefix (typically WordPres post_type)
      * @return  bool                Returns false if BuddyPress is not available, otherwise true.
      */
     public static function register_buddypress_activities( $post_type )
     {
         // Bail if buddypress doesn't exist or have activity enabled
-        if ( ! self::buddypress_active() ) 
+        if ( ! self::buddypress_active() )
             return false;
 
         $activity_actions = array( 'updated', 'comment', 'deleted', 'created' );
@@ -527,7 +529,7 @@ abstract class Base
              * Define parameters for defining an Activity action.
              *
              * From the BuddyPress documentation:
-             * 
+             *
              *   @param string $component_id The unique string ID of the component.
              *   @param string $type The action type.
              *   @param string $description The action description.
@@ -561,15 +563,15 @@ abstract class Base
      * the components of the Activity.
      *
      * @since   0.1.1
-     * @param   string  $action
-     * @param   object  $activity
+     * @param string  $action
+     * @param object  $activity
      * @return  string  Formatted Action string with filter
      */
     public static function bp_format_activity( $action, $activity )
     {
         $initiator_link = \bp_core_get_userlink( $activity->user_id );
 
-        /* 
+        /*
          * $activity->type is basically ${post_type}_${action}, so we can
          * explode the $activity->type string into the post type and the action
          * performed on the underscore character.
@@ -577,22 +579,22 @@ abstract class Base
         $verbs = explode( '_', $activity->type );
         $verb = end( $verbs ) == 'comment' ? 'commented' : end( $verbs );
 
-        /* 
+        /*
          * For Fossil objects, the item_id is the fossil id, however for all
          * other objects, the item_id is the object's id and the
          * secondary_item_id is the fossil's id.
          */
         if ( strpos( $activity->type, Fossil::POST_TYPE ) === 0 ) {
-            $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
-                    $activity->item_id, $activity->item_id );
+            $fossil_link = sprintf( '<a href="/fossils/%d">Fossil #%06d</a>',
+                $activity->item_id, $activity->item_id );
             $owner_link = ( $activity->user_id == $activity->secondary_item_id )
                 ? 'their own' : sprintf( "%s's", \bp_core_get_userlink(
                     $activity->secondary_item_id ) );
             if ( $owner_link == 'their own' && $verb == 'created' )
                 $owner_link = 'a';
         } else {
-            $fossil_link = sprintf('<a href="/fossils/%d">Fossil #%06d</a>',
-                    $activity->secondary_item_id, $activity->secondary_item_id );
+            $fossil_link = sprintf( '<a href="/fossils/%d">Fossil #%06d</a>',
+                $activity->secondary_item_id, $activity->secondary_item_id );
             $fossil = new Fossil( $activity->secondary_item_id );
             $owner_link = ( $activity->user_id == $fossil->post_author )
                 ? 'their own' : sprintf( "%s's", \bp_core_get_userlink(
@@ -608,7 +610,8 @@ abstract class Base
             '_format', $action, $activity );
     }
 
-    public static function bp_format_activity_json( $json, $tpl ) {
+    public static function bp_format_activity_json( $json, $tpl )
+    {
         return json_encode( $json );
     }
 

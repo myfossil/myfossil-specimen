@@ -1,9 +1,10 @@
 <?php
 
-require_once( '_common.php' );
+require_once '_common.php';
 
-function fossil_edit_dimensions( $fossil=null ) {
-    ?>
+function fossil_edit_dimensions( $fossil=null )
+{
+?>
     <div id="edit-fossil-dimensions" class="edit-fossil-popup">
         <div class="edit-fossil">
             <div class="edit-fossil-heading">
@@ -44,8 +45,9 @@ function fossil_edit_dimensions( $fossil=null ) {
 }
 
 
-function fossil_view_dimensions( $fossil=null ) {
-    ?>
+function fossil_view_dimensions( $fossil=null )
+{
+?>
 
     <h3>
         Dimensions
@@ -66,14 +68,14 @@ function fossil_view_dimensions( $fossil=null ) {
         </tr>
         <?php foreach ( array( 'length', 'width', 'height' ) as $k ) { ?>
             <tr>
-                <td class="fossil-property"><?=ucwords( $k ) ?></td>
-                <td class="fossil-property-value<?=( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-dimensions_open editable" : null ?>"
-                        id="fossil-dimension-<?=$k ?>"
-                        data-value="<?=( $fossil->dimension ) ? $fossil->dimension->{ $k } : null ?>"
-                        data-edit="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>"
-                        data-popup-ordinal="<?=( current_user_can( 'edit_post', $fossil->id ) ) ?>">
+                <td class="fossil-property"><?php echo ucwords( $k ) ?></td>
+                <td class="fossil-property-value<?php echo ( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-dimensions_open editable" : null ?>"
+                        id="fossil-dimension-<?php echo $k ?>"
+                        data-value="<?php echo ( $fossil->dimension ) ? $fossil->dimension->{ $k } : null ?>"
+                        data-edit="<?php echo current_user_can( 'edit_post', $fossil->id )?>"
+                        data-popup-ordinal="<?php echo current_user_can( 'edit_post', $fossil->id )?>">
                     <?php if ( $fossil->dimension && $v = $fossil->dimension->{ $k } * 100 ): ?>
-                        <?=$v ?> cm
+                        <?php echo $v ?> cm
                     <?php else: ?>
                         <span class="unknown">Unknown</span>
                     <?php endif; ?>
@@ -85,7 +87,8 @@ function fossil_view_dimensions( $fossil=null ) {
     <?php
 }
 
-function fossil_dimensions( $fossil=null ) {
+function fossil_dimensions( $fossil=null )
+{
     fossil_view_dimensions( $fossil );
     fossil_edit_dimensions( $fossil );
 }

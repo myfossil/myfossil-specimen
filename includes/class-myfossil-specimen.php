@@ -170,17 +170,17 @@ class myFOSSIL_Specimen
     private function define_admin_hooks()
     {
         $plugin_admin = new myFOSSIL_Specimen_Admin( $this->get_plugin_name(),
-                $this->get_version() );
+            $this->get_version() );
 
         /* Administration UI fixes */
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'admin_menu' );
 
         /* WordPress custom post types */
-        $this->loader->add_action( 'init', 
+        $this->loader->add_action( 'init',
             $plugin_admin, 'register_custom_post_types' );
 
         /* WordPress custom taxonomies */
-        $this->loader->add_action( 'init', 
+        $this->loader->add_action( 'init',
             $plugin_admin, 'register_taxonomies' );
         $this->loader->add_action( 'wp_ajax_myfossil_load_terms',
             $plugin_admin, 'ajax_handler' );
@@ -245,7 +245,7 @@ class myFOSSIL_Specimen
 
         /* BuddyPress Activity JSON filtering */
         $this->loader->add_filter( 'bp_get_activity_content_body',
-                $plugin_public, 'bp_get_activity_content_body', 10 );
+            $plugin_public, 'bp_get_activity_content_body', 10 );
 
         remove_filter( 'bp_get_activity_action',                'convert_chars', 0 );
         remove_filter( 'bp_get_activity_content_body',          'convert_chars', 0 );

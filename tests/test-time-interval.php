@@ -12,14 +12,16 @@ use myFOSSIL\Plugin\Specimen\TimeInterval;
  */
 class TimeIntervalTest extends myFOSSIL_Specimen_Test {
 
-    public function testSaveTimeInterval() {
+    public function testSaveTimeInterval()
+    {
         $ti = new TimeInterval;
         $ti->early_age = 100;
         $this->assertGreaterThan( 0, $ti->save() );
         $this->assertGreaterThan( 0, $ti->wp_post->ID );
     }
 
-    public function testGetTimeInterval() {
+    public function testGetTimeInterval()
+    {
         $ti = new TimeInterval;
         $ti->early_age = 100;
         $new_ti = new TimeInterval( $ti->save() );

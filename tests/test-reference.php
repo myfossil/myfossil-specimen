@@ -12,14 +12,16 @@ use myFOSSIL\Plugin\Specimen\Reference;
  */
 class ReferenceTest extends myFOSSIL_Specimen_Test {
 
-    public function testSaveReference() {
+    public function testSaveReference()
+    {
         $ref = new Reference;
         $ref->year = 2004;
         $this->assertGreaterThan( 0, $ref->save() );
         $this->assertGreaterThan( 0, $ref->wp_post->ID );
     }
 
-    public function testGetReference() {
+    public function testGetReference()
+    {
         $ref = new Reference;
         $ref->year = 2004;
         $new_ref = new Reference( $ref->save() );

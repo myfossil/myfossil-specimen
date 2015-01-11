@@ -144,7 +144,8 @@ class TimeInterval extends Base
     }
 
 
-    public static function bp_format_activity_json( $json, $tpl ) {
+    public static function bp_format_activity_json( $json, $tpl )
+    {
         $geo0 = new TimeInterval;
         $geo1 = new TimeInterval;
 
@@ -162,7 +163,7 @@ class TimeInterval extends Base
             $geo0 = null;
 
         $tpl_path = 'activities/geochronology.htm';
-        return $tpl->render( $tpl_path, array( 'from' => $geo0, 'to' => $geo1) );
+        return $tpl->render( $tpl_path, array( 'from' => $geo0, 'to' => $geo1 ) );
     }
 
     /**
