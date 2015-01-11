@@ -76,7 +76,7 @@ class myFOSSIL_Specimen_Public {
     public function get_twig() {
         if ( ! $this->twig ) {
             if ( ! $this->twig_loader ) {
-                $template_dir = plugin_dir_path( realpath( __FILE__ ) ) . '/templates';
+                $template_dir = plugin_dir_path( realpath( __FILE__ ) ) . '/partials';
                 $this->twig_loader = new \Twig_Loader_Filesystem( $template_dir );
             }
             $this->twig = new \Twig_Environment( $this->twig_loader,
