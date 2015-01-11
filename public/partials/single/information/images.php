@@ -6,7 +6,7 @@ function fossil_view_images( $fossil )
 {
     $image_id = $fossil->image_id;
     $image_src = $fossil->image;
-    ?>
+?>
     <h3 class="sr-only">Image</h3>
     <div class="activity-entry">
         <div class="activity-body">
@@ -20,7 +20,7 @@ function fossil_view_images( $fossil )
         </div>
         <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
         <div class="activity-footer text-center">
-            <a class="btn btn-sm btn-default" href="/fossils/<?=$fossil->id ?>/images">
+            <a class="btn btn-sm btn-default" href="/fossils/<?php echo $fossil->id ?>/images">
                 Manage Images
             </a>
         </div>

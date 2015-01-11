@@ -13,7 +13,7 @@ function myfossil_fossil_render_single_history( $fossil )
         array_push( $item_ids, $fossil->{ $key } );
 
     $item_query = implode( ',', $item_ids );
-    ?>
+?>
 
     <?php if ( bp_has_activities( bp_ajax_querystring( 'activity' ) .
             '&primary_id=' . $item_query ) ) : ?>
