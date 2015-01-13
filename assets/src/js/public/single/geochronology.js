@@ -9,41 +9,52 @@
         5: 'age'
     };
 
+    var SCALE_NAMES = ['eon', 'era', 'period', 'epoch', 'age'];
+
     function reset_geochronlogy() {
         $.map(['era', 'period', 'epoch', 'age'], function(level) {
             $('#fossil-geochronology-' + level).html(
                 '<span class="unknown">Unknown</span>'
-            );
+            )
+            .css('background-color', '')
+            .css('color', '');
         });
     }
 
     function load_geochronology() {
-        var url = "http://paleobiodb.org/data1.1/intervals/list.json" + "?scale=1&vocab=pbdb";
+        var url = "http://paleobiodb.org/data1.1/intervals/list.json" +
+            "?scale=1&vocab=pbdb";
 
         $.ajax({
             type: 'post',
             url: url,
             dataType: 'json',
+
+            /**
+             * Re-organize results from the PBDB.
+             * 
+             * Certain features are not currently supported by PBDB, so
+             * that's why we're doing it here in the client.
+             */
             success: function(resp) {
-                // Re-organize results from the PBDB.
-                var intervals = [],
-                    match;
-                resp.records.forEach(
-                    function(interval) {
-                        intervals[interval.interval_no] = interval;
-                        if ($('#fossil-geochronology-name').val() === interval.interval_name)
-                            match = interval.interval_no;
-                    }
-                );
+                var data = resp.records;
 
-                var current_interval = intervals[match];
+                // Sort data by age ascending
+                data.sort(function(a, b) {
+                    if (a.early_age < b.early_age)
+                        return 1;
+                    if (a.early_age > b.early_age)
+                        return -1;
+                    return 0;
+                });
 
-                while (current_interval) {
-                    $('#fossil-geochronology-' + SCALES[current_interval.level])
-                        .text(current_interval.interval_name);
-                    current_interval = intervals[current_interval.parent_no];
-                }
+                /* Load the data into the interface */
+                populate_geochronology_ui(data);
 
+                /* Load the data into the select box */
+                populate_geochronology_select(data);
+
+                /* Let everyone know that we're good to go... */
                 $('#fossil-geochronology-success').show().fadeOut();
             },
             complete: function(data) {
@@ -56,50 +67,71 @@
         });
     }
 
-    function init_edit_geochronology() {
-        var select = $('select#edit-fossil-geochronology');
-        var url = "http://paleobiodb.org/data1.1/intervals/list.json?vocab=pbdb&scale=1";
+    function populate_geochronology_ui(data) {
+        var intervals = [], match = false;
 
-        $.ajax({
-            type: 'post',
-            url: url,
-            dataType: 'json',
-            success: function(data) {
-                $.map(data.records, function(time_interval) {
-                    var option = $('<option></option>');
-                    option
-                        .val(time_interval.interval_name)
-                        .text(time_interval.interval_name);
-                    option
-                        .data('color', time_interval.color)
-                        .data('early_age', parseFloat(time_interval.early_age))
-                        .data('late_age', parseFloat(time_interval.late_age))
-                        .data('pbdbid', time_interval.interval_no)
-                        .data('parent_pbdbid', time_interval.parent_no)
-                        .data('reference_pbdbid', time_interval.reference_no.pop())
-                        .data('level', SCALES[time_interval.level])
-                        .data('name', time_interval.interval_name);
-
-                    select.append(option);
-                });
-
-                select.change(function() {
-                    var option = $('select#edit-fossil-geochronology option:selected');
-                    $.map(['name', 'level', 'pbdb', 'color'], function(property) {
-                        $('#fossil-geochronology-' + property).val(
-                            option.data(property)
-                        );
-                    });
-
-                    reset_geochronlogy();
-                    load_geochronology();
-                });
-            },
-            error: function(err) {
-                console.error(err);
+        data.forEach(function(interval) {
+            intervals[interval.interval_no] = interval;
+            if ($('#fossil-geochronology-name').val() === interval.interval_name) {
+                match = interval.interval_no;
             }
         });
 
+        /**
+         * Populate parents of the time interval
+         */
+        var current_interval = match ? intervals[match] : null;
+        while (current_interval) {
+            $('#fossil-geochronology-' + SCALES[current_interval.level])
+                .text(current_interval.interval_name)
+                .css('background-color', current_interval.color)
+                .css('color', (parseInt(current_interval.color.slice(1), 16) > 0xffffff / 2) ? '#000' : '#fff');
+            current_interval = intervals[current_interval.parent_no];
+        }
+
+    }
+
+    function populate_geochronology_select(data) {
+        var select = $('select#edit-fossil-geochronology');
+
+        var optgroups = {}, scale_label;
+        for (var level = 1; level <= 5; level++) {
+            scale_label = SCALES[level].charAt(0).toUpperCase() + SCALES[level].slice(1);
+            optgroups[level] = $('<optgroup />').attr('label', scale_label);
+        };
+
+        data.forEach(function(time_interval) {
+            var option = $('<option></option>')
+                .val(time_interval.interval_name)
+                .text(time_interval.interval_name)
+                .data('color', time_interval.color)
+                .data('early_age', parseFloat(time_interval.early_age))
+                .data('late_age', parseFloat(time_interval.late_age))
+                .data('pbdbid', time_interval.interval_no)
+                .data('parent_pbdbid', time_interval.parent_no)
+                .data('reference_pbdbid', time_interval.reference_no.pop())
+                .data('level', SCALES[time_interval.level])
+                .data('name', time_interval.interval_name);
+
+            // Add to optgroup
+            optgroups[time_interval.level].append(option);
+        });
+
+        for (var level in optgroups) {
+            select.append(optgroups[level]);
+        }
+
+        select.change(function() {
+            var option = $('select#edit-fossil-geochronology option:selected');
+            $.map(['name', 'level', 'pbdb', 'color'], function(property) {
+                $('#fossil-geochronology-' + property).val(
+                    option.data(property)
+                );
+            });
+
+            reset_geochronlogy();
+            load_geochronology();
+        });
     }
 
     // {{{ save_geochronology 
@@ -158,7 +190,6 @@
 
     $(function() {
         load_geochronology();
-        init_edit_geochronology();
 
         $('#edit-fossil-geochronology-save').click(save_geochronology);
         $('#edit-fossil-geochronology-comment-toggle > button').click(toggle_comment);
