@@ -92,7 +92,7 @@
     }
 
     function populate_geochronology_select(data) {
-        var select = $('select#edit-fossil-geochronology');
+        var select = $('select#edit-fossil-geochronology').empty();
 
         var optgroups = {}, scale_label;
         for (var level = 1; level <= 5; level++) {
