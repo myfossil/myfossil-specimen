@@ -34,7 +34,9 @@
                 $('#fossil-location-' + k)
                     .text($('#edit-fossil-location-' + k).val())
                     .data('value', $('#edit-fossil-location-' + k).val());
+                save_prompt();
             });
+
         });
     }
 
@@ -100,7 +102,6 @@
             opacity: 1,
             background: false,
             transition: 'all 0.2s',
-            closetransitionend: save_prompt
         });
     });
 

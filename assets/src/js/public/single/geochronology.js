@@ -131,6 +131,7 @@
 
             reset_geochronlogy();
             load_geochronology();
+            save_prompt();
         });
     }
 
@@ -178,7 +179,7 @@
         }
         // }}}
 
-    function save_prompt() {
+    function save_prompt(e) {
         $('#edit-fossil-geochronology-save-alert').show();
     }
 
@@ -199,7 +200,6 @@
             opacity: 1,
             background: false,
             transition: 'all 0.2s',
-            closetransitionend: save_prompt
         });
     });
 

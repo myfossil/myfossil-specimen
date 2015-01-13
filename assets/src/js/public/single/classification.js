@@ -66,6 +66,7 @@
 
             reset_taxa();
             load_taxa();
+            save_prompt();
         }
         // }}}
 
@@ -206,7 +207,6 @@
             opacity: 1,
             background: false,
             transition: 'all 0.2s',
-            closetransitionend: save_prompt,
         });
     });
 
