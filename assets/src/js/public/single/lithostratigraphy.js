@@ -97,6 +97,7 @@
                     .data('n_colls', stratum.n_colls)
                     .click(function() {
                         set_stratum(rank, stratum);
+                        save_prompt();
                     });
 
                 // show at most 10 results
@@ -177,7 +178,6 @@
                 opacity: 1,
                 background: false,
                 transition: 'all 0.2s',
-                closetransitionend: save_prompt,
             });
         }); // $.map
 

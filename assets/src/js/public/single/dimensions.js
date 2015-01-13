@@ -14,6 +14,7 @@
             input.keyup(function() {
                 if ($.isNumeric(input.val()))
                     view.text(input.val() + ' cm').attr('value', input.val());
+                save_prompt();
             });
         });
     }
@@ -77,7 +78,6 @@
             opacity: 1,
             background: false,
             transition: 'all 0.2s',
-            closetransitionend: save_prompt
         });
 
     });

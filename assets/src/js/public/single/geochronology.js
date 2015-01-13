@@ -131,6 +131,7 @@
 
             reset_geochronlogy();
             load_geochronology();
+            save_prompt();
         });
     }
 
@@ -178,14 +179,13 @@
         }
         // }}}
 
-    function save_prompt() {
+    function save_prompt(e) {
         $('#edit-fossil-geochronology-save-alert').show();
     }
 
     function toggle_comment() {
         $('#edit-fossil-geochronology-comment-form-group').toggle();
         $(this).fadeOut(400);
-        // $( '#edit-fossil-geochronology-comment-toggle > button' ).click( toggle_comment );
     }
 
     $(function() {
@@ -199,7 +199,6 @@
             opacity: 1,
             background: false,
             transition: 'all 0.2s',
-            closetransitionend: save_prompt
         });
     });
 
