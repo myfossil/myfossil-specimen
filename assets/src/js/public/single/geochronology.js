@@ -15,7 +15,9 @@
         $.map(['era', 'period', 'epoch', 'age'], function(level) {
             $('#fossil-geochronology-' + level).html(
                 '<span class="unknown">Unknown</span>'
-            );
+            )
+            .css('background-color', '')
+            .css('color', '');
         });
     }
 
@@ -81,9 +83,12 @@
         var current_interval = match ? intervals[match] : null;
         while (current_interval) {
             $('#fossil-geochronology-' + SCALES[current_interval.level])
-                .text(current_interval.interval_name);
+                .text(current_interval.interval_name)
+                .css('background-color', current_interval.color)
+                .css('color', (parseInt(current_interval.color.slice(1), 16) > 0xffffff / 2) ? '#000' : '#fff');
             current_interval = intervals[current_interval.parent_no];
         }
+
     }
 
     function populate_geochronology_select(data) {
@@ -95,7 +100,7 @@
             optgroups[level] = $('<optgroup />').attr('label', scale_label);
         };
 
-        $.map(data, function(time_interval) {
+        data.forEach(function(time_interval) {
             var option = $('<option></option>')
                 .val(time_interval.interval_name)
                 .text(time_interval.interval_name)
