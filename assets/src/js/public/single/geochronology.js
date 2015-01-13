@@ -36,7 +36,6 @@
              */
             success: function(resp) {
                 var data = resp.records;
-                var intervals = [], match = false;
 
                 // Sort data by age ascending
                 data.sort(function(a, b) {
@@ -45,28 +44,13 @@
                     if (a.early_age > b.early_age)
                         return -1;
                     return 0;
-                        
                 });
 
-                resp.records.forEach(function(interval) {
-                    intervals[interval.interval_no] = interval;
-                    if ($('#fossil-geochronology-name').val() === interval.interval_name) {
-                        match = interval.interval_no;
-                    }
-                });
-
-                /**
-                 * Populate parents of the time interval
-                 */
-                var current_interval = match ? intervals[match] : null;
-                while (current_interval) {
-                    $('#fossil-geochronology-' + SCALES[current_interval.level])
-                        .text(current_interval.interval_name);
-                    current_interval = intervals[current_interval.parent_no];
-                }
+                /* Load the data into the interface */
+                populate_geochronology_ui(data);
 
                 /* Load the data into the select box */
-                populate_geochronology_select(resp);
+                populate_geochronology_select(data);
 
                 /* Let everyone know that we're good to go... */
                 $('#fossil-geochronology-success').show().fadeOut();
@@ -81,6 +65,27 @@
         });
     }
 
+    function populate_geochronology_ui(data) {
+        var intervals = [], match = false;
+
+        data.forEach(function(interval) {
+            intervals[interval.interval_no] = interval;
+            if ($('#fossil-geochronology-name').val() === interval.interval_name) {
+                match = interval.interval_no;
+            }
+        });
+
+        /**
+         * Populate parents of the time interval
+         */
+        var current_interval = match ? intervals[match] : null;
+        while (current_interval) {
+            $('#fossil-geochronology-' + SCALES[current_interval.level])
+                .text(current_interval.interval_name);
+            current_interval = intervals[current_interval.parent_no];
+        }
+    }
+
     function populate_geochronology_select(data) {
         var select = $('select#edit-fossil-geochronology');
 
@@ -90,7 +95,7 @@
             optgroups[level] = $('<optgroup />').attr('label', scale_label);
         };
 
-        $.map(data.records, function(time_interval) {
+        $.map(data, function(time_interval) {
             var option = $('<option></option>')
                 .val(time_interval.interval_name)
                 .text(time_interval.interval_name)
@@ -123,7 +128,6 @@
             load_geochronology();
         });
     }
-
 
     // {{{ save_geochronology 
     function save_geochronology() {
