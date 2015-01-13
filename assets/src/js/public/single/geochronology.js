@@ -186,7 +186,6 @@
     function toggle_comment() {
         $('#edit-fossil-geochronology-comment-form-group').toggle();
         $(this).fadeOut(400);
-        // $( '#edit-fossil-geochronology-comment-toggle > button' ).click( toggle_comment );
     }
 
     $(function() {

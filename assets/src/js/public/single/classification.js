@@ -3,6 +3,8 @@
 
     // {{{ load_taxa
     function load_taxa() {
+            reset_taxa();
+
             var url = "http://paleobiodb.org/data1.1/taxa/list.json?name=" + $('#fossil-taxon-name').val() + "&rel=all_parents&vocab=pbdb";
             $.ajax({
                 type: 'post',
@@ -64,7 +66,6 @@
             $('#fossil-taxon-rank').val(taxon.taxon_rank);
             $('#fossil-taxon-pbdb').val(taxon.taxon_no);
 
-            reset_taxa();
             load_taxa();
             save_prompt();
         }
@@ -191,7 +192,6 @@
     function toggle_comment() {
         $('#edit-fossil-taxon-comment-form-group').toggle();
         $(this).fadeOut(400);
-        // $( '#edit-fossil-taxon-comment-toggle > button' ).click( toggle_comment );
     }
 
     $(function() {

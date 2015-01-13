@@ -9,14 +9,6 @@ function save_alert( $id, $message=null )
             You have unsaved changes.
         </div>
         <div class="actions">
-            <?php
-    /*
-            <button class="btn btn-default btn-sm" id="edit-fossil-<?=$id ?>-reset">
-                <i class="fa fa-fw fa-undo"></i>
-                Reset
-            </button>
-           */
-?>
 
             <button class="btn btn-default btn-sm" id="edit-fossil-<?php echo $id ?>-save">
                 <i class="fa fa-fw fa-save"></i>
@@ -26,6 +18,12 @@ function save_alert( $id, $message=null )
     </div>
 
     <?php
+    /*
+    <button class="btn btn-default btn-sm" id="edit-fossil-<?=$id ?>-reset">
+        <i class="fa fa-fw fa-undo"></i>
+        Undo
+    </button>
+    */
 }
 
 
