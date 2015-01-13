@@ -35,7 +35,18 @@
              * that's why we're doing it here in the client.
              */
             success: function(resp) {
+                var data = resp.records;
                 var intervals = [], match = false;
+
+                // Sort data by age ascending
+                data.sort(function(a, b) {
+                    if (a.early_age < b.early_age)
+                        return 1;
+                    if (a.early_age > b.early_age)
+                        return -1;
+                    return 0;
+                        
+                });
 
                 resp.records.forEach(function(interval) {
                     intervals[interval.interval_no] = interval;
@@ -54,10 +65,10 @@
                     current_interval = intervals[current_interval.parent_no];
                 }
 
-                // Load the data into the select box
+                /* Load the data into the select box */
                 populate_geochronology_select(resp);
 
-                // Let everyone know that we're good to go...
+                /* Let everyone know that we're good to go... */
                 $('#fossil-geochronology-success').show().fadeOut();
             },
             complete: function(data) {
