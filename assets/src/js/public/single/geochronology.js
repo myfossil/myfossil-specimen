@@ -73,13 +73,11 @@
     function populate_geochronology_select(data) {
         var select = $('select#edit-fossil-geochronology');
 
-        /*
-        var optgroups = {};
-        SCALE_NAMES.forEach(function(scale) {
-            var scale_label = scale;
-            optgroups[scale] = $('<optgroup>').attr('label', scale_label);
-        });
-        */
+        var optgroups = {}, scale_label;
+        for (var level = 1; level <= 5; level++) {
+            scale_label = SCALES[level].charAt(0).toUpperCase() + SCALES[level].slice(1);
+            optgroups[level] = $('<optgroup />').attr('label', scale_label);
+        };
 
         $.map(data.records, function(time_interval) {
             var option = $('<option></option>')
@@ -94,8 +92,13 @@
                 .data('level', SCALES[time_interval.level])
                 .data('name', time_interval.interval_name);
 
-            select.append(option);
+            // Add to optgroup
+            optgroups[time_interval.level].append(option);
         });
+
+        for (var level in optgroups) {
+            select.append(optgroups[level]);
+        }
 
         select.change(function() {
             var option = $('select#edit-fossil-geochronology option:selected');
