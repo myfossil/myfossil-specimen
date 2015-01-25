@@ -8,7 +8,9 @@ function fossil_header( $fossil=null, $view='main' )
         <div id="item-header" class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
-                    <img class="avatar img-responsive fossil-image" src="<?php echo $fossil->image ?>" />
+                    <a href="<?php echo $fossil->image ?>">
+                        <img class="avatar img-responsive fossil-image" src="<?php echo $fossil->image ?>" />
+                    </a>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
                     <h1>Fossil <?php echo sprintf( "%06d", $fossil->id ) ?></h1>

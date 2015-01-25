@@ -50,9 +50,11 @@ function myfossil_fossil_render_single_images( $fossil )
 ?>
             <div class="activity-entry col-sm-12 col-md-4">
                 <div class="activity-body">
-                    <img class="img-responsive"
-                            src="<?php echo $image_src ?>" style="padding: 10px;"
-                            data-attachment-id="<?php echo $image_id ?>" />
+                    <a href="<?php echo $image_src; ?>">
+                        <img class="img-responsive"
+                                src="<?php echo $image_src ?>" style="padding: 10px;"
+                                data-attachment-id="<?php echo $image_id ?>" />
+                    </a>
                 </div>
                 <div class="activity-footer">
                     <?php myfossil_fossil_render_single_images_edit( $fossil, $image ); ?>
