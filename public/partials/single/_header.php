@@ -42,9 +42,6 @@ function fossil_header( $fossil=null, $view='main' )
                 <li class="<?php echo ( $view == 'history' ) ? "active" : null ?>">
                     <a href="/fossils/<?php echo $fossil->id ?>/history">History</a>
                 </li>
-                <li class="<?php echo ( $view == 'discussion' ) ? "active" : null ?>">
-                    <a href="/fossils/<?php echo $fossil->id ?>/discussion">Discussion</a>
-                </li>
                 <?php if ( current_user_can( 'edit_post', $fossil->ID ) ) : ?>
                 <li class="<?php echo ( $view == 'settings' ) ? "active" : null ?>">
                     <a href="/fossils/<?php echo $fossil->id ?>/settings">Settings</a>
