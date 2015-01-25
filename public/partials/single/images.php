@@ -29,16 +29,18 @@ function myfossil_fossil_render_single_images( $fossil )
 
 ?>
     <div id="buddypress" class="container page-styling site-main" role="main">
-        <div class="row" style="margin-bottom: 20px;">
-            <span class="btn btn-default btn-file" id="upload-button">
-                Upload Images
-                <input class="form-control" type="file" id="fossil-upload-image" multiple />
-            </span>
-        </div>
-        <div id="progress-bar" class="progress" style="display: none">
-            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+        <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
+            <div class="row" style="margin-bottom: 20px;">
+                <span class="btn btn-default btn-file" id="upload-button">
+                    Upload Images
+                    <input class="form-control" type="file" id="fossil-upload-image" multiple />
+                </span>
             </div>
-        </div>
+            <div id="progress-bar" class="progress" style="display: none">
+                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                </div>
+            </div>
+        <?php endif; ?>
         <div class="row" id="fossil-images">
     <?php
 

@@ -18,13 +18,15 @@ function fossil_view_images( $fossil )
                 <p class="text-center" style="padding: 10px; color: #c0c0c0">No image available.</p>
             <?php endif; ?>
         </div>
-        <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
         <div class="activity-footer text-center">
             <a class="btn btn-sm btn-default" href="/fossils/<?php echo $fossil->id ?>/images">
-                Manage Images
+                <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
+                    Manage Images
+                <?php else : ?>
+                    View More Images
+                <?php endif; ?>
             </a>
         </div>
-        <?php endif; ?>
     </div>
     <?php
 }
