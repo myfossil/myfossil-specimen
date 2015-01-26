@@ -152,6 +152,21 @@ class myFOSSIL_Specimen_Public
         );
     }
 
+    public static function buddypress_add_activity( $type, $item_id, $action, $content, $secondary_item_id=0 )
+    {
+        $args = array(
+            'component' => 'myfossil',
+            'item_id' => $item_id,
+            'user_id' => \bp_loggedin_user_id(),
+            'content' => $content,
+            'secondary_item_id' => $secondary_item_id,
+            'action' => $action,
+            'type' => $type
+        );
+
+        return \bp_activity_add( $args );
+    }
+
     public static function upload_user_file( $file=array(), $post_id=0 )
     {
         require_once ABSPATH . 'wp-admin/includes/admin.php';
@@ -182,6 +197,13 @@ class myFOSSIL_Specimen_Public
             wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
             if ( 0 < intval( $attachment_id ) ) {
+                $user_link = \bp_core_get_userlink( \bp_loggedin_user_id() );
+                $fossil_link = sprintf( '<a href="/fossils/%d">Fossil #%06d</a>', $post_id, $post_id );
+                $action = sprintf( '%s uploaded a new image to %s', $user_link, $fossil_link );
+                $image_src = wp_get_attachment_url( $attachment_id );
+                $content = sprintf( '<img src="%s" class="img-responsive" />', $image_src );
+                self::buddypress_add_activity( 'uploaded_image', $post_id, $action, $content, $attachment_id );
+
                 return $attachment_id;
             }
         }

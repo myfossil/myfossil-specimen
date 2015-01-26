@@ -19,9 +19,11 @@ function fossil_view_comments( $fossil=null )
         'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
         'stratum_member_id', 'dimension_id', 'reference_id' );
     $item_ids = array();
-    foreach ( $item_id_keys as $key )
-        if ( $fossil->{ $key } )
-        array_push( $item_ids, $fossil->{ $key } );
+    foreach ( $item_id_keys as $key ) {
+        if ( $fossil->{ $key } ) {
+            array_push( $item_ids, $fossil->{ $key } );
+        }
+    }
 
     $item_query = implode( ',', $item_ids );
 
@@ -34,9 +36,7 @@ function fossil_view_comments( $fossil=null )
 
         <?php while ( bp_activities() ): ?>
             <?php bp_the_activity(); ?>
-            <?php if ( bp_get_activity_content_body() && strpos( bp_get_activity_content_body(), 'post_type' ) === false ) : ?>
-                <?php bp_get_template_part( 'activity/entry' ); ?>
-            <?php endif; ?>
+            <?php bp_get_template_part( 'activity/entry' ); ?>
         <?php endwhile; ?>
 
         <?php if ( bp_activity_has_more_items() ): ?>
