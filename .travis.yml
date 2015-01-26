@@ -1,33 +1,22 @@
-# Travis CI Configuration File
-
-# Trigger container based infrastructure
-# See http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 sudo: false
-
-# Tell Travis CI we're using PHP
 language: php
-
-# PHP version used in first build configuration.
 php:
-    - 5.4
-    - 5.5
-    - 5.6
-    - hhvm
-
-# WordPress versions uses Git 'develop' repo branches
+- 5.4
+- 5.5
+- 5.6
+- hhvm
 env:
-    - WP_VERSION=latest # Git equivalent of SVN /trunk
-    - WP_VERSION=4.0    # Includes latest 4.0.x release
-    - WP_VERSION=3.9    # Includes latest 3.9.x release
-    - WP_VERSION=3.8    # Includes latest 3.8.x release
-
-# Build matrix options
+- WP_VERSION=latest
+- WP_VERSION=4.0
+- WP_VERSION=3.9
+- WP_VERSION=3.8
 matrix:
   allow_failures:
-    - php: hhvm
-
+  - php: hhvm
 before_script:
-    - composer install
-    - bash tests/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION 
-
+- composer install
+- bash tests/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 script: phpunit
+notifications:
+  slack:
+    secure: Cm0b19k1qdGXJL2gAFiMD/Dtzh03MnfsHG1iFaadIewzsykJBFYidfOH6lcfjW9e6BWi7d+oOBuGAWvtFvWNxf6mzQjKyvCAqqgt/MnEIUGPj/Z9+4Dsfiwmssuf1eCfmJbh/8qGi5AClGZB8u+VgtmXLF5z4x6mQhzlrLtU/Ek=
