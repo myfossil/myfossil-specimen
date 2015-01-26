@@ -201,7 +201,7 @@ class myFOSSIL_Specimen_Public
                 $fossil_link = sprintf( '<a href="/fossils/%d">Fossil #%06d</a>', $post_id, $post_id );
                 $action = sprintf( '%s uploaded a new image to %s', $user_link, $fossil_link );
                 $image_src = wp_get_attachment_url( $attachment_id );
-                $content = sprintf( '<img src="%s" />', $image_src );
+                $content = json_encode( array( 'image_src' => $image_src ) );
                 self::buddypress_add_activity( 'uploaded_image', $post_id, $action, $content, $attachment_id );
 
                 return $attachment_id;
