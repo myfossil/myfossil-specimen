@@ -19,4 +19,4 @@ before_script:
 script: phpunit
 notifications:
   slack:
-    secure: Cm0b19k1qdGXJL2gAFiMD/Dtzh03MnfsHG1iFaadIewzsykJBFYidfOH6lcfjW9e6BWi7d+oOBuGAWvtFvWNxf6mzQjKyvCAqqgt/MnEIUGPj/Z9+4Dsfiwmssuf1eCfmJbh/8qGi5AClGZB8u+VgtmXLF5z4x6mQhzlrLtU/Ek=
+    secure: Fr1jhXLF5EgbgG/TjSA2YTLKj/D7Qeaa5DfA//IYpOqfDG6m455GvRPjnGTkv9A9pKTg7MmW6a2pUKoD9qfCawDYEDRTH7ZXNxXB0H8sNJIgPeHn5/hQQ7jlyixXpWT01V3KV1pT2B4mD2BfZdlvLpXvSP5uQtUqwIfuSXcOt44=
