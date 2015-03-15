@@ -7,6 +7,7 @@ php:
 - hhvm
 env:
 - WP_VERSION=latest
+- WP_VERSION=4.1
 - WP_VERSION=4.0
 - WP_VERSION=3.9
 - WP_VERSION=3.8
