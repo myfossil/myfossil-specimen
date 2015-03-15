@@ -42,6 +42,7 @@
             },
             success: function(data) {
                 console.log(data);
+                console.debug(post_id, nonce, length, width, height, comment);
                 $('#fossil-dimensions-success').show().fadeOut();
                 $('#edit-fossil-dimension-save-alert').fadeOut();
             },

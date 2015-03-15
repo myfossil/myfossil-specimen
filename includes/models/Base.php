@@ -479,7 +479,6 @@ abstract class Base
              */
             $args = array(
                 'component' => self::BP_COMPONENT_ID,
-                'hide_sitewide' => true,
                 'item_id' => $this->id,
                 'user_id' => \bp_loggedin_user_id(),
                 'content' => json_encode( array( 'post_type' => $post_type,

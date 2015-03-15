@@ -345,9 +345,9 @@ class myFOSSIL_Specimen_Public
             $width  = (float) $_POST['width'];
             $height = (float) $_POST['height'];
 
-            $dim->length = $length / 100; // convert to meters
-            $dim->width  = $width  / 100; // convert to meters
-            $dim->height = $height / 100; // convert to meters
+            $dim->length = $length / 100.; // convert to meters
+            $dim->width  = $width  / 100.; // convert to meters
+            $dim->height = $height / 100.; // convert to meters
             $dim->comment = $_POST['comment'];
             $dim->parent_id = $post_id;
 
