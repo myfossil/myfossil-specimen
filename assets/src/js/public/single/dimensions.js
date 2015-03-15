@@ -8,12 +8,11 @@
             var input = $('input#edit-fossil-dimension-' + dim);
             var view = $('td#fossil-dimension-' + dim);
 
-            if ($.isNumeric(view.attr('value')))
-                input.val(view.attr('value'));
+            input.val(view.data('value') * 100.);
 
             input.keyup(function() {
                 if ($.isNumeric(input.val()))
-                    view.text(input.val() + ' cm').attr('value', input.val());
+                    view.text(input.val() + ' cm').data('value', input.val());
                 save_prompt();
             });
         });
