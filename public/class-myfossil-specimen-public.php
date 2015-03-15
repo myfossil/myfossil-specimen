@@ -418,6 +418,8 @@ class myFOSSIL_Specimen_Public
                 )
             );
 
+            echo $activity_id;
+
             die;
             break;
 

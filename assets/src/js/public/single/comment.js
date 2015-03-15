@@ -7,7 +7,6 @@
         var nonce = $('#myfossil_specimen_nonce').val();
 
         $.ajax({
-            async: false,
             type: 'post',
             url: ajaxurl,
             data: {
@@ -18,10 +17,7 @@
             },
             dataType: 'html',
             success: function(data) {
-                if (typeof myFOSSILBpAtivityRefresh_automaticRefresh == 'function') {
-                    // Refresh if we can
-                    myFOSSILBpAtivityRefresh_automaticRefresh();
-                }
+              location.reload();
             },
             complete: function(data) {},
             error: function(err) {
