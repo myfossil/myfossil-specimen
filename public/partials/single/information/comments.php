@@ -30,7 +30,7 @@ function fossil_view_comments( $fossil=null )
     global $activities_template;
 ?>
 
-    <?php if ( bp_has_activities( bp_ajax_querystring( 'activity' ) .
+    <?php if ( bp_has_activities( 'activity' .
             '&primary_id=' . $item_query ) ) : ?>
         <ul id="activity-stream" class="activity-list item-list">
 
