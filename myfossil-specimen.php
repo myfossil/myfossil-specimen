@@ -23,7 +23,7 @@ namespace myFOSSIL\Plugin\Specimen;
  * Plugin Name:       myFOSSIL Specimen
  * Plugin URI:        https://github.com/myfossil/myfossil-specimen
  * Description:       Adds fossil management to WordPress + BuddyPress.
- * Version:           0.3.1
+ * Version:           0.4.0
  * Author:            myFOSSIL
  * Author URI:        https://github.com/myfossil
  * License:           BSD
