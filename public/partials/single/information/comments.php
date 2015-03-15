@@ -8,6 +8,7 @@ function fossil_view_comments( $fossil=null )
 
     <h3>Discussion</h3>
 
+    <div class="activity" role="main">
     <div>
         <?php if ( is_user_logged_in() ): ?>
             <?php fossil_post_comment_form( $fossil ) ?>
@@ -51,6 +52,8 @@ function fossil_view_comments( $fossil=null )
             <p><?php _e( 'Sorry, there was no activity found. Please try a different filter.', 'buddypress' ); ?></p>
         </div>
     <?php endif; ?>
+
+    </div>
 
     <?php
 }
