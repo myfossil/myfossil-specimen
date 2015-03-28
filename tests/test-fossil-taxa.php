@@ -35,5 +35,11 @@ class FossilTaxaTest extends myFOSSIL_Specimen_Test {
             $this->assertGreaterThan( 0, $taxa->{ $k } );
             $this->assertGreaterThan( 0, $ntaxa->{ $k } );
         }
+
+        foreach ( array( 'phylum', 'class', 'order', 'family', 'genus',
+                         'species' ) as $k ) {
+            $this->assertInstanceOf( 'myFOSSIL\Plugin\Specimen\Taxon', 
+                    $taxa->{ $k } );
+        }
     }
 }

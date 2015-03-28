@@ -88,15 +88,13 @@ class FossilTaxa extends Base
      * @param unknown $key
      * @return unknown
      */
-    /*
     public function __get( $key )
     {
-        if ( in_array( $key, array( 'phlyum', 'class', 'order', 'family',
+        if ( in_array( $key, array( 'phylum', 'class', 'order', 'family',
                                     'genus', 'species' ) ) ) {
             return new Taxon( $this->{ sprintf( 'taxon_id_%s', $key ) } );
         }
 
         return parent::__get( $key );
     }
-    */
 }
