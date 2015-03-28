@@ -366,11 +366,12 @@ class myFOSSIL_Specimen_Public
                 $location = new FossilLocation;
 
             foreach ( array( 'latitude', 'longitude', 'country', 'state',
-                    'county', 'city' ) as $k ) {
+                             'county', 'city' ) as $k ) {
                 $location->{ $k } = $_POST['location'][$k];
             }
 
             $location->comment = $_POST['comment'];
+            $location->is_disclosed = $_POST['is_disclosed'];
             $location->parent_id = $post_id;
 
             $fossil->location_id = $location->save();

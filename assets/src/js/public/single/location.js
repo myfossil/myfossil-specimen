@@ -24,7 +24,7 @@
     }
 
     function init_location_edit() {
-        var keys = ['latitude', 'longitude', 'country', 'state', 'county', 'city'];
+        var keys = ['latitude', 'longitude', 'country', 'state', 'county', 'city', 'is_disclosed'];
         $.map(keys, function(k) {
             $('#edit-fossil-location-' + k).val(
                 $('#fossil-location-' + k).data('value')
@@ -47,11 +47,11 @@
             var post_id = parseInt($('#post_id').val());
             var loc = {};
 
-            var keys = ['latitude', 'longitude', 'country', 'state', 'county', 'city'];
+            var keys = ['latitude', 'longitude', 'country', 'state', 'county', 'city', 'is_disclosed'];
             $.map(keys, function(k) {
                 loc[k] = $('#edit-fossil-location-' + k).val();
             });
-
+            console.log($('#edit-fossil-location-is-disclosed').is(':checked'));
             $.ajax({
                 async: false,
                 type: 'post',
@@ -61,7 +61,8 @@
                     'nonce': nonce,
                     'post_id': post_id,
                     'location': loc,
-                    'comment': $('#edit-fossil-location-comment').val()
+                    'comment': $('#edit-fossil-location-comment').val(),
+                    'is_disclosed': $('#edit-fossil-location-is-disclosed').is(':checked'),
                 },
                 dataType: 'json',
                 success: function(data) {
