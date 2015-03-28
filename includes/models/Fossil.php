@@ -57,9 +57,10 @@ class Fossil extends Base
 
         $this->pbdb = new PBDB\FossilOccurence;
 
-        $this->_meta_keys = array( 'pbdb_id', 'taxon_id', 'location_id',
-            'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
-            'stratum_member_id', 'dimension_id', 'reference_id', 'image_id' );
+        $this->_meta_keys = array( 'pbdb_id', 'taxa_id', 'location_id',
+                'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
+                'stratum_member_id', 'dimension_id', 'reference_id', 'image_id'
+                );
     }
 
     // {{{ _save
@@ -173,11 +174,12 @@ class Fossil extends Base
             return sprintf( 'Fossil %06d', $this->id );
             break;
 
-        case 'taxon':
-            if ( $this->taxon_id ) {
-                $this->_cache->taxon = new Taxon( $this->taxon_id );
-                return $this->_cache->taxon;
+        case 'taxa':
+            if ( $this->taxa_id ) {
+                $this->_cache->taxa = new FossilTaxa( $this->taxa_id );
+                return $this->_cache->taxa;
             }
+            return new FossilTaxa;
             break;
 
         case 'location':

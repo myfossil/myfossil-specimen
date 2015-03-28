@@ -15,6 +15,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
     public function testSaveGetFossil()
     {
         $taxon = new Specimen\Taxon( null, array( 'common_name' => 'whale' ) );
+        $taxa = new Specimen\FossilTaxa;
         $location = new Specimen\FossilLocation( null, array( 'latitude' =>
                 10.2, 'longitude' => 20.3 ) );
         $dimension = new Specimen\FossilDimension( null, array( 'length' => 10,
@@ -25,15 +26,19 @@ class FossilTest extends myFOSSIL_Specimen_Test {
                 20, 'late_age' => 30 ) );
 
         // Save all our new objects that will comprise our fossil
-        foreach ( array( $taxon, $location, $dimension, $reference, $stratum,
-                $time_interval ) as $obj )
+        foreach ( array( $taxon, $taxa, $location, $dimension, $reference,
+                         $stratum, $time_interval ) as $obj )
             $this->assertGreaterThan( 0, $obj->save() );
+
+        foreach ( Specimen\FossilTaxa::get_ranks() as $rank ) {
+            $taxa->{ $rank } = $taxon;
+        }
 
         // Create new fossil
         $fossil = new Specimen\Fossil(
             null,
             array(
-                'taxon_id' => $taxon->id,
+                'taxa_id' => $taxa->save(),
                 'location_id' => $location->id,
                 'dimension_id' => $dimension->id,
                 'reference_id' => $reference->id,
@@ -46,7 +51,9 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $this->assertGreaterThan( 0, $fossil->save() );
 
         // Assert that everything is in there properly
-        $this->assertEquals( $taxon->common_name, $fossil->taxon->common_name );
+        foreach ( Specimen\FossilTaxa::get_ranks() as $rank )
+            $this->assertEquals( $taxa->{ $rank }->common_name,
+                                 $fossil->taxa->{ $rank }->common_name );
         $this->assertEquals( $location->latitude, $fossil->location->latitude );
         $this->assertEquals( $location->longitude, $fossil->location->longitude );
         $this->assertEquals( $dimension->length, $fossil->dimension->length );
@@ -63,7 +70,9 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         // Test loading from the database again
         $fossil_id = $fossil->id;
         $fossil = new Specimen\Fossil( $fossil->id );
-        $this->assertEquals( $taxon->common_name, $fossil->taxon->common_name );
+        foreach ( Specimen\FossilTaxa::get_ranks() as $rank )
+            $this->assertEquals( $taxa->{ $rank }->common_name,
+                                 $fossil->taxa->{ $rank }->common_name );
         $this->assertEquals( $location->latitude, $fossil->location->latitude );
         $this->assertEquals( $location->longitude, $fossil->location->longitude );
         $this->assertEquals( $dimension->length, $fossil->dimension->length );

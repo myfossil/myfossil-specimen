@@ -61,7 +61,7 @@
 
     // {{{ set_taxon
     function set_taxon(taxon) {
-            $('td#fossil-taxon-' + taxon.rank).text(taxon.taxon_name);
+            $('td#fossil-taxon-' + taxon.rank).value(taxon.taxon_name);
             $('#fossil-taxon-name').val(taxon.taxon_name);
             $('#fossil-taxon-rank').val(taxon.taxon_rank);
             $('#fossil-taxon-pbdb').val(taxon.taxon_no);
