@@ -25,6 +25,7 @@ function fossil_edit_location( $fossil=null )
                                     id="edit-fossil-location-<?php echo $k ?>" />
                         </div>
                     <?php endforeach; ?>
+                    <?php edit_is_disclosed( 'location' ); ?>
                     <?php edit_comment_box( 'location' ); ?>
                 </form>
             </div>
@@ -94,6 +95,8 @@ function fossil_view_location( $fossil=null )
 
 function fossil_location( $fossil=null )
 {
-    fossil_view_location( $fossil );
-    fossil_edit_location( $fossil );
+    if($fossil->location->is_disclosed == 'true' || current_user_can( 'edit_post', $fossil->id)) {
+        fossil_view_location( $fossil );
+        fossil_edit_location( $fossil );
+    }
 }

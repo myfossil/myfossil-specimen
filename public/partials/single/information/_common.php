@@ -49,3 +49,12 @@ function edit_comment_box( $id )
         </div>
     <?php
 }
+
+function edit_is_disclosed( $id ) {
+?>
+    <div style="padding-bottom: 1rem; ">
+        Disclose Location: 
+      <input id="edit-fossil-<?php echo $id ?>-is-disclosed" type="checkbox" />
+    </div>
+<?php
+}
