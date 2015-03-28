@@ -34,10 +34,36 @@ class FossilTaxaTest extends myFOSSIL_Specimen_Test {
             $this->assertEquals( $taxa->{ $k }, $ntaxa->{ $k } );
             $this->assertGreaterThan( 0, $taxa->{ $k } );
             $this->assertGreaterThan( 0, $ntaxa->{ $k } );
+            $this->assertInternalType( 'int', $taxa->{ $k } );
         }
 
-        foreach ( array( 'phylum', 'class', 'order', 'family', 'genus',
-                         'species' ) as $k ) {
+        foreach ( FossilTaxa::get_ranks() as $k ) {
+            $this->assertInstanceOf( 'myFOSSIL\Plugin\Specimen\Taxon', 
+                    $taxa->{ $k } );
+        }
+    }
+
+    public function testSetFossilTaxa()
+    {
+        $taxa = new FossilTaxa;
+        foreach ( FossilTaxa::get_ranks() as $k ) {
+            $taxon = new Taxon;
+            $taxon->common_name = $k;
+            $taxon->rank = $k;
+            $taxon->save();
+            $taxa->{ $k } = $taxon;
+        }
+        $ntaxa = new FossilTaxa( $taxa->save() );
+
+        foreach ( $taxa->_meta_keys as $k ) {
+            $taxa->{ $k } = $taxon->save();
+            $ntaxa = new FossilTaxa( $taxa->save() );
+            $this->assertEquals( $taxa->{ $k }, $ntaxa->{ $k } );
+            $this->assertGreaterThan( 0, $taxa->{ $k } );
+            $this->assertGreaterThan( 0, $ntaxa->{ $k } );
+            $this->assertInternalType( 'int', $taxa->{ $k } );
+        }
+        foreach ( FossilTaxa::get_ranks() as $k ) {
             $this->assertInstanceOf( 'myFOSSIL\Plugin\Specimen\Taxon', 
                     $taxa->{ $k } );
         }
