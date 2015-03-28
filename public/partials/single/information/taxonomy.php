@@ -1,4 +1,5 @@
 <?php
+use myFOSSIL\Plugin\Specimen\FossilTaxa;
 
 require_once '_common.php';
 
@@ -58,7 +59,7 @@ function fossil_view_taxonomy( $fossil=null )
             <th>Value</th>
             <th>Options</th>
         </tr>
-        <?php foreach ( array( 'phylum', 'class', 'order', 'family', 'genus', 'species' ) as $k ): ?>
+        <?php foreach ( FossilTaxa::get_ranks() as $k ): ?>
             <tr>
                 <td class="fossil-property"><?php echo ucwords( $k ) ?></td>
                 <td class="fossil-property-value<?php echo ( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-taxon_open editable" : null ?>"
