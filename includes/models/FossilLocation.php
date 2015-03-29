@@ -38,7 +38,8 @@ class FossilLocation extends Base
         parent::__construct( $post_id, $meta );
 
         $this->_meta_keys = array( 'latitude', 'longitude', 'country', 'state',
-            'county', 'city', 'zip', 'address', 'map_url' );
+            'county', 'city', 'zip', 'address', 'map_url',
+            'is_disclosed' );
     }
 
     /**

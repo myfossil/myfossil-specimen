@@ -76,6 +76,7 @@ class myFOSSIL_Specimen_Public
         FossilLocation::register_buddypress_activities( FossilLocation::POST_TYPE );
         Stratum::register_buddypress_activities( Stratum::POST_TYPE );
         Taxon::register_buddypress_activities( Taxon::POST_TYPE );
+        FossilTaxa::register_buddypress_activities( FossilTaxa::POST_TYPE );
         TimeInterval::register_buddypress_activities( TimeInterval::POST_TYPE );
     }
 
@@ -124,6 +125,9 @@ class myFOSSIL_Specimen_Public
             break;
         case Taxon::POST_TYPE:
             return Taxon::bp_format_activity_json( $json, $tpl );
+            break;
+        case FossilTaxa::POST_TYPE:
+            return FossilTaxa::bp_format_activity_json( $json, $tpl );
             break;
         case TimeInterval::POST_TYPE:
             return TimeInterval::bp_format_activity_json( $json, $tpl );
@@ -267,18 +271,20 @@ class myFOSSIL_Specimen_Public
         case 'myfossil_save_taxon':
             $fossil = new Fossil( $_POST['post_id'] );
 
-            if ( $fossil->taxon_id )
-                $taxon = new Taxon( $fossil->taxon_id );
+            if ( $fossil->taxa_id )
+                $taxa = new FossilTaxa( $fossil->taxa_id );
             else
+                $taxa = new FossilTaxa;
+
+            foreach ( FossilTaxa::get_ranks() as $rank ) {
                 $taxon = new Taxon;
+                $taxon->name    = $_POST['taxa'][$rank];
+                $taxon->rank    = $rank;
+                $taxon->parent_id = $post_id;
+                $taxa->{ sprintf( "taxon_id_%s", $rank ) } = $taxon->save();
+            }
 
-            $taxon->pbdb_id = $_POST['taxon']['pbdb'];
-            $taxon->name    = $_POST['taxon']['name'];
-            $taxon->rank    = $_POST['taxon']['rank'];
-            $taxon->comment = $_POST['taxon']['comment'];
-            $taxon->parent_id = $post_id;
-
-            $fossil->taxon_id = $taxon->save();
+            $fossil->taxa_id = $taxa->save();
 
             echo json_encode( $fossil->save() );
             die;
@@ -371,6 +377,7 @@ class myFOSSIL_Specimen_Public
             }
 
             $location->comment = $_POST['comment'];
+            $location->is_disclosed = $_POST['is_disclosed'];
             $location->parent_id = $post_id;
 
             $fossil->location_id = $location->save();

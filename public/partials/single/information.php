@@ -12,7 +12,49 @@ function myfossil_fossil_render_single_information( $fossil )
 {
 ?>
     <div id="buddypress" class="container page-styling site-main" role="main">
-        <div class="row clearfix">
+        <?php if ( current_user_can( 'edit_post', $fossil->id ) ) {?>
+            <?php if ( get_post_status( $fossil->id ) == 'draft' ) { ?>
+                <div class="alert alert-info" role="alert">
+                    This specimen is currently <strong>unpublished</strong> and visible only to you.
+            <?php } else { ?>
+                <div class="alert alert-success" role="alert">
+                    This specimen is currently <strong>published</strong> and visible to the public.
+            <?php } ?>
+                    <br />
+                    <br />
+                    <div class="row">
+                    <div class="col-xs-8 col-lg-8">
+                        <?php $draft = ( get_post_status( $fossil->id ) == 'draft' ); ?>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default btn-sm <?php echo ( $draft ) ? "btn-active active" : null ?>">
+                                <input type="radio" name="status"
+                                    id="draft" autcomplete="off"
+                                    <?php echo ( $draft ) ? "checked" : null ?>
+                                    class="post_status" value="draft" />
+                                <i class="fa fa-fw fa-eye-slash"></i>
+                                Draft
+                            </label>
+                            <label class="btn btn-default btn-sm <?php echo ( $draft ) ? null : "btn-active active" ?>">
+                                <input type="radio" name="status"
+                                    id="published" autcomplete="off"
+                                    <?php echo ( $draft ) ? null : "checked" ?>
+                                    class="post_status" value="publish" />
+                                <i class="fa fa-fw fa-eye"></i>
+                                Published
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-lg-4">
+                      <a class="pull-right" href="settings">
+                        <i class="fa fa-fw fa-trash-o"></i>
+                        Delete
+                      </a>
+                    </div>
+            </div>
+        </div>
+        <?php } ?>
+
+        <div class="row">
 
             <!-- Classification -->
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">

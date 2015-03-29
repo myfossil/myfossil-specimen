@@ -1,11 +1,11 @@
 (function($) {
     'use strict';
 
-    // {{{ load_taxa
-    function load_taxa() {
-            reset_taxa();
+    var ranks = ['phylum', 'class', 'order', 'family', 'genus', 'species'];
 
-            var url = "http://paleobiodb.org/data1.1/taxa/list.json?name=" + $('#fossil-taxon-name').val() + "&rel=all_parents&vocab=pbdb";
+    // {{{ load_taxa
+    function load_taxa(taxon_name) {
+            var url = "http://paleobiodb.org/data1.1/taxa/list.json?name=" + taxon_name + "&rel=all_parents&vocab=pbdb";
             $.ajax({
                 type: 'post',
                 url: url,
@@ -14,10 +14,7 @@
                     resp.records.forEach(
                         function(taxon) {
                             taxon = normalize_taxon(taxon);
-                            $('#fossil-taxon-' + taxon.rank).text(taxon.taxon_name);
-                            $('#fossil-taxon-name').val(taxon.taxon_name);
-                            $('#fossil-taxon-rank').val(taxon.taxon_rank);
-                            $('#fossil-taxon-pbdb').val(taxon.taxon_no);
+                            $('#fossil-taxon-' + taxon.rank).val(taxon.taxon_name);
                         }
                     );
                     $('#fossil-taxon-success').show().fadeOut();
@@ -61,22 +58,17 @@
 
     // {{{ set_taxon
     function set_taxon(taxon) {
-            $('td#fossil-taxon-' + taxon.rank).text(taxon.taxon_name);
-            $('#fossil-taxon-name').val(taxon.taxon_name);
-            $('#fossil-taxon-rank').val(taxon.taxon_rank);
-            $('#fossil-taxon-pbdb').val(taxon.taxon_no);
-
-            load_taxa();
+            $('#fossil-taxon-' + taxon.rank).val(taxon.taxon_name);
+            load_taxa(taxon.taxon_name);
             save_prompt();
         }
         // }}}
 
     // {{{ reset_taxa
     function reset_taxa() {
-            var ranks = ['phylum', 'class', 'order', 'family', 'genus', 'species'];
 
             $.map(ranks, function(rank) {
-                $('#fossil-taxon-' + rank).html('<span class="unknown">Unknown</span>');
+                $('#fossil-taxon-' + rank).val("");
             });
         }
         // }}}
@@ -85,17 +77,12 @@
     function save_taxon() {
             var nonce = $('#myfossil_specimen_nonce').val();
             var post_id = parseInt($('#post_id').val());
-            var taxon_name = $('#fossil-taxon-name').val(),
-                taxon_rank = $('#fossil-taxon-rank').val(),
-                taxon_pbdb = $('#fossil-taxon-pbdb').val(),
-                taxon_comment = $('#edit-fossil-taxon-comment').val();
+            var taxon_comment = $('#edit-fossil-taxon-comment').val();
+            var taxa = {};
 
-            var taxon = {
-                name: taxon_name,
-                rank: taxon_rank,
-                pbdb: taxon_pbdb,
-                comment: taxon_comment,
-            };
+            $.map(ranks, function(rank) {
+                taxa[rank] = $('#fossil-taxon-' + rank).val();
+            });
 
             $.ajax({
                 async: false,
@@ -105,7 +92,8 @@
                     'action': 'myfossil_save_taxon',
                     'nonce': nonce,
                     'post_id': post_id,
-                    'taxon': taxon
+                    'taxa': taxa,
+                    'comment': taxon_comment,
                 },
                 dataType: 'json',
                 success: function(data) {
@@ -195,12 +183,14 @@
     }
 
     $(function() {
-        load_taxa();
-
         $('#edit-fossil-taxon-save').click(save_taxon);
         $('#edit-fossil-taxon-comment-toggle > button').click(toggle_comment);
 
         $('#edit-fossil-taxon-name').keyup(autocomplete_taxon);
+
+        $('input.taxon').change(function() {
+          save_prompt();
+        });
 
         $('#edit-fossil-taxon').popup({
             type: 'tooltip',

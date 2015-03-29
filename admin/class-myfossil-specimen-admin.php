@@ -77,6 +77,7 @@ class myFOSSIL_Specimen_Admin
             Reference::POST_TYPE,
             Stratum::POST_TYPE,
             Taxon::POST_TYPE,
+            FossilTaxa::POST_TYPE,
             TimeInterval::POST_TYPE
         );
     }
@@ -96,6 +97,7 @@ class myFOSSIL_Specimen_Admin
         Reference::register_cpt();
         Stratum::register_cpt();
         Taxon::register_cpt();
+        FossilTaxa::register_cpt();
         TimeInterval::register_cpt();
     }
 

@@ -1,4 +1,5 @@
 <?php
+use myFOSSIL\Plugin\Specimen\FossilTaxa;
 
 require_once '_common.php';
 
@@ -35,10 +36,12 @@ function fossil_edit_taxonomy( $fossil=null )
 function fossil_view_taxonomy( $fossil=null )
 {
 ?>
-    <input type="hidden" id="fossil-taxon-name" value="<?php echo $fossil->taxon->name ?>" />
-    <input type="hidden" id="fossil-taxon-rank" value="<?php echo $fossil->taxon->rank ?>" />
-    <input type="hidden" id="fossil-taxon-pbdb" value="<?php echo $fossil->taxon->pbdbid ?>" />
-
+    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
+        <button class="btn btn-default edit-fossil-taxon_open pull-right">
+            <i class="fa fa-fw fa-magic"></i>
+            Taxon Helper
+        </button>
+    <?php endif; ?>
     <h3>
         Classification
         <i style="display: none" class="fa fa-fw fa-circle-o-notch fa-spin"
@@ -47,7 +50,6 @@ function fossil_view_taxonomy( $fossil=null )
                 id="fossil-taxon-success"></i>
         <i style="display: none" class="fa fa-fw fa-warning"
                 id="fossil-taxon-error"></i>
-
     </h3>
 
     <?php save_alert( 'taxon' ); ?>
@@ -58,20 +60,33 @@ function fossil_view_taxonomy( $fossil=null )
             <th>Value</th>
             <th>Options</th>
         </tr>
-        <?php foreach ( array( 'phylum', 'class', 'order', 'family', 'genus', 'species' ) as $k ): ?>
-            <tr>
-                <td class="fossil-property"><?php echo ucwords( $k ) ?></td>
-                <td class="fossil-property-value<?php echo ( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-taxon_open editable" : null ?>"
-                        id="fossil-taxon-<?php echo $k ?>"
-                        data-edit="<?php echo current_user_can( 'edit_post', $fossil->id )?>"
-                        data-popup-ordinal="<?php echo current_user_can( 'edit_post', $fossil->id )?>">
-                    <?php if ( $fossil->taxon && ( $fossil->taxon->{ $k } ) && ( $v = $fossil->taxon->{ $k }->name ) ): ?>
-                        <?php echo $v ?>
-                    <?php else: ?>
-                        <span class="unknown">Unknown</span>
-                    <?php endif; ?>
-                </td>
-            </tr>
+        <?php foreach ( FossilTaxa::get_ranks() as $k ): ?>
+            <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
+                <tr>
+                    <td class="fossil-property"><?php echo ucwords( $k ) ?></td>
+                    <td class="fossil-property-value">
+                        <?php if ( $fossil->taxa->{ $k } ) : ?>
+                            <input type="text"
+                                class="form-control taxon"
+                                id="fossil-taxon-<?php echo $k ?>"
+                                name="fossil-taxon-<?php echo $k ?>"
+                                value="<?php echo $fossil->taxa->{ $k }->name ?>" />
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php else: ?>
+                <tr>
+                    <td class="fossil-property"><?php echo ucwords( $k ) ?></td>
+                    <td class="fossil-property-value"
+                        id="fossil-taxon-<?php echo $k ?>">
+                        <?php if ( $fossil->taxa->{ $k } && ( $v = $fossil->taxa->{ $k }->name ) ): ?>
+                            <?php echo $v ?>
+                        <?php else: ?>
+                            <span class="unknown">Unknown</span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endif; ?>
         <?php endforeach; ?>
     </table>
 
