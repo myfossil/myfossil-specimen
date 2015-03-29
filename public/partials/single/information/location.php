@@ -95,7 +95,7 @@ function fossil_view_location( $fossil=null )
 
 function fossil_location( $fossil=null )
 {
-    if($fossil->location->is_disclosed == 'true' || current_user_can( 'edit_post', $fossil->id)) {
+    if ( $fossil->location->is_disclosed == 'true' || current_user_can( 'edit_post', $fossil->id ) ) {
         fossil_view_location( $fossil );
         fossil_edit_location( $fossil );
     }

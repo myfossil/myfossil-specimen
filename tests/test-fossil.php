@@ -27,7 +27,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
 
         // Save all our new objects that will comprise our fossil
         foreach ( array( $taxon, $taxa, $location, $dimension, $reference,
-                         $stratum, $time_interval ) as $obj )
+                $stratum, $time_interval ) as $obj )
             $this->assertGreaterThan( 0, $obj->save() );
 
         foreach ( Specimen\FossilTaxa::get_ranks() as $rank ) {
@@ -53,7 +53,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         // Assert that everything is in there properly
         foreach ( Specimen\FossilTaxa::get_ranks() as $rank )
             $this->assertEquals( $taxa->{ $rank }->common_name,
-                                 $fossil->taxa->{ $rank }->common_name );
+            $fossil->taxa->{ $rank }->common_name );
         $this->assertEquals( $location->latitude, $fossil->location->latitude );
         $this->assertEquals( $location->longitude, $fossil->location->longitude );
         $this->assertEquals( $dimension->length, $fossil->dimension->length );
@@ -72,7 +72,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $fossil = new Specimen\Fossil( $fossil->id );
         foreach ( Specimen\FossilTaxa::get_ranks() as $rank )
             $this->assertEquals( $taxa->{ $rank }->common_name,
-                                 $fossil->taxa->{ $rank }->common_name );
+            $fossil->taxa->{ $rank }->common_name );
         $this->assertEquals( $location->latitude, $fossil->location->latitude );
         $this->assertEquals( $location->longitude, $fossil->location->longitude );
         $this->assertEquals( $dimension->length, $fossil->dimension->length );

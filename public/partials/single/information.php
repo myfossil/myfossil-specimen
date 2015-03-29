@@ -11,51 +11,50 @@ require_once 'information/taxonomy.php';
 function myfossil_fossil_render_single_information( $fossil )
 {
 ?>
-
     <div id="buddypress" class="container page-styling site-main" role="main">
         <?php if ( current_user_can( 'edit_post', $fossil->id ) ) {?>
-            <div class="status-message">
-                <?php if( get_post_status( $fossil->id ) == 'draft' ) { ?>
-                    <div class="alert alert-info" role="alert">
-                        This specimen is currently <strong>unpublished</strong> and visible only to you.
-                    </div>
-                <?php } else { ?>
+            <?php if ( get_post_status( $fossil->id ) == 'draft' ) { ?>
+                <div class="alert alert-info" role="alert">
+                    This specimen is currently <strong>unpublished</strong> and visible only to you.
+            <?php } else { ?>
                 <div class="alert alert-success" role="alert">
                     This specimen is currently <strong>published</strong> and visible to the public.
-                </div>
             <?php } ?>
-        </div>
-
-        <div class="pull-left">
-            <?php $draft = ( get_post_status( $fossil->id ) == 'draft' ); ?>
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default btn-sm <?php echo ( $draft ) ? "btn-active active" : null ?>">
-                    <input type="radio" name="status"
-                        id="draft" autcomplete="off"
-                        <?php echo ( $draft ) ? "checked" : null ?>
-                        class="post_status" value="draft" />
-                    <i class="fa fa-fw fa-eye-slash"></i>
-                    Draft
-                </label>
-                <label class="btn btn-default btn-sm <?php echo ( $draft ) ? null : "btn-active active" ?>">
-                    <input type="radio" name="status"
-                        id="published" autcomplete="off"
-                        <?php echo ( $draft ) ? null : "checked" ?>
-                        class="post_status" value="publish" />
-                    <i class="fa fa-fw fa-eye"></i>
-                    Published
-                </label>
+                    <br />
+                    <br />
+                    <div class="row">
+                    <div class="col-xs-8 col-lg-8">
+                        <?php $draft = ( get_post_status( $fossil->id ) == 'draft' ); ?>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default btn-sm <?php echo ( $draft ) ? "btn-active active" : null ?>">
+                                <input type="radio" name="status"
+                                    id="draft" autcomplete="off"
+                                    <?php echo ( $draft ) ? "checked" : null ?>
+                                    class="post_status" value="draft" />
+                                <i class="fa fa-fw fa-eye-slash"></i>
+                                Draft
+                            </label>
+                            <label class="btn btn-default btn-sm <?php echo ( $draft ) ? null : "btn-active active" ?>">
+                                <input type="radio" name="status"
+                                    id="published" autcomplete="off"
+                                    <?php echo ( $draft ) ? null : "checked" ?>
+                                    class="post_status" value="publish" />
+                                <i class="fa fa-fw fa-eye"></i>
+                                Published
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-lg-4">
+                      <a class="pull-right" href="settings">
+                        <i class="fa fa-fw fa-trash-o"></i>
+                        Delete
+                      </a>
+                    </div>
             </div>
-        </div>
-
-        <div class="pull-right">
-          <a href="settings">Delete</a>
         </div>
         <?php } ?>
 
-
-
-        <div class="row clearfix">
+        <div class="row">
 
             <!-- Classification -->
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">

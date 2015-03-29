@@ -53,7 +53,8 @@ class FossilTaxa extends Base
         $this->_meta_keys = self::create_meta_keys();
     }
 
-    public static function create_meta_keys() {
+    public static function create_meta_keys()
+    {
         $meta_keys = array();
         foreach ( self::get_ranks() as $k ) {
             $meta_keys[] = sprintf( 'taxon_id_%s', $k );
@@ -61,9 +62,10 @@ class FossilTaxa extends Base
         return $meta_keys;
     }
 
-    public static function get_ranks() {
+    public static function get_ranks()
+    {
         return array( 'phylum', 'class', 'order', 'family', 'genus',
-                'species');
+            'species' );
     }
 
     /**
@@ -100,7 +102,13 @@ class FossilTaxa extends Base
      */
     public function __get( $key )
     {
-        if ( in_array( $key, self::get_ranks(), true ) ) {
+        $is_taxon = false;
+        foreach ( self::get_ranks() as $rank ) {
+            if ( $rank == $key ) {
+                $is_taxon = true;
+            }
+        }
+        if ( $is_taxon ) {
             return new Taxon( $this->{ sprintf( 'taxon_id_%s', $key ) } );
         }
 
@@ -110,7 +118,14 @@ class FossilTaxa extends Base
     public function __set( $key, $value )
     {
         $k = $key;
-        if ( in_array( $key, self::get_ranks(), true ) ) {
+        $is_taxon = false;
+        foreach ( self::get_ranks() as $rank ) {
+            if ( $rank == $key ) {
+                $is_taxon = true;
+            }
+        }
+
+        if ( $is_taxon ) {
             $k = sprintf( 'taxon_id_%s', $key );
         }
 

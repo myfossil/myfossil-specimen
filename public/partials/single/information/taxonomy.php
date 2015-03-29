@@ -36,10 +36,6 @@ function fossil_edit_taxonomy( $fossil=null )
 function fossil_view_taxonomy( $fossil=null )
 {
 ?>
-    <input type="hidden" id="fossil-taxon-name" value="<?php echo $fossil->taxon->name ?>" />
-    <input type="hidden" id="fossil-taxon-rank" value="<?php echo $fossil->taxon->rank ?>" />
-    <input type="hidden" id="fossil-taxon-pbdb" value="<?php echo $fossil->taxon->pbdbid ?>" />
-
     <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
         <button class="btn btn-default edit-fossil-taxon_open pull-right">
             <i class="fa fa-fw fa-magic"></i>
@@ -58,7 +54,6 @@ function fossil_view_taxonomy( $fossil=null )
 
     <?php save_alert( 'taxon' ); ?>
 
-
     <table id="fossil-taxon" class="table">
         <tr class="sr-only">
             <th>Taxonomy Level</th>
@@ -71,11 +66,11 @@ function fossil_view_taxonomy( $fossil=null )
                     <td class="fossil-property"><?php echo ucwords( $k ) ?></td>
                     <td class="fossil-property-value">
                         <?php if ( $fossil->taxa->{ $k } ) : ?>
-                            <input type="text" 
-                                class="form-control"
+                            <input type="text"
+                                class="form-control taxon"
                                 id="fossil-taxon-<?php echo $k ?>"
                                 name="fossil-taxon-<?php echo $k ?>"
-                                value="<?=$fossil->taxa->{ $k }->name ?>" />
+                                value="<?php echo $fossil->taxa->{ $k }->name ?>" />
                         <?php endif; ?>
                     </td>
                 </tr>

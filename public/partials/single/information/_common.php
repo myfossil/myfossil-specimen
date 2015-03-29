@@ -2,7 +2,7 @@
 
 function save_alert( $id, $message=null )
 {
-    ?>
+?>
     <div class="alert-save" id="edit-fossil-<?php echo $id ?>-save-alert" style="display: none">
         <div class="message">
             You have unsaved changes.
@@ -49,10 +49,11 @@ function edit_comment_box( $id )
     <?php
 }
 
-function edit_is_disclosed( $id ) {
+function edit_is_disclosed( $id )
+{
 ?>
     <div style="padding-bottom: 1rem; ">
-        Disclose Location: 
+        Disclose Location:
       <input id="edit-fossil-<?php echo $id ?>-is-disclosed" type="checkbox" />
     </div>
 <?php

@@ -26,6 +26,7 @@ class FossilTaxaTest extends myFOSSIL_Specimen_Test {
     public function testGetFossilTaxa()
     {
         $taxon = new Taxon;
+        $taxon->name = "Test Taxon";
         $taxa = new FossilTaxa;
         $this->assertGreaterThan( 0, count( $taxa->_meta_keys ) );
         foreach ( $taxa->_meta_keys as $k ) {
@@ -38,8 +39,8 @@ class FossilTaxaTest extends myFOSSIL_Specimen_Test {
         }
 
         foreach ( FossilTaxa::get_ranks() as $k ) {
-            $this->assertInstanceOf( 'myFOSSIL\Plugin\Specimen\Taxon', 
-                    $taxa->{ $k } );
+            $this->assertInstanceOf( 'myFOSSIL\Plugin\Specimen\Taxon',
+                $taxa->{ $k } );
         }
     }
 
@@ -48,6 +49,7 @@ class FossilTaxaTest extends myFOSSIL_Specimen_Test {
         $taxa = new FossilTaxa;
         foreach ( FossilTaxa::get_ranks() as $k ) {
             $taxon = new Taxon;
+            $taxon->name = $k;
             $taxon->common_name = $k;
             $taxon->rank = $k;
             $taxon->save();
@@ -64,8 +66,8 @@ class FossilTaxaTest extends myFOSSIL_Specimen_Test {
             $this->assertInternalType( 'int', $taxa->{ $k } );
         }
         foreach ( FossilTaxa::get_ranks() as $k ) {
-            $this->assertInstanceOf( 'myFOSSIL\Plugin\Specimen\Taxon', 
-                    $taxa->{ $k } );
+            $this->assertInstanceOf( 'myFOSSIL\Plugin\Specimen\Taxon',
+                $taxa->{ $k } );
         }
     }
 }

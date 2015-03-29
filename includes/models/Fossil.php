@@ -58,9 +58,9 @@ class Fossil extends Base
         $this->pbdb = new PBDB\FossilOccurence;
 
         $this->_meta_keys = array( 'pbdb_id', 'taxa_id', 'location_id',
-                'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
-                'stratum_member_id', 'dimension_id', 'reference_id', 'image_id'
-                );
+            'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
+            'stratum_member_id', 'dimension_id', 'reference_id', 'image_id'
+        );
     }
 
     // {{{ _save

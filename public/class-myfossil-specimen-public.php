@@ -267,18 +267,20 @@ class myFOSSIL_Specimen_Public
         case 'myfossil_save_taxon':
             $fossil = new Fossil( $_POST['post_id'] );
 
-            if ( $fossil->taxon_id )
-                $taxon = new Taxon( $fossil->taxon_id );
+            if ( $fossil->taxa_id )
+                $taxa = new FossilTaxa( $fossil->taxa_id );
             else
+                $taxa = new FossilTaxa;
+
+            foreach ( FossilTaxa::get_ranks() as $rank ) {
                 $taxon = new Taxon;
+                $taxon->name    = $_POST['taxa'][$rank];
+                $taxon->rank    = $rank;
+                $taxon->parent_id = $post_id;
+                $taxa->{ sprintf( "taxon_id_%s", $rank ) } = $taxon->save();
+            }
 
-            $taxon->pbdb_id = $_POST['taxon']['pbdb'];
-            $taxon->name    = $_POST['taxon']['name'];
-            $taxon->rank    = $_POST['taxon']['rank'];
-            $taxon->comment = $_POST['taxon']['comment'];
-            $taxon->parent_id = $post_id;
-
-            $fossil->taxon_id = $taxon->save();
+            $fossil->taxa_id = $taxa->save();
 
             echo json_encode( $fossil->save() );
             die;
@@ -366,7 +368,7 @@ class myFOSSIL_Specimen_Public
                 $location = new FossilLocation;
 
             foreach ( array( 'latitude', 'longitude', 'country', 'state',
-                             'county', 'city' ) as $k ) {
+                    'county', 'city' ) as $k ) {
                 $location->{ $k } = $_POST['location'][$k];
             }
 
