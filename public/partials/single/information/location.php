@@ -2,10 +2,18 @@
 
 require_once '_common.php';
 
+function edit_is_disclosed( $fossil=null ) {
+    ?>
+    <div style="padding-bottom: 1rem; ">
+        Disclose Location:
+        <input id="edit-fossil-location-is-disclosed" type="checkbox" <?php if ( $fossil->location->is_disclosed ) echo 'checked="checked"'; ?> />
+    </div>
+    <?php
+}
+
 function fossil_edit_location( $fossil=null )
 {
-?>
-
+    ?>
     <div id="edit-fossil-location" class="edit-fossil-popup">
         <div class="edit-fossil">
             <div class="edit-fossil-heading">
@@ -25,7 +33,7 @@ function fossil_edit_location( $fossil=null )
                                     id="edit-fossil-location-<?php echo $k ?>" />
                         </div>
                     <?php endforeach; ?>
-                    <?php edit_is_disclosed( 'location' ); ?>
+                    <?php edit_is_disclosed( $fossil ); ?>
                     <?php edit_comment_box( 'location' ); ?>
                 </form>
             </div>
@@ -39,7 +47,7 @@ function fossil_edit_location( $fossil=null )
 
 function fossil_view_location( $fossil=null )
 {
-    $hide_fields = array( 'zip', 'address', 'map_url' );
+    $hide_fields = array( 'zip', 'address', 'map_url', 'is_disclosed' );
 ?>
 
     <h3 style="margin: 20px 0">
@@ -98,5 +106,14 @@ function fossil_location( $fossil=null )
     if ( $fossil->location->is_disclosed == 'true' || current_user_can( 'edit_post', $fossil->id ) ) {
         fossil_view_location( $fossil );
         fossil_edit_location( $fossil );
+    } else {
+        ?>
+        <h3 style="margin: 20px 0">
+            Location
+        </h3>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <p>This user has chosen to not disclose the location of this fossil.</p>
+        </div>
+        <?php
     }
 }
