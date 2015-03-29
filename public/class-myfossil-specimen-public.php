@@ -76,6 +76,7 @@ class myFOSSIL_Specimen_Public
         FossilLocation::register_buddypress_activities( FossilLocation::POST_TYPE );
         Stratum::register_buddypress_activities( Stratum::POST_TYPE );
         Taxon::register_buddypress_activities( Taxon::POST_TYPE );
+        FossilTaxa::register_buddypress_activities( FossilTaxa::POST_TYPE );
         TimeInterval::register_buddypress_activities( TimeInterval::POST_TYPE );
     }
 
@@ -124,6 +125,9 @@ class myFOSSIL_Specimen_Public
             break;
         case Taxon::POST_TYPE:
             return Taxon::bp_format_activity_json( $json, $tpl );
+            break;
+        case FossilTaxa::POST_TYPE:
+            return FossilTaxa::bp_format_activity_json( $json, $tpl );
             break;
         case TimeInterval::POST_TYPE:
             return TimeInterval::bp_format_activity_json( $json, $tpl );

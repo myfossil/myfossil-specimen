@@ -131,4 +131,18 @@ class FossilTaxa extends Base
 
         return parent::__set( $k, $value );
     }
+
+    public static function bp_format_activity_json( $json, $tpl )
+    {
+        $output = "<div>";
+        foreach ( $json->changeset as $change ) {
+            $t0 = new Taxon( $change->from );
+            $t1 = new Taxon( $change->to );
+            $tpl_path = 'activities/taxon.htm';
+            if ( $t0->name !== $t1->name )
+                $output .= $tpl->render( $tpl_path, array( 'from' => $t0, 'to' => $t1 ) );
+        }
+        return $output . "</div>";
+    }
+
 }
