@@ -377,7 +377,7 @@ class myFOSSIL_Specimen_Public
             }
 
             $location->comment = $_POST['comment'];
-            $location->is_disclosed = $_POST['is_disclosed'];
+            $location->not_disclosed = $_POST['not_disclosed'];
             $location->parent_id = $post_id;
 
             $fossil->location_id = $location->save();

@@ -39,7 +39,7 @@ class FossilLocation extends Base
 
         $this->_meta_keys = array( 'latitude', 'longitude', 'country', 'state',
             'county', 'city', 'zip', 'address', 'map_url',
-            'is_disclosed' );
+            'not_disclosed' );
     }
 
     /**
