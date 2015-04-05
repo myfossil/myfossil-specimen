@@ -97,7 +97,7 @@
 
         $('#edit-fossil-location-save').click(save_location);
         $('#edit-fossil-location-comment-toggle > button').click(toggle_comment);
-        $('#edit-fossil-location-is-disclosed').click(function() {
+        $('#edit-fossil-location-not-disclosed').click(function() {
             save_prompt();
         });
 
