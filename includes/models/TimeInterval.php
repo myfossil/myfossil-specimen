@@ -122,10 +122,8 @@ class TimeInterval extends Base
                 return $this->_cache->reference;
             }
         }
-
         if ( in_array( $key, array( 'early_age', 'late_age' ) ) )
             $key = $key . '_ma';
-
         return parent::__get( $key );
     }
 
