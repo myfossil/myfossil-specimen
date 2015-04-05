@@ -17,6 +17,7 @@ require_once 'models/FossilLocation.php';
 require_once 'models/FossilDimension.php';
 require_once 'models/Reference.php';
 require_once 'models/Stratum.php';
+require_once 'models/FossilLithostratigraphy.php';
 require_once 'models/Taxon.php';
 require_once 'models/FossilTaxa.php';
 require_once 'models/TimeInterval.php';
