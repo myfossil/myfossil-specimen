@@ -7,6 +7,13 @@ require_once '_common.php';
 function fossil_view_lithostratigraphy( $fossil=null )
 {
 ?>
+    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
+        <button class="btn btn-default edit-fossil-litho_open pull-right">
+            <i class="fa fa-fw fa-magic"></i>
+            Litho Helper
+        </button>
+    <?php endif; ?>
+
 
     <h3>
         Lithostratigraphy
