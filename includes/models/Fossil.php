@@ -58,7 +58,7 @@ class Fossil extends Base
         $this->pbdb = new PBDB\FossilOccurence;
 
         $this->_meta_keys = array( 'pbdb_id', 'taxa_id', 'location_id',
-            'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
+            'geochronology_id', 'stratum_formation_id', 'stratum_group_id',
             'stratum_member_id', 'dimension_id', 'reference_id', 'image_id'
         );
     }
@@ -195,10 +195,11 @@ class Fossil extends Base
         case 'time':
         case 'time_interval':
         case 'geochronology':
-            if ( $this->time_interval_id ) {
-                $this->_cache->time_interval = new TimeInterval( $this->time_interval_id );
-                return $this->_cache->time_interval;
+            if ( $this->geochronology_id ) {
+                $this->_cache->time_interval = new FossilGeochronology(
+                        this->geochronology_id );
             }
+            return $this->_cache->time_interval;
             break;
 
         case 'strata':
