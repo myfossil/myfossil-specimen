@@ -104,16 +104,13 @@ class myFOSSIL_Specimen_Public
 
         // Bail if it's not even JSON
         // Bail if we don't have a post type defined
-        if ( ! $json
+        if ( ! self::isJson( $content )
             || ! property_exists( $json, 'post_type' )
             || ! property_exists( $json, 'changeset' ) )
             return $content;
 
         $tpl = $this->get_twig();
         switch ( $json->post_type ) {
-        case Fossil::POST_TYPE:
-            return Fossil::bp_format_activity_json( $json, $tpl );
-            break;
         case FossilDimension::POST_TYPE:
             return FossilDimension::bp_format_activity_json( $json, $tpl );
             break;
@@ -132,10 +129,19 @@ class myFOSSIL_Specimen_Public
         case TimeInterval::POST_TYPE:
             return TimeInterval::bp_format_activity_json( $json, $tpl );
             break;
+        case FossilGeochronology::POST_TYPE:
+            return FossilGeochronology::bp_format_activity_json( $json, $tpl );
+            break;
+        case Fossil::POST_TYPE:
         default:
-            return $content;
+            return; // $content;
             break;
         }
+    }
+
+    public static function isJson($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
     }
 
     public function bp_add_member_fossil_nav_items()
