@@ -145,4 +145,13 @@ class FossilTaxa extends Base
         return $output . "</div>";
     }
 
+    public function __toString()
+    {
+        foreach ( array_reverse(self::get_ranks()) as $rank ) {
+            if ( $this->{ sprintf( 'taxon_id_%s', $rank ) } ) {
+                return (string) $this->{ $rank };
+            }
+        }
+        return '<span class="unknown">Unknown</span>';
+    }
 }

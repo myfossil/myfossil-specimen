@@ -90,4 +90,14 @@ class FossilGeochronology extends Base
         return parent::__set( $k, $value );
     }
 
+    public function __toString()
+    {
+        foreach ( array_reverse(self::get_ranks()) as $rank ) {
+            if ( $this->{ sprintf( 'time_interval_id_%s', $rank ) } ) {
+                return (string) $this->{ $rank };
+            }
+        }
+        return '<span class="unknown">Unknown</span>';
+    }
+
 }

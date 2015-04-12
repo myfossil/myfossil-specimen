@@ -194,10 +194,11 @@ class Fossil extends Base
 
         case 'time':
         case 'geochronology':
-        case 'geochronology':
             if ( $this->geochronology_id ) {
                 $this->_cache->geochronology = new FossilGeochronology(
                         $this->geochronology_id );
+            } else {
+                $this->_cache->geochronology = new FossilGeochronology;
             }
             return $this->_cache->geochronology;
             break;
