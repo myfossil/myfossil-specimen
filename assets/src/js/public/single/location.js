@@ -40,14 +40,15 @@
         });
     }
 
-    // {{{ geocode
     function geocode(place) {
         var address = '';
         if ( place ) {
             if ( place.street_address ) address += place.street_address + " ";
             if ( place.state ) address += place.state + " ";
+            if ( place.county ) address += place.county + " County ";
             if ( place.city ) address += place.city + " ";
-            if ( place.zip_code ) address += place.zip_code;
+            if ( place.zip_code ) address += place.zip_code + " ";
+            if ( place.country ) address += place.country;
         } 
 
         return $.ajax({
@@ -64,13 +65,12 @@
             }
         });
     }
-    // }}}
 
     function improve_location() {
         var city           = $( 'input#edit-fossil-location-city' ).val();
         var state          = $( 'input#edit-fossil-location-state' ).val();
         var county         = $( 'input#edit-fossil-location-county' ).val();
-        var country         = $( 'input#edit-fossil-location-country' ).val();
+        var country        = $( 'input#edit-fossil-location-country' ).val();
         var zip            = $( 'input#edit-fossil-location-zip' ).val();
         var latitude       = $( 'input#edit-fossil-location-latitude' ).val();
         var longitude      = $( 'input#edit-fossil-location-longitude' ).val();
@@ -90,28 +90,49 @@
                 try {
                   var results = data.results[0];
                   $( 'input#edit-fossil-location-latitude' ).val( results.geometry.location.lat );
+                  $('#fossil-location-latitude')
+                      .text($('#edit-fossil-location-latitude').val())
+                      .data('value', $('#edit-fossil-location-latitude').val());
                   $( 'input#edit-fossil-location-longitude ' ).val( results.geometry.location.lng );
+                  $('#fossil-location-longitude')
+                      .text($('#edit-fossil-location-longitude').val())
+                      .data('value', $('#edit-fossil-location-longitude').val());
                   results.address_components.forEach( function( ac ) {
                       ac.types.forEach( function( t ) {
                           switch ( t ) {
                               case 'locality':
                                   $( 'input#edit-fossil-location-city' ).val( ac.long_name );
+                                  $('#fossil-location-city')
+                                      .text($('#edit-fossil-location-city').val())
+                                      .data('value', $('#edit-fossil-location-city').val());
                                   break;
 
                               case 'administrative_area_level_1':
                                   $( 'input#edit-fossil-location-state' ).val( ac.long_name );
+                                  $('#fossil-location-state')
+                                      .text($('#edit-fossil-location-state').val())
+                                      .data('value', $('#edit-fossil-location-state').val());
                                   break;
 
                               case 'postal_code':
                                   $( 'input#edit-fossil-location-zip' ).val( ac.long_name );
+                                  $('#fossil-location-zip')
+                                      .text($('#edit-fossil-location-zip').val())
+                                      .data('value', $('#edit-fossil-location-zip').val());
                                   break;
 
                               case 'administrative_area_level_2':
                                   $( 'input#edit-fossil-location-county').val( ac.long_name );
+                                  $('#fossil-location-county')
+                                      .text($('#edit-fossil-location-county').val())
+                                      .data('value', $('#edit-fossil-location-county').val());
                                   break;
 
                               case 'country':
                                   $( 'input#edit-fossil-location-country').val( ac.long_name );
+                                  $('#fossil-location-country')
+                                      .text($('#edit-fossil-location-country').val())
+                                      .data('value', $('#edit-fossil-location-country').val());
                                   break;
 
                               default:
@@ -120,6 +141,7 @@
                           }
                       });
                   });
+                  save_prompt();
               } catch(e) {
                 console.warn("Geocode threw error", e);
                 return;
