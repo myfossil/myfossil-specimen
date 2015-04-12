@@ -70,6 +70,7 @@ function fossil_view_taxonomy( $fossil=null )
                                 class="form-control taxon"
                                 id="fossil-taxon-<?php echo $k ?>"
                                 name="fossil-taxon-<?php echo $k ?>"
+                                placeholder="Unknown"
                                 value="<?php echo $fossil->taxa->{ $k }->name ?>" />
                         <?php endif; ?>
                     </td>

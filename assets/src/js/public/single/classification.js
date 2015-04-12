@@ -1,7 +1,7 @@
 (function($) {
     'use strict';
 
-    var ranks = ['phylum', 'class', 'order', 'family', 'genus', 'species'];
+    var ranks = ['common', 'phylum', 'class', 'order', 'family', 'genus', 'species'];
 
     // {{{ load_taxa
     function load_taxa(taxon_name) {
@@ -58,6 +58,7 @@
 
     // {{{ set_taxon
     function set_taxon(taxon) {
+            reset_taxa();
             $('#fossil-taxon-' + taxon.rank).val(taxon.taxon_name);
             load_taxa(taxon.taxon_name);
             save_prompt();
@@ -66,7 +67,6 @@
 
     // {{{ reset_taxa
     function reset_taxa() {
-
             $.map(ranks, function(rank) {
                 $('#fossil-taxon-' + rank).val("");
             });
