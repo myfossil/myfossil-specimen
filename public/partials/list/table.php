@@ -40,7 +40,7 @@ function myfossil_list_fossils_table( $fossils )
                         <?php echo $fossil->location ? $fossil->location : $unk ?>
                     </td>
                     <td>
-                        <?php echo $fossil->geochronology ? $fossil->geochronology : $unk ?>
+                        <?php echo $fossil->time_interval? $fossil->time_interval : $unk ?>
                     </td>
                     <td>
                         <?php foreach ( array( 'group', 'formation', 'member' ) as $lith ): ?>
