@@ -8,6 +8,7 @@ function fossil_view_lithostratigraphy( $fossil=null )
 {
 ?>
 
+
     <h3>
         Lithostratigraphy
         <i style="display: none" class="fa fa-fw fa-circle-o-notch fa-spin"
@@ -24,15 +25,26 @@ function fossil_view_lithostratigraphy( $fossil=null )
         <?php foreach ( Stratum::get_ranks() as $n => $k ): ?>
             <tr>
                 <td class="fossil-property"><?php echo ucwords( $k ) ?></td>
-                <td class="fossil-property-value<?php echo ( current_user_can( 'edit_post', $fossil->id ) ) ? " edit-fossil-stratum-{$k}_open editable" : null ?>"
+                <td>
+                    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
+                    <div class="input-group">
+                    <input type="text"
+                        class="form-control fossil-property-value"
                         id="fossil-stratum-<?php echo $k ?>"
                         data-edit="<?php echo current_user_can( 'edit_post', $fossil->id )?>"
                         data-popup-ordinal="<?php echo current_user_can( 'edit_post', $fossil->id )?>"
-                        data-name="<?php echo ( property_exists( $fossil->strata, $k ) ) ? $fossil->strata->{ $k }->name : null ?>">
-                    <?php if ( property_exists( $fossil->strata, $k ) && $fossil->strata->{ $k }->name ): ?>
-                        <?php echo $fossil->strata->{ $k }->name ?>
+                        data-name="<?php echo ( property_exists( $fossil->strata, $k ) ) ? $fossil->strata->{ $k }->name : null ?>"
+                        placeholder="Unknown"
+                        value="<?php echo property_exists( $fossil->strata, $k ) ? $fossil->strata->{ $k }->name : null ?>" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default<?=" edit-fossil-stratum-{$k}_open"; ?>">
+                                <i class="fa fa-fw fa-magic"></i>
+                            </button>
+                        </span>
                     <?php else: ?>
-                        <span class="unknown">Unknown</span>
+                        <span>
+                            <?php echo $fossil->strata->{ $k }->name ?>
+                        </span>
                     <?php endif; ?>
                 </td>
             </tr>

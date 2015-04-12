@@ -34,13 +34,13 @@ function myfossil_list_fossils_table( $fossils )
                         </div>
                     </td>
                     <td>
-                        <?php echo $fossil->taxon ? $fossil->taxon : $unk ?>
+                        <?php echo $fossil->taxa ? $fossil->taxa : $unk ?>
                     </td>
                     <td>
                         <?php echo $fossil->location ? $fossil->location : $unk ?>
                     </td>
                     <td>
-                        <?php echo $fossil->time_interval ? $fossil->time_interval : $unk ?>
+                        <?php echo $fossil->time_interval? $fossil->time_interval : $unk ?>
                     </td>
                     <td>
                         <?php foreach ( array( 'group', 'formation', 'member' ) as $lith ): ?>

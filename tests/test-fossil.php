@@ -24,14 +24,19 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $stratum = new Specimen\Stratum( null, array( 'color' => '#c0c0c0' ) );
         $time_interval = new Specimen\TimeInterval( null, array( 'early_age' =>
                 20, 'late_age' => 30 ) );
+        $geochronology = new Specimen\FossilGeochronology();
 
         // Save all our new objects that will comprise our fossil
         foreach ( array( $taxon, $taxa, $location, $dimension, $reference,
-                $stratum, $time_interval ) as $obj )
+                $stratum, $time_interval, $geochronology ) as $obj )
             $this->assertGreaterThan( 0, $obj->save() );
 
         foreach ( Specimen\FossilTaxa::get_ranks() as $rank ) {
             $taxa->{ $rank } = $taxon;
+        }
+
+        foreach ( Specimen\FossilGeochronology::get_ranks() as $rank ) {
+            $geochronology->{ $rank } = $time_interval;
         }
 
         // Create new fossil
@@ -43,7 +48,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
                 'dimension_id' => $dimension->id,
                 'reference_id' => $reference->id,
                 'stratum_formation_id' => $stratum->id,
-                'time_interval_id' => $time_interval->id
+                'geochronology_id' => $geochronology->save()
             )
         );
 
@@ -64,8 +69,10 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $this->assertEquals( $dimension->height, $fossil->dim->height );
         $this->assertEquals( $reference->year, $fossil->reference->year );
         $this->assertEquals( $stratum->color, $fossil->strata->formation->color );
-        $this->assertEquals( $time_interval->early_age, $fossil->time_interval->early_age );
-        $this->assertEquals( $time_interval->late_age, $fossil->time_interval->late_age );
+        foreach ( Specimen\FossilGeochronology::get_ranks() as $rank ) {
+            $this->assertEquals( $time_interval->early_age, $fossil->geochronology->{ $rank }->early_age );
+            $this->assertEquals( $time_interval->late_age, $fossil->geochronology->{ $rank }->late_age );
+        }
 
         // Test loading from the database again
         $fossil_id = $fossil->id;
@@ -83,8 +90,10 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $this->assertEquals( $dimension->height, $fossil->dim->height );
         $this->assertEquals( $reference->year, $fossil->reference->year );
         $this->assertEquals( $stratum->color, $fossil->strata->formation->color );
-        $this->assertEquals( $time_interval->early_age, $fossil->time_interval->early_age );
-        $this->assertEquals( $time_interval->late_age, $fossil->time_interval->late_age );
+        foreach ( Specimen\FossilGeochronology::get_ranks() as $rank ) {
+            $this->assertEquals( $time_interval->early_age, $fossil->geochronology->{ $rank }->early_age );
+            $this->assertEquals( $time_interval->late_age, $fossil->geochronology->{ $rank }->late_age );
+        }
     }
 
 }

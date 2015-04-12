@@ -2,9 +2,9 @@
     'use strict';
 
     function set_stratum(rank, stratum) {
-        var td = $('td#fossil-stratum-' + rank);
+        var inputBox = $('input#fossil-stratum-' + rank);
 
-        td.text(stratum.name)
+        inputBox.val(stratum.name)
             .data('name', stratum.name)
             .data('rank', stratum.rank)
             .data('n_occs', stratum.n_occs)
@@ -18,7 +18,7 @@
 
             var strata = {};
             $.map(['member', 'formation', 'group'], function(rank) {
-                strata[rank] = $('td#fossil-stratum-' + rank).data('name');
+                strata[rank] = $('input#fossil-stratum-' + rank).val();
             });
 
             $.ajax({
@@ -97,7 +97,6 @@
                     .data('n_colls', stratum.n_colls)
                     .click(function() {
                         set_stratum(rank, stratum);
-                        save_prompt();
                     });
 
                 // show at most 10 results
@@ -163,6 +162,9 @@
         $.map(['member', 'formation', 'group'], function(rank) {
             $('input#edit-fossil-stratum-' + rank)
                 .keyup(autocomplete_stratum);
+
+            $('input#fossil-stratum-' + rank)
+                .change(save_prompt);
 
             $('select#edit-fossil-stratum-' + rank + '-sortby')
                 .change({

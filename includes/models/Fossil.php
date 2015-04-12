@@ -58,8 +58,9 @@ class Fossil extends Base
         $this->pbdb = new PBDB\FossilOccurence;
 
         $this->_meta_keys = array( 'pbdb_id', 'taxa_id', 'location_id',
-            'time_interval_id', 'stratum_formation_id', 'stratum_group_id',
-            'stratum_member_id', 'dimension_id', 'reference_id', 'image_id'
+                'time_interval_id', 'geochronology_id', 'stratum_formation_id',
+                'stratum_group_id', 'stratum_member_id', 'dimension_id',
+                'reference_id', 'image_id'
         );
     }
 
@@ -177,28 +178,40 @@ class Fossil extends Base
         case 'taxa':
             if ( $this->taxa_id ) {
                 $this->_cache->taxa = new FossilTaxa( $this->taxa_id );
-                return $this->_cache->taxa;
+            } else {
+                $this->_cache->taxa = new FossilTaxa;
             }
-            return new FossilTaxa;
+            return $this->_cache->taxa;
             break;
 
         case 'location':
             if ( $this->location_id ) {
                 $this->_cache->location = new FossilLocation( $this->location_id );
-                return $this->_cache->location;
             } else {
                 $this->_cache->location = new FossilLocation;
-                return $this->_cache->location;
             }
+            return $this->_cache->location;
             break;
 
         case 'time':
         case 'time_interval':
-        case 'geochronology':
             if ( $this->time_interval_id ) {
-                $this->_cache->time_interval = new TimeInterval( $this->time_interval_id );
-                return $this->_cache->time_interval;
+                $this->_cache->time_interval = new TimeInterval(
+                        $this->time_interval_id );
+            } else {
+                $this->_cache->time_interval = new TimeInterval;
             }
+            return $this->_cache->time_interval;
+            break;
+
+        case 'geochronology':
+            if ( $this->geochronology_id ) {
+                $this->_cache->geochronology = new FossilGeochronology(
+                        $this->geochronology_id );
+            } else {
+                $this->_cache->geochronology = new FossilGeochronology;
+            }
+            return $this->_cache->geochronology;
             break;
 
         case 'strata':
@@ -224,15 +237,17 @@ class Fossil extends Base
         case 'dimension':
             if ( $this->dimension_id ) {
                 $this->_cache->dimension = new FossilDimension( $this->dimension_id );
-                return $this->_cache->dimension;
+            } else {
+                $this->_cache->dimension = new FossilDimension;
             }
+            return $this->_cache->dimension;
             break;
 
         case 'reference':
             if ( $this->reference_id ) {
                 $this->_cache->reference = new Reference( $this->reference_id );
-                return $this->_cache->reference;
             }
+            return $this->_cache->reference;
             break;
 
         case 'history':
