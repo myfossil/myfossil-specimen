@@ -237,6 +237,8 @@ class Fossil extends Base
         case 'dimension':
             if ( $this->dimension_id ) {
                 $this->_cache->dimension = new FossilDimension( $this->dimension_id );
+            } else {
+                $this->_cache->dimension = new FossilDimension;
             }
             return $this->_cache->dimension;
             break;
