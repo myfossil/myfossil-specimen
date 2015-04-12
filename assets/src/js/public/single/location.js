@@ -40,6 +40,93 @@
         });
     }
 
+    // {{{ geocode
+    function geocode(place) {
+        var address = '';
+        if ( place ) {
+            if ( place.street_address ) address += place.street_address + " ";
+            if ( place.state ) address += place.state + " ";
+            if ( place.city ) address += place.city + " ";
+            if ( place.zip_code ) address += place.zip_code;
+        } 
+
+        return $.ajax({
+            url: 'https://maps.googleapis.com/maps/api/geocode/json',
+            data: { 
+                'address': address
+            },
+            dataType: 'json',
+            success: function( data ) {
+                // console.log("Geocode:", place, data);
+            },
+            error: function ( err ) {
+                console.error( err );
+            }
+        });
+    }
+    // }}}
+
+    function improve_location() {
+        var city           = $( 'input#edit-fossil-location-city' ).val();
+        var state          = $( 'input#edit-fossil-location-state' ).val();
+        var county         = $( 'input#edit-fossil-location-county' ).val();
+        var country         = $( 'input#edit-fossil-location-country' ).val();
+        var zip            = $( 'input#edit-fossil-location-zip' ).val();
+        var latitude       = $( 'input#edit-fossil-location-latitude' ).val();
+        var longitude      = $( 'input#edit-fossil-location-longitude' ).val();
+
+        var place = {
+            state: state,
+            county: county,
+            country: country,
+            city: city,
+            zip_code: zip
+        };
+
+        console.log( place );
+
+        geocode( place )
+            .then( function( data ) {
+                try {
+                  var results = data.results[0];
+                  $( 'input#edit-fossil-location-latitude' ).val( results.geometry.location.lat );
+                  $( 'input#edit-fossil-location-longitude ' ).val( results.geometry.location.lng );
+                  results.address_components.forEach( function( ac ) {
+                      ac.types.forEach( function( t ) {
+                          switch ( t ) {
+                              case 'locality':
+                                  $( 'input#edit-fossil-location-city' ).val( ac.long_name );
+                                  break;
+
+                              case 'administrative_area_level_1':
+                                  $( 'input#edit-fossil-location-state' ).val( ac.long_name );
+                                  break;
+
+                              case 'postal_code':
+                                  $( 'input#edit-fossil-location-zip' ).val( ac.long_name );
+                                  break;
+
+                              case 'administrative_area_level_2':
+                                  $( 'input#edit-fossil-location-county').val( ac.long_name );
+                                  break;
+
+                              case 'country':
+                                  $( 'input#edit-fossil-location-country').val( ac.long_name );
+                                  break;
+
+                              default:
+                                  console.log("Address Component:", t, ac);
+                                  break;
+                          }
+                      });
+                  });
+              } catch(e) {
+                console.warn("Geocode threw error", e);
+                return;
+              }
+            });
+    }
+
 
     // {{{ save_location 
     function save_location() {
@@ -107,6 +194,9 @@
             background: false,
             transition: 'all 0.2s',
         });
+
+        // Add Geocoding feature to Groups page
+        $( '#improve-fossil-location' ).click( improve_location );
     });
 
 }(jQuery));
