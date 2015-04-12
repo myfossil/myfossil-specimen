@@ -177,29 +177,29 @@ class Fossil extends Base
         case 'taxa':
             if ( $this->taxa_id ) {
                 $this->_cache->taxa = new FossilTaxa( $this->taxa_id );
-                return $this->_cache->taxa;
+            } else {
+                $this->_cache->taxa = new FossilTaxa;
             }
-            return new FossilTaxa;
+            return $this->_cache->taxa;
             break;
 
         case 'location':
             if ( $this->location_id ) {
                 $this->_cache->location = new FossilLocation( $this->location_id );
-                return $this->_cache->location;
             } else {
                 $this->_cache->location = new FossilLocation;
-                return $this->_cache->location;
             }
+            return $this->_cache->location;
             break;
 
         case 'time':
-        case 'time_interval':
+        case 'geochronology':
         case 'geochronology':
             if ( $this->geochronology_id ) {
-                $this->_cache->time_interval = new FossilGeochronology(
+                $this->_cache->geochronology = new FossilGeochronology(
                         $this->geochronology_id );
             }
-            return $this->_cache->time_interval;
+            return $this->_cache->geochronology;
             break;
 
         case 'strata':
@@ -225,15 +225,15 @@ class Fossil extends Base
         case 'dimension':
             if ( $this->dimension_id ) {
                 $this->_cache->dimension = new FossilDimension( $this->dimension_id );
-                return $this->_cache->dimension;
             }
+            return $this->_cache->dimension;
             break;
 
         case 'reference':
             if ( $this->reference_id ) {
                 $this->_cache->reference = new Reference( $this->reference_id );
-                return $this->_cache->reference;
             }
+            return $this->_cache->reference;
             break;
 
         case 'history':
