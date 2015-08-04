@@ -155,6 +155,8 @@
         // $( '#edit-fossil-lithostratigraphy-comment-toggle > button' ).click( toggle_comment );
     }
 
+    
+
     $(function() {
         $('#edit-fossil-lithostratigraphy-save').click(save_lithostratigraphy);
         $('#edit-fossil-lithostratigraphy-comment-toggle > button').click(toggle_comment);
@@ -163,8 +165,11 @@
             $('input#edit-fossil-stratum-' + rank)
                 .keyup(autocomplete_stratum);
 
-            $('input#fossil-stratum-' + rank)
-                .change(save_prompt);
+            // $('input#fossil-stratum-' + rank)
+            //     .change(save_prompt);
+
+                  $('input#fossil-stratum-' + rank)
+                .keyup(save_prompt);
 
             $('select#edit-fossil-stratum-' + rank + '-sortby')
                 .change({

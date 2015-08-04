@@ -188,7 +188,11 @@
 
         $('#edit-fossil-taxon-name').keyup(autocomplete_taxon);
 
-        $('input.taxon').change(function() {
+        // $('input.taxon').change(function() {
+        //   save_prompt();
+        // });
+
+         $('input.taxon').keyup(function() {
           save_prompt();
         });
 
