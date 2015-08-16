@@ -378,6 +378,10 @@ abstract class Base
     }
     // }}}
 
+    public function matches_search_query( $q ) {
+        return False;
+    }
+
     // {{{ get_meta_keys
     /**
      * Return the metadata keys that can be retrieved from this class.

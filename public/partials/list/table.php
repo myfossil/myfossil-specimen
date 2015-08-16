@@ -2,7 +2,7 @@
 
 use myFOSSIL\Plugin\Specimen\Fossil;
 
-function myfossil_list_fossils_table( $fossils )
+function myfossil_list_fossils_table( $fossils, $query )
 {
     $unk = '<span class="unknown">Unknown</span>';
 ?>
@@ -18,7 +18,10 @@ function myfossil_list_fossils_table( $fossils )
             </thead>
             <tbody>
             <?php while ( $fossils->have_posts() ) : $fossils->the_post(); ?>
-            <?php $fossil = new Fossil( get_the_id() ); ?>
+            <?php
+                $fossil = new Fossil( get_the_id() );
+                if ( !$query || $fossil->matches_search_query( $query ) ):
+            ?>
                 <tr class="hover-hand" data-href="/fossils/<?php echo get_the_id() ?>">
                     <td>
                         <div class="pull-left">
@@ -50,6 +53,7 @@ function myfossil_list_fossils_table( $fossils )
                         <?php endforeach; ?>
                     </td>
                 </tr>
+            <?php endif; ?>
             <?php endwhile; ?>
             </tbody>
         </table>

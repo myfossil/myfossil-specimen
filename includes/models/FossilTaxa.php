@@ -68,6 +68,17 @@ class FossilTaxa extends Base
             'species' );
     }
 
+    public function matches_search_query( $q ) {
+        $q = strtolower( $q );
+        foreach ( $this::get_ranks() as $rank ) {
+            $v = strtolower( $this->{ $rank }->name );
+            if ( strpos( $v, $q ) !== false || $v == $q ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      *
      *
@@ -102,13 +113,7 @@ class FossilTaxa extends Base
      */
     public function __get( $key )
     {
-        $is_taxon = false;
-        foreach ( self::get_ranks() as $rank ) {
-            if ( $rank == $key ) {
-                $is_taxon = true;
-            }
-        }
-        if ( $is_taxon ) {
+        if ( in_array( $key, self::get_ranks() ) ) {
             return new Taxon( $this->{ sprintf( 'taxon_id_%s', $key ) } );
         }
 
@@ -117,19 +122,12 @@ class FossilTaxa extends Base
 
     public function __set( $key, $value )
     {
-        $k = $key;
-        $is_taxon = false;
-        foreach ( self::get_ranks() as $rank ) {
-            if ( $rank == $key ) {
-                $is_taxon = true;
-            }
+        if ( in_array( $key, self::get_ranks() ) ) {
+            $key = sprintf( 'taxon_id_%s', $key );
+            $value = $value->ID;
         }
 
-        if ( $is_taxon ) {
-            $k = sprintf( 'taxon_id_%s', $key );
-        }
-
-        return parent::__set( $k, $value );
+        return parent::__set( $key, $value );
     }
 
     public static function bp_format_activity_json( $json, $tpl )

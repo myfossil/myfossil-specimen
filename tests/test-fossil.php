@@ -14,7 +14,11 @@ class FossilTest extends myFOSSIL_Specimen_Test {
 
     public function testSaveGetFossil()
     {
-        $taxon = new Specimen\Taxon( null, array( 'common_name' => 'whale' ) );
+        $taxon = new Specimen\Taxon( null );
+        $taxon->common_name = "whale";
+        $taxon->name = "whale";
+        $this->assertNotNull( $taxon->common_name );
+        $taxon->save();
         $taxa = new Specimen\FossilTaxa;
         $location = new Specimen\FossilLocation( null, array( 'latitude' =>
                 10.2, 'longitude' => 20.3 ) );
@@ -23,7 +27,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $reference = new Specimen\Reference( null, array( 'year' => 2014 ) );
         $stratum = new Specimen\Stratum( null, array( 'color' => '#c0c0c0' ) );
         $time_interval = new Specimen\TimeInterval( null, array( 'early_age' =>
-                20, 'late_age' => 30 ) );
+                20, 'late_age' => 30, 'name' => "Jurrasic" ) );
         $geochronology = new Specimen\FossilGeochronology();
 
         // Save all our new objects that will comprise our fossil
@@ -32,7 +36,11 @@ class FossilTest extends myFOSSIL_Specimen_Test {
             $this->assertGreaterThan( 0, $obj->save() );
 
         foreach ( Specimen\FossilTaxa::get_ranks() as $rank ) {
+            $this->assertGreaterThan( 0, $taxon->save() );
             $taxa->{ $rank } = $taxon;
+            $this->assertNotNull( $taxon->common_name );
+            $this->assertGreaterThan( 0, $taxa->save(true) );
+            $this->assertNotNull( $taxa->{ $rank }->common_name );
         }
 
         foreach ( Specimen\FossilGeochronology::get_ranks() as $rank ) {
@@ -74,12 +82,17 @@ class FossilTest extends myFOSSIL_Specimen_Test {
             $this->assertEquals( $time_interval->late_age, $fossil->geochronology->{ $rank }->late_age );
         }
 
-        // Test loading from the database again
+        // Test loading from the database again, also search
         $fossil_id = $fossil->id;
         $fossil = new Specimen\Fossil( $fossil->id );
-        foreach ( Specimen\FossilTaxa::get_ranks() as $rank )
+        foreach ( Specimen\FossilTaxa::get_ranks() as $rank ) {
             $this->assertEquals( $taxa->{ $rank }->common_name,
-            $fossil->taxa->{ $rank }->common_name );
+                $fossil->taxa->{ $rank }->common_name );
+            $this->assertNotNull( $taxa->{ $rank }->common_name );
+            $this->assertNotNull( $fossil->taxa->{ $rank }->common_name );
+            $this->assertTrue( $fossil->taxa->matches_search_query( "whale" ) );
+            $this->assertTrue( $fossil->matches_search_query( "whale" ) );
+        }
         $this->assertEquals( $location->latitude, $fossil->location->latitude );
         $this->assertEquals( $location->longitude, $fossil->location->longitude );
         $this->assertEquals( $dimension->length, $fossil->dimension->length );
@@ -93,7 +106,10 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         foreach ( Specimen\FossilGeochronology::get_ranks() as $rank ) {
             $this->assertEquals( $time_interval->early_age, $fossil->geochronology->{ $rank }->early_age );
             $this->assertEquals( $time_interval->late_age, $fossil->geochronology->{ $rank }->late_age );
+            $this->assertNotNull( $time_interval->name );
+            $this->assertTrue( $fossil->matches_search_query( $time_interval->name ) );
         }
+
     }
 
 }

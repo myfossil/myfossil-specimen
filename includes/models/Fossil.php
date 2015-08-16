@@ -87,6 +87,15 @@ class Fossil extends Base
     }
     // }}}
 
+    public function matches_search_query( $q ) {
+        // TODO add Strata to search queries
+        return $this->taxa->matches_search_query( $q )
+            || $this->location->matches_search_query( $q )
+            || $this->time_interval->matches_search_query( $q )
+            || $this->geochronology->matches_search_query( $q )
+            || $this->dimension->matches_search_query( $q );
+    }
+
     // {{{ Custom Post Type
     /**
      * Register the custom post type for this class.

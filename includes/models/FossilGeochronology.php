@@ -77,17 +77,23 @@ class FossilGeochronology extends Base
 
     public function __set( $key, $value )
     {
-        $k = $key;
-        $is_time_interval = false;
-        foreach ( self::get_ranks() as $rank ) {
-            if ( $rank == $key ) {
-                $is_time_interval = true;
+        if ( in_array( $key, $this::get_ranks() ) ) {
+            $key = sprintf( 'time_interval_id_%s', $key );
+            $value = $value->ID;
+        }
+
+        return parent::__set( $key, $value );
+    }
+
+    public function matches_search_query( $q ) {
+        $q = strtolower( $q );
+        foreach ( $this::get_ranks() as $rank ) {
+            $v = strtolower( $this->{ $rank }->name );
+            if ( strpos( $v, $q ) !== false || $v == $q ) {
+                return true;
             }
         }
-        if ( $is_time_interval ) {
-            $k = sprintf( 'time_interval_id_%s', $key );
-        }
-        return parent::__set( $k, $value );
+        return false;
     }
 
     public function __toString()
