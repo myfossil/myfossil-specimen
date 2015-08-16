@@ -163,7 +163,7 @@ class Taxon extends Base
      */
     public function __toString()
     {
-        return sprintf( '<p class="fossil-property">%s</p> %s', $this->rank,
+        return sprintf( '<span class="fossil-property">%s</span> %s', $this->rank,
             $this->name );
     }
 }
