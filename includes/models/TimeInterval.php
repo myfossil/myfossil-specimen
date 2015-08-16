@@ -142,6 +142,15 @@ class TimeInterval extends Base
     }
 
 
+    public function matches_search_query( $q ) {
+        $q = strtolower( $q );
+        $v = strtolower( $this->name );
+        if ( strpos( $v, $q ) !== false || $v == $q ) {
+            return true;
+        }
+        return false;
+    }
+
     public static function bp_format_activity_json( $json, $tpl )
     {
         $geo0 = new TimeInterval;

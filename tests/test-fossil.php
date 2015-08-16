@@ -31,8 +31,8 @@ class FossilTest extends myFOSSIL_Specimen_Test {
                 'width' => 20, 'height' => 30 ) );
         $reference = new Specimen\Reference( null, array( 'year' => 2014 ) );
         $stratum = new Specimen\Stratum( null, array( 'color' => '#c0c0c0', "name" => "rock" ) );
-        $time_interval = new Specimen\TimeInterval( null, array( 'early_age' =>
-                20, 'late_age' => 30, 'name' => "Jurrasic" ) );
+        $time_interval = new Specimen\TimeInterval( null,
+            array( 'early_age' => 20, 'late_age' => 30, "pbdbid" => 15, "name" => "jurrasic" ) );
         $geochronology = new Specimen\FossilGeochronology();
 
         // Save all our new objects that will comprise our fossil
@@ -122,6 +122,8 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         }
 
         $this->assertTrue( $fossil->matches_search_query( "rock" ) );
+        $this->assertTrue( $fossil->matches_search_query( "jur" ) );
+        $this->assertTrue( $fossil->matches_search_query( "jurrasic" ) );
     }
 
 }
