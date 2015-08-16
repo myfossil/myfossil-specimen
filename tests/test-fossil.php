@@ -124,6 +124,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $this->assertTrue( $fossil->matches_search_query( "rock" ) );
         $this->assertTrue( $fossil->matches_search_query( "jur" ) );
         $this->assertTrue( $fossil->matches_search_query( "jurrasic" ) );
+        $this->assertTrue( $fossil->matches_search_query( (string) $fossil->id ) );
     }
 
 }

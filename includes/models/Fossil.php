@@ -101,7 +101,8 @@ class Fossil extends Base
             || $this->location->matches_search_query( $q )
             || $this->time_interval->matches_search_query( $q )
             || $this->geochronology->matches_search_query( $q )
-            || $this->dimension->matches_search_query( $q );
+            || $this->dimension->matches_search_query( $q )
+            || intval( $q ) === $this->id;
     }
 
     // {{{ Custom Post Type
