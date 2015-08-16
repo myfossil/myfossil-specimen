@@ -30,7 +30,7 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $dimension = new Specimen\FossilDimension( null, array( 'length' => 10,
                 'width' => 20, 'height' => 30 ) );
         $reference = new Specimen\Reference( null, array( 'year' => 2014 ) );
-        $stratum = new Specimen\Stratum( null, array( 'color' => '#c0c0c0' ) );
+        $stratum = new Specimen\Stratum( null, array( 'color' => '#c0c0c0', "name" => "rock" ) );
         $time_interval = new Specimen\TimeInterval( null, array( 'early_age' =>
                 20, 'late_age' => 30, 'name' => "Jurrasic" ) );
         $geochronology = new Specimen\FossilGeochronology();
@@ -61,6 +61,8 @@ class FossilTest extends myFOSSIL_Specimen_Test {
                 'dimension_id' => $dimension->id,
                 'reference_id' => $reference->id,
                 'stratum_formation_id' => $stratum->id,
+                'stratum_member_id' => $stratum->id,
+                'stratum_group_id' => $stratum->id,
                 'geochronology_id' => $geochronology->save()
             )
         );
@@ -118,6 +120,8 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         foreach ( array( "gainesvIlL", "fl", "alachua", "Alachua" ) as $location_query ) {
             $this->assertTrue( $fossil->matches_search_query( $location_query ) );
         }
+
+        $this->assertTrue( $fossil->matches_search_query( "rock" ) );
     }
 
 }

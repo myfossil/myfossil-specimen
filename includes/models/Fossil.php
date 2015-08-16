@@ -88,7 +88,15 @@ class Fossil extends Base
     // }}}
 
     public function matches_search_query( $q ) {
-        // TODO add Strata to search queries
+        $strata_match = false;
+        foreach ( Stratum::get_ranks() as $rank ) {
+            if ( property_exists( $this->strata, $rank ) ) {
+                $v = strtolower( $this->strata->{ $rank }->name );
+                if ( strpos( $v, $q ) !== false || $v == $q ) {
+                    return true;
+                }
+            }
+        }
         return $this->taxa->matches_search_query( $q )
             || $this->location->matches_search_query( $q )
             || $this->time_interval->matches_search_query( $q )
