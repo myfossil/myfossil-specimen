@@ -20,8 +20,13 @@ class FossilTest extends myFOSSIL_Specimen_Test {
         $this->assertNotNull( $taxon->common_name );
         $taxon->save();
         $taxa = new Specimen\FossilTaxa;
-        $location = new Specimen\FossilLocation( null, array( 'latitude' =>
-                10.2, 'longitude' => 20.3 ) );
+        $location = new Specimen\FossilLocation( null, array(
+            'latitude' => 10.2,
+            'longitude' => 20.3,
+            "city" => "Gainesville",
+            "state" => "Florida",
+            "county" => "Alachua"
+        ) );
         $dimension = new Specimen\FossilDimension( null, array( 'length' => 10,
                 'width' => 20, 'height' => 30 ) );
         $reference = new Specimen\Reference( null, array( 'year' => 2014 ) );
@@ -110,6 +115,9 @@ class FossilTest extends myFOSSIL_Specimen_Test {
             $this->assertTrue( $fossil->matches_search_query( $time_interval->name ) );
         }
 
+        foreach ( array( "gainesvIlL", "fl", "alachua", "Alachua" ) as $location_query ) {
+            $this->assertTrue( $fossil->matches_search_query( $location_query ) );
+        }
     }
 
 }

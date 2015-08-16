@@ -72,6 +72,18 @@ class FossilLocation extends Base
         return (string) null;
     }
 
+    public function matches_search_query( $q ) {
+        $q = strtolower( $q );
+        foreach ( array( "country", "state", "county", "city", "address" ) as $k ) {
+            $v = strtolower( $this->{ $k } );
+            if ( strpos( $v, $q ) !== false || $v == $q ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     // {{{ Custom Post Type
 
     /**
