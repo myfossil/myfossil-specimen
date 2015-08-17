@@ -13,12 +13,12 @@ function myfossil_fossil_render_single_information( $fossil )
 ?>
     <div id="buddypress" class="container page-styling site-main" role="main">
         <?php if ( current_user_can( 'edit_post', $fossil->id ) ) {?>
-            <?php if ( get_post_status( $fossil->id ) == 'draft' ) { ?>
+           <?php if ( get_post_status( $fossil->id ) == 'draft' ) { ?>
                 <div class="alert alert-info" role="alert">
-                    This specimen is currently <strong>unpublished</strong> and visible only to you.
+                   <p class="alert-content"> This specimen is currently <strong>unpublished</strong> and visible only to you.</p>
             <?php } else { ?>
                 <div class="alert alert-success" role="alert">
-                    This specimen is currently <strong>published</strong> and visible to the public.
+                  <p class="alert-content">  This specimen is currently <strong>published</strong> and visible to the public. </p>
             <?php } ?>
                     <br />
                     <br />

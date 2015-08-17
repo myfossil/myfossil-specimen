@@ -18,6 +18,23 @@
             },
             success: function(data) {
                 console.info(data);
+		
+		if($('.alert').hasClass('alert-info'))
+        {
+            $('.alert').removeClass('alert-info');
+            $('.alert').addClass('alert-success');
+            $('.alert-content').html('This specimen is currently <strong>published</strong> and visible to the public.');  
+        }
+        else
+        {
+            $('.alert').removeClass('alert-success');
+            $('.alert').addClass('alert-info');
+            $('.alert-content').html('This specimen is currently <strong>unpublished</strong> and visible only to you.');  
+        }   		
+		
+		
+		
+		
             },
             error: function(err) {
                 console.error(err);
