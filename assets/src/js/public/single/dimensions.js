@@ -45,10 +45,13 @@
                 console.debug(post_id, nonce, length, width, height, comment);
                 $('#fossil-dimensions-success').show().fadeOut();
                 $('#edit-fossil-dimension-save-alert').fadeOut();
+
+               
             },
             complete: function(data) {
                 $('#fossil-dimensions-loading').hide();
                 init_dimensions();
+                   window.location.reload(true);
             },
             error: function(err) {
                 console.error(err);

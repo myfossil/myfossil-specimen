@@ -166,9 +166,11 @@
                     console.info(data);
                     $('#fossil-geochronology-success').show().fadeOut();
                     $('#edit-fossil-geochronology-save-alert').fadeOut();
+
                 },
                 complete: function(data) {
                     $('#fossil-geochronology-loading').hide();
+                    window.location.reload(true);
                 },
                 error: function(err) {
                     console.error(err);

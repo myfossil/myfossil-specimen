@@ -177,9 +177,11 @@
                 success: function(data) {
                     $('#fossil-location-success').show().fadeOut();
                     $('#edit-fossil-location-save-alert').fadeOut();
+                      
                 },
                 complete: function(data) {
                     $('#fossil-location-loading').hide();
+                    window.location.reload(true);
                 },
                 error: function(err) {
                     console.error(err);

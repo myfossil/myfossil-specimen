@@ -36,9 +36,11 @@
                     console.info(data);
                     $('#fossil-lithostratigraphy-success').show().fadeOut();
                     $('#edit-fossil-lithostratigraphy-save-alert').fadeOut();
+                      
                 },
                 complete: function(data) {
                     $('#fossil-lithostratigraphy-loading').hide();
+                    window.location.reload(true);
                 },
                 error: function(err) {
                     console.error(err);

@@ -100,9 +100,12 @@
                     $('#fossil-taxon-success').show().fadeOut();
                     $('#edit-fossil-taxon-save-alert').fadeOut();
                     console.info(data);
+                     
+
                 },
                 complete: function(data) {
                     $('#fossil-taxon-loading').hide();
+                    window.location.reload(true);
                 },
                 error: function(err) {
                     console.error(err);
