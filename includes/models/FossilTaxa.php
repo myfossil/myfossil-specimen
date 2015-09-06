@@ -145,17 +145,34 @@ class FossilTaxa extends Base
 
     public function __toString()
     {
-        $c = 0;
-        $str = "";
+        /*
+         * Show 3 ranks, starting with common name and then the most accurate
+         * ones
+         */
+        $N_RANKS = 3;
+
+        /**
+         * Lists the common name (if defined), and then the two most accurate
+         * ranks
+         */
+        $taxon_strs = [];
         foreach ( self::get_ranks() as $rank ) {
             if ( $this->{ sprintf( 'taxon_id_%s', $rank ) } > 0
-                && $this->{ $rank }->name && $c < 3) {
-                $str .= (string) $this->{ $rank } . "<br />";
-                $c++;
+                    && $this->{ $rank }->name) {
+                $taxon_strs[] = (string) $this->{ $rank };
             }
         }
+
+        $taxa = [];
+        while ( $taxon_strs && count( $taxa ) < $N_RANKS ) {
+            $taxa[] = array_pop( $taxon_strs );
+        };
+
+        $str = implode( array_reverse( $taxa ), "<br />" );
+
         if ( !$str )
             return '<span class="unknown">Unknown</span>';
+
         return $str;
     }
 }
