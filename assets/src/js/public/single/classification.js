@@ -67,13 +67,13 @@
 
     // {{{ reset_taxa
     function reset_taxa() {
-            $.map(ranks, function(rank) {
+            $.map(ranks.slice(1, -1), function(rank) {
                 $('#fossil-taxon-' + rank).val("");
             });
         }
         // }}}
 
-    // {{{ save_taxon 
+    // {{{ save_taxon
     function save_taxon() {
             var nonce = $('#myfossil_specimen_nonce').val();
             var post_id = parseInt($('#post_id').val());
@@ -100,7 +100,7 @@
                     $('#fossil-taxon-success').show().fadeOut();
                     $('#edit-fossil-taxon-save-alert').fadeOut();
                     console.info(data);
-                     
+
 
                 },
                 complete: function(data) {
