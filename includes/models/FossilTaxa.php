@@ -64,8 +64,8 @@ class FossilTaxa extends Base
 
     public static function get_ranks()
     {
-        return array( 'common', 'phylum', 'class', 'order', 'family', 'genus',
-            'species' );
+        return array( 'kingdom', 'phylum', 'class', 'order', 'family', 'genus',
+            'species', 'common' );
     }
 
     public function matches_search_query( $q ) {
