@@ -151,12 +151,15 @@ class FossilTaxa extends Base
          */
         $N_RANKS = 3;
 
+        $ranks = self::get_ranks();
+        $ranks[] = array_shift( $ranks );
+
         /**
          * Lists the common name (if defined), and then the two most accurate
          * ranks
          */
         $taxon_strs = [];
-        foreach ( self::get_ranks() as $rank ) {
+        foreach ( $ranks as $rank ) {
             if ( $this->{ sprintf( 'taxon_id_%s', $rank ) } > 0
                     && $this->{ $rank }->name) {
                 $taxon_strs[] = (string) $this->{ $rank };
