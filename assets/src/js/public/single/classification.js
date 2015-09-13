@@ -79,6 +79,36 @@
   }
   // }}}
 
+  function get_confirmation_div(taxon) {
+    console.log("__taxon__", taxon);
+    return $("<div />")
+      .attr("id", "edit-fossil-taxon-confirmation")
+      .attr("class", "alert alert-danger")
+      .css("margin-top", "10px")
+      .css("max-width", "215px")
+      .append(
+          $("<p />")
+            .text("This will overwrite your currently defined taxonomy!")
+      )
+      .append(
+          $("<button />")
+            .attr("id", "overwrite-button")
+            .attr("class", "btn btn-default btn-sm form-control")
+            .append(
+              $("<i />")
+                .attr("class", "fa fa-fw fa-exclamation-triangle")
+            )
+            .append(
+              $("<span />")
+                .text("Overwrite")
+            )
+            .click(function () {
+              set_taxon(normalize_taxon(taxon));
+              $("#edit-fossil-taxon-confirmation").remove();
+            })
+      );
+  }
+
   // {{{ save_taxon
   function save_taxon() {
     var nonce = $("#myfossil_specimen_nonce")
@@ -164,10 +194,11 @@
           if (!!taxon.misspelling) return true;
 
           // Deduplicate
-          if ($.inArray(taxon.taxon_name,
-              results) !== -1) return true;
-          else results.push(taxon.taxon_name);
-          //
+          if ($.inArray(taxon.taxon_name, results) !== -1)
+            return true;
+          else
+            results.push(taxon.taxon_name);
+
           // Build list item, including phylopic.
           var taxon_li = $("<li></li>")
             .addClass("hover-hand")
@@ -175,7 +206,8 @@
             .append(" ")
             .append(taxon.taxon_name)
             .click(function () {
-              set_taxon(normalize_taxon(taxon));
+              $("#edit-fossil-taxon-confirmation").remove();
+              $(this).append(get_confirmation_div(taxon));
             });
 
           // Add list item to the results.
@@ -190,15 +222,13 @@
   // }}}
 
   function save_prompt() {
-    $("#edit-fossil-taxon-save-alert")
-      .show();
+    $("#edit-fossil-taxon-save-alert").show();
   }
 
   function toggle_comment() {
     $("#edit-fossil-taxon-comment-form-group")
       .toggle();
-    $(this)
-      .fadeOut(400);
+    $(this).fadeOut(400);
   }
 
   $(function () {
@@ -210,10 +240,6 @@
 
     $("#edit-fossil-taxon-name")
       .keyup(autocomplete_taxon);
-
-    // $('input.taxon').change(function() {
-    //   save_prompt();
-    // });
 
     $("input.taxon")
       .keyup(function () {

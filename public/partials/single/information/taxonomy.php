@@ -3,6 +3,7 @@ use myFOSSIL\Plugin\Specimen\FossilTaxa;
 
 require_once "_common.php";
 
+
 function fossil_edit_taxonomy( $fossil=null )
 {
     ?>
@@ -39,12 +40,14 @@ function fossil_edit_taxonomy( $fossil=null )
 function fossil_view_taxonomy( $fossil=null )
 {
 ?>
+
     <?php if ( current_user_can( "edit_post", $fossil->id ) ) : ?>
         <button class="btn btn-default edit-fossil-taxon_open pull-right">
             <i class="fa fa-fw fa-magic"></i>
             Taxon Helper
         </button>
     <?php endif; ?>
+
     <h3>
         Classification
         <i style="display: none" class="fa fa-fw fa-circle-o-notch fa-spin"
@@ -63,6 +66,7 @@ function fossil_view_taxonomy( $fossil=null )
             <th>Value</th>
             <th>Options</th>
         </tr>
+
         <?php foreach ( FossilTaxa::get_ranks() as $k ): ?>
             <?php if ( current_user_can( "edit_post", $fossil->id ) ) : ?>
                 <tr>
