@@ -73,9 +73,8 @@
 
   // {{{ reset_taxa
   function reset_taxa() {
-    $.map(ranks.slice(1, -1), function (rank) {
-      $("#fossil-taxon-" + rank)
-        .val("");
+    $.map(ranks, function (rank) {
+      $("#fossil-taxon-" + rank).val("");
     });
   }
   // }}}
@@ -131,18 +130,23 @@
   // {{{ autocomplete_taxon
   function autocomplete_taxon() {
     var input = this;
+
     // PBDB auto-complete requires least 3 characters before returning a
     // response.
     if (parseInt($(input)
         .val()
         .length) < 3) return;
+
     // Auto-complete unordered list.
     var ul = $("ul#edit-fossil-taxon-results");
+
     // @todo Make the PBDB URL some kind of constant.
     var url = "http://paleobiodb.org/data1.1/taxa/auto.json" +
       "?limit=20&vocab=pbdb&name=" + $(this)
       .val();
+
     var results = [];
+
     // Query the PBDB with the current taxon name partial.
     $.ajax({
       url: url,
@@ -151,15 +155,19 @@
       success: function (data) {
         // Remove current taxa from the auto-complete list.
         ul.empty();
+
         // foreach taxon result from the auto-complete
         $.map(data.records, function (taxon) {
           taxon = normalize_taxon(taxon);
+
           // Filter out misspellings.
           if (!!taxon.misspelling) return true;
+
           // Deduplicate
           if ($.inArray(taxon.taxon_name,
               results) !== -1) return true;
           else results.push(taxon.taxon_name);
+          //
           // Build list item, including phylopic.
           var taxon_li = $("<li></li>")
             .addClass("hover-hand")
@@ -167,10 +175,9 @@
             .append(" ")
             .append(taxon.taxon_name)
             .click(function () {
-              set_taxon(
-                normalize_taxon(
-                  taxon));
+              set_taxon(normalize_taxon(taxon));
             });
+
           // Add list item to the results.
           ul.append(taxon_li);
         });
@@ -197,17 +204,22 @@
   $(function () {
     $("#edit-fossil-taxon-save")
       .click(save_taxon);
+
     $("#edit-fossil-taxon-comment-toggle > button")
       .click(toggle_comment);
+
     $("#edit-fossil-taxon-name")
       .keyup(autocomplete_taxon);
+
     // $('input.taxon').change(function() {
     //   save_prompt();
     // });
+
     $("input.taxon")
       .keyup(function () {
         save_prompt();
       });
+
     $("#edit-fossil-taxon")
       .popup({
         type: "tooltip",
