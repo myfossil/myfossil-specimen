@@ -8,6 +8,12 @@ function save_alert( $id, $message=null )
             You have unsaved changes.
         </div>
         <div class="actions">
+            <button class="btn btn-default btn-sm"
+                onClick="window.location.reload()"
+            >
+                <i class="fa fa-fw fa-trash"></i>
+                Reset All
+            </button>
 
             <button class="btn btn-default btn-sm" id="edit-fossil-<?php echo $id ?>-save">
                 <i class="fa fa-fw fa-save"></i>
