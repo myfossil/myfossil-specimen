@@ -1,11 +1,12 @@
 <?php
 use myFOSSIL\Plugin\Specimen\FossilTaxa;
 
-require_once '_common.php';
+require_once "_common.php";
+
 
 function fossil_edit_taxonomy( $fossil=null )
 {
-?>
+    ?>
 
     <div id="edit-fossil-taxon" class="edit-fossil-popup">
         <div class="edit-fossil">
@@ -16,11 +17,14 @@ function fossil_edit_taxonomy( $fossil=null )
                 <form class="form">
                     <div class="form-group">
                         <label class="control-label">Taxon</label>
-                        <input class="form-control" type="text"
-                                id="edit-fossil-taxon-name"
-                                placeholder="Begin typing your Taxon" />
+                        <input
+                            class="form-control"
+                            id="edit-fossil-taxon-name"
+                            placeholder="Begin typing your Taxon"
+                            type="text"
+                        />
                     </div>
-                    <?php edit_comment_box( 'taxon' ); ?>
+                    <?php edit_comment_box( "taxon" ); ?>
                 </form>
             </div>
             <div class="edit-fossil-footer">
@@ -36,12 +40,14 @@ function fossil_edit_taxonomy( $fossil=null )
 function fossil_view_taxonomy( $fossil=null )
 {
 ?>
-    <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
+
+    <?php if ( current_user_can( "edit_post", $fossil->id ) ) : ?>
         <button class="btn btn-default edit-fossil-taxon_open pull-right">
             <i class="fa fa-fw fa-magic"></i>
             Taxon Helper
         </button>
     <?php endif; ?>
+
     <h3>
         Classification
         <i style="display: none" class="fa fa-fw fa-circle-o-notch fa-spin"
@@ -52,7 +58,7 @@ function fossil_view_taxonomy( $fossil=null )
                 id="fossil-taxon-error"></i>
     </h3>
 
-    <?php save_alert( 'taxon' ); ?>
+    <?php save_alert( "taxon" ); ?>
 
     <table id="fossil-taxon" class="table">
         <tr class="sr-only">
@@ -60,8 +66,9 @@ function fossil_view_taxonomy( $fossil=null )
             <th>Value</th>
             <th>Options</th>
         </tr>
+
         <?php foreach ( FossilTaxa::get_ranks() as $k ): ?>
-            <?php if ( current_user_can( 'edit_post', $fossil->id ) ) : ?>
+            <?php if ( current_user_can( "edit_post", $fossil->id ) ) : ?>
                 <tr>
                     <td class="fossil-property"><?php echo ucwords( $k ) ?></td>
                     <td class="fossil-property-value">
