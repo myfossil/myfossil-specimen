@@ -52,9 +52,14 @@ function myfossil_fossil_render_single_information( $fossil )
                     </div>
             </div>
         </div>
+
+         <div class="col-xs-12">
+            <div class="alert alert-danger" role="alert">You must click the "save" button in each section in order to save progress.  The save button will appear when you edit a section.</div>
+        </div>
         <?php } ?>
 
         <div class="row">
+           
 
             <!-- Classification -->
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
