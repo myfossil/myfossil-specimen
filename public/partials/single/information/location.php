@@ -20,7 +20,7 @@ function fossil_edit_location( $fossil=null )
                 <h4>Location</h4>
             </div>
             <div class="edit-fossil-body">
-                <button class="btn btn-default form-control" id="improve-fossil-location">
+                <button type="button" class="btn btn-default form-control" id="improve-fossil-location">
                     <i class="fa fa-fw fa-magic"></i>
                     Improve Location
                 </button>
