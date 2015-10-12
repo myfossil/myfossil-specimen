@@ -8,7 +8,7 @@
     "url": "https://github.com/myfossil/myfossil-specimen.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp"
   },
   "author": "Brandon Wood",
   "license": "GNU General Public Licence 2.0",
